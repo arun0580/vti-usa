@@ -8,7 +8,7 @@ export function Logo() {
       </span>
       <span className="hidden leading-tight sm:block">
         <span className="block text-sm font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-          VirtualTechnologies
+          Virtual Technologies
         </span>
         <span className="block text-[11px] font-medium tracking-[0.18em] text-zinc-500 dark:text-zinc-400">
           INTERACTIVE DISPLAYS
@@ -18,4 +18,3 @@ export function Logo() {
     </Link>
   );
 }
-
