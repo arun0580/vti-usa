@@ -276,71 +276,217 @@ export default function Home() {
       </section>
 
       <section>
-        <Container className="py-16 sm:py-20">
-          <div className="flex items-end justify-between gap-6">
-            <div className="max-w-2xl">
-              <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-                Real Voices
+        <Container className="py-16 sm:py-24">
+          <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+            <div className="max-w-xl">
+              <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
+                WHY VTI
               </div>
-              <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-                Spec sheets tell. Installations sell.
+              <h2 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight text-zinc-950 sm:text-5xl">
+                Big-brand specs.
+                <br />
+                <span className="text-red-600">Boutique service.</span>
+              </h2>
+              <p className="mt-4 text-[16px] leading-7 text-zinc-600 dark:text-zinc-300">
+                Resellers and buyers choose VTI over other brands because we
+                give every partner direct access to the people who actually
+                built the product — no call centers, no chatbots, no runaround.
+              </p>
+              <div className="mt-8">
+                <ButtonLink href="/about" variant="secondary">
+                  About our company <span aria-hidden="true">→</span>
+                </ButtonLink>
+              </div>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              {[
+                {
+                  title: "Engineered for daily use",
+                  desc: "Hardened glass, anti-glare coating, and components rated for 50,000+ hours.",
+                  icon: (
+                    <path
+                      d="M14.7 6.3 18 3m-1 6 3.3-3.3M3 21l5.7-1.2L19 9.5a2 2 0 0 0 0-2.8L17.3 5a2 2 0 0 0-2.8 0L4.2 15.3 3 21Z"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  ),
+                },
+                {
+                  title: "Real human support",
+                  desc: "Talk to engineers and account leads — not chatbots or call centers.",
+                  icon: (
+                    <path
+                      d="M6 12a6 6 0 1 1 12 0v6a2 2 0 0 1-2 2h-2m-8-8v6a2 2 0 0 0 2 2h2"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  ),
+                },
+                {
+                  title: "Stocked & ready to ship",
+                  desc: "US warehouses keep our top SKUs on the shelf for fast reseller fulfillment.",
+                  icon: (
+                    <path
+                      d="M3 7h12v10H3V7Zm12 3h4l2 3v4h-6v-7Zm4.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM7.5 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  ),
+                },
+                {
+                  title: "5-year standard warranty",
+                  desc: "Industry-leading coverage included on every interactive flat panel.",
+                  icon: (
+                    <path
+                      d="M12 3l8 4v6c0 5-3.5 8-8 8s-8-3-8-8V7l8-4Z"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  ),
+                },
+              ].map((card) => (
+                <div
+                  key={card.title}
+                  className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
+                >
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="h-6 w-6"
+                      aria-hidden="true"
+                    >
+                      {card.icon}
+                    </svg>
+                  </span>
+                  <div className="mt-4 text-sm font-semibold text-zinc-950 dark:text-zinc-50">
+                    {card.title}
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+                    {card.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section>
+        <Container className="py-16 sm:py-20">
+          <div className="flex items-start justify-between gap-6">
+            <div className="max-w-2xl">
+              <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
+                REAL VOICES
+              </div>
+              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">
+                Spec sheets tell. Installations sell.{" "}
+                <span className="text-red-600">See the results.</span>
               </h2>
               <p className="mt-3 text-zinc-600 dark:text-zinc-300">
                 Hear from IT directors, AV specialists, and reseller partners
                 who put VTI displays into rooms across the country.
               </p>
             </div>
-            <ButtonLink
+            <a
               href="/gallery"
-              variant="secondary"
-              className="hidden sm:inline-flex"
+              className="mt-8 hidden items-center gap-2 text-sm font-semibold text-red-600 hover:text-red-700 sm:inline-flex"
             >
-              View full gallery
-            </ButtonLink>
+              View full gallery <span aria-hidden="true">→</span>
+            </a>
           </div>
 
-          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+          <div className="mt-10 grid gap-6 lg:grid-cols-3">
             {[
               {
                 quote:
                   "We rolled VTI panels into 42 classrooms over the summer. Zero RMAs, zero help-desk tickets from teachers. That's never happened before.",
                 name: "Marcus Reed",
                 role: "Director of IT · Westbrook Unified School District",
+                tag: "K-12 Classroom",
+                image:
+                  "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80",
               },
               {
                 quote:
                   "The 21:9 collaboration display transformed how our faculty run hybrid lectures. Students in the back row finally feel like they're in the room.",
                 name: "Dr. Priya Sundaram",
                 role: "AV Systems Specialist · State University Learning Commons",
+                tag: "Higher Ed Lecture Hall",
+                image:
+                  "https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1400&q=80",
               },
               {
                 quote:
                   "VTI is the only manufacturer where I can text the engineer who designed the panel. My margins stay healthy and my clients stay happy.",
                 name: "Tony Alvarez",
                 role: "Principal & Founder · Northstar AV Integrators",
+                tag: "Reseller Partner",
+                image:
+                  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=80",
               },
             ].map((t) => (
               <figure
                 key={t.name}
-                className="rounded-3xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950"
+                className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
               >
-                <blockquote className="text-sm leading-6 text-zinc-700 dark:text-zinc-300">
-                  “{t.quote}”
-                </blockquote>
-                <figcaption className="mt-4">
-                  <div className="text-sm font-semibold">{t.name}</div>
-                  <div className="text-xs text-zinc-600 dark:text-zinc-400">
-                    {t.role}
+                <div className="relative aspect-[16/9] w-full">
+                  <Image
+                    src={t.image}
+                    alt=""
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 400px, 92vw"
+                  />
+                  <div className="absolute left-4 top-4">
+                    <span className="rounded-full border border-zinc-200 bg-white px-3 py-1 text-[10px] font-semibold tracking-[0.18em] text-zinc-900 shadow-sm">
+                      {t.tag.toUpperCase()}
+                    </span>
                   </div>
-                </figcaption>
+                </div>
+
+                <div className="p-6">
+                  <div className="text-red-600" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="h-7 w-7"
+                    >
+                      <path d="M7.5 10.5c0-1.657 1.343-3 3-3h.5v2H10.5c-.552 0-1 .448-1 1v.5H12v5H7.5v-5.5Zm9 0c0-1.657 1.343-3 3-3h.5v2h-.5c-.552 0-1 .448-1 1v.5H21v5h-4.5v-5.5Z" />
+                    </svg>
+                  </div>
+                  <blockquote className="mt-3 text-[13px] leading-6 text-zinc-700 dark:text-zinc-300">
+                    “{t.quote}”
+                  </blockquote>
+                  <div className="mt-6 border-t border-zinc-200 pt-5 dark:border-zinc-800">
+                    <figcaption>
+                      <div className="text-sm font-semibold">{t.name}</div>
+                      <div className="text-xs text-zinc-600 dark:text-zinc-400">
+                        {t.role}
+                      </div>
+                    </figcaption>
+                  </div>
+                </div>
               </figure>
             ))}
           </div>
 
           <div className="mt-10 flex sm:hidden">
-            <ButtonLink href="/gallery" variant="secondary">
-              View full gallery
-            </ButtonLink>
+            <a
+              href="/gallery"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-red-600 hover:text-red-700"
+            >
+              View full gallery <span aria-hidden="true">→</span>
+            </a>
           </div>
         </Container>
       </section>
