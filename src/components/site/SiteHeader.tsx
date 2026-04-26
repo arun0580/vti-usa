@@ -8,11 +8,10 @@ import { Logo } from "@/components/site/Logo";
 const nav = [
   { href: "/", label: "Home" },
   { href: "/products", label: "Products" },
-  { href: "/shop", label: "Shop" },
   { href: "/gallery", label: "Gallery" },
   { href: "/about", label: "About" },
-  { href: "/resellers", label: "Resellers" },
   { href: "/contact", label: "Contact" },
+  { href: "/resellers", label: "Reseller Portal" },
 ];
 
 export function SiteHeader() {

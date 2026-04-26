@@ -28,11 +28,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${urbanist.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${urbanist.variable} ${geistMono.variable} h-full overflow-x-hidden antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
+      <body className="min-h-full w-full min-w-0 flex flex-col overflow-x-hidden bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <main className="min-w-0 flex-1">{children}</main>
         <SiteFooter />
       </body>
     </html>

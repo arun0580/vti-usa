@@ -31,3 +31,21 @@ body {
   margin-inline: auto;
   padding-inline: 1.25rem;
 }
+
+@keyframes products-ticker-anim {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .products-ticker-run {
+    animation: products-ticker-anim 40s linear infinite;
+  }
+  .group:hover .products-ticker-run {
+    animation-play-state: paused;
+  }
+}

@@ -62,7 +62,7 @@ export function Hero() {
 
             <div className="relative ml-auto aspect-square w-full max-w-[520px] overflow-hidden rounded-full border-0 ">
               <Image
-                src="/vt-panel-hero.png"
+                src="/vt-panel-hero-BbQvghRM.png"
                 alt="VTI interactive display lineup"
                 fill
                 priority

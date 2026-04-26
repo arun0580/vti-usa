@@ -211,7 +211,7 @@ export default function Home() {
                     ].join(" ")}
                   >
                     <Image
-                      src="/vt-panel-hero.png"
+                      src="/vt-panel-hero-BbQvghRM.png"
                       alt=""
                       fill
                       className={[
