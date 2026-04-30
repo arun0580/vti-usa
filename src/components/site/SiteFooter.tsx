@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/site/Container";
 
 export function SiteFooter() {
@@ -8,13 +9,14 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="space-y-4 lg:col-span-4">
             <Link href="/" className="inline-flex items-center gap-3">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-red-600 text-[12px] font-semibold tracking-tight text-white">
-                VTI
-              </span>
-              <span className="text-sm font-semibold text-zinc-100">
-                Virtual Technologies
-              </span>
-              <span className="sr-only">VTI Home</span>
+              <Image
+                src="/logo.png"
+                alt=""
+                width={180}
+                height={60}
+                className="rounded-md object-contain"
+                priority
+              />
             </Link>
 
             <p className="max-w-sm text-sm leading-6 text-zinc-400">
@@ -86,7 +88,10 @@ export function SiteFooter() {
               </div>
               <ul className="space-y-2 text-xs text-zinc-400">
                 <li>
-                  <a className="hover:text-zinc-200" href="mailto:info@vtiusa.com">
+                  <a
+                    className="hover:text-zinc-200"
+                    href="mailto:info@vtiusa.com"
+                  >
                     info@vtiusa.com
                   </a>
                 </li>
@@ -102,7 +107,10 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-8 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-          <div>© {new Date().getFullYear()} Virtual Technologies, Inc. All rights reserved.</div>
+          <div>
+            © {new Date().getFullYear()} Virtual Technologies, Inc. All rights
+            reserved.
+          </div>
           <div className="flex items-center gap-6">
             <Link className="hover:text-zinc-300" href="/privacy">
               Privacy
@@ -119,4 +127,3 @@ export function SiteFooter() {
     </footer>
   );
 }
-

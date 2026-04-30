@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "VTI — Interactive Displays for Education, Business & Government",
   description:
     "Interactive panels, LED posters, and digital signage solutions for education, business, government, and public spaces — delivered through a nationwide partner network.",
+  icons: {
+    icon: "/fav_icon.png",
+  },
 };
 
 export default function RootLayout({
