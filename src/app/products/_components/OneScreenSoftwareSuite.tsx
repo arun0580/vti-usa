@@ -1,3 +1,4 @@
+import { GraduationCap, BookOpen, PenTool, Settings } from "lucide-react";
 import type { ComponentType } from "react";
 
 /* Line-art icon paths from Lucide (v0.460) — ISC License, https://lucide.dev */
@@ -61,55 +62,60 @@ function SettingsLineArtIcon({ className }: { className?: string }) {
 const APPS: {
   name: string;
   desc: string;
-  Icon: ComponentType<{ className?: string }>;
+  Icon: React.ReactNode;
 }[] = [
   {
-    name: "Scribe",
-    desc: "Built-in whiteboard for annotating, sketching, and saving multi-page sessions.",
-    Icon: PenLineArtIcon,
+    name: "Lesson",
+    desc: "Build and explore standards-based or custom lessons — accurate, simple lesson creation with a built-in repository.",
+    Icon: <GraduationCap className="h-5 w-5" />,
   },
   {
     name: "QuizWiz",
-    desc: "Live quizzes and polls students answer from any device — instant results on the panel.",
-    Icon: BookOpenLineArtIcon,
+    desc: "AI-assisted quiz creation with Google Drive and Google Forms integration — students answer from any device.",
+    Icon: <BookOpen className="h-5 w-5" />,
   },
   {
-    name: "Management software",
+    name: "Scrybe",
+    desc: "AI-based real-time transcription and translation — closed captions for accessibility, with AI-summarized notes you can share.",
+    Icon: <PenTool className="h-5 w-5" />,
+  },
+  {
+    name: "OneScreen Central",
     desc: "Centrally monitor, push updates, and manage every OneScreen panel across your campus.",
-    Icon: SettingsLineArtIcon,
+    Icon: <Settings className="h-5 w-5" />,
   },
 ];
 
 export function OneScreenSoftwareSuite() {
   return (
-    <div className="mt-10 rounded-3xl border border-zinc-200/90 bg-white p-8 shadow-sm shadow-zinc-950/[0.04] sm:p-10 dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="mt-10 rounded-3xl border border-zinc-200/90 bg-white p-8 shadow-sm shadow-zinc-950/[0.04] sm:p-10">
       <div className="text-center">
         <p className="text-[12px] font-semibold tracking-[0.2em] text-red-600">
           ONESCREEN SOFTWARE SUITE
         </p>
-        <h3 className="mt-2 text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl dark:text-zinc-50">
-          Three apps that ship with every panel.
+        <h3 className="mt-2 text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
+          Four apps that ship with every panel.
         </h3>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-3">
+      <div className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-4">
         {APPS.map((app) => {
           const { Icon } = app;
           return (
             <div
               key={app.name}
-              className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm shadow-zinc-950/5 dark:border-zinc-800 dark:bg-zinc-950/60 dark:shadow-none"
+              className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm shadow-zinc-950/5"
             >
               <div
                 aria-hidden="true"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-rose-100/90 bg-rose-50/90 text-red-600 dark:border-red-900/50 dark:bg-red-950/35 dark:text-red-400"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-rose-100/90 bg-rose-50/90 text-red-600"
               >
-                <Icon className="h-5 w-5" />
+                {Icon}
               </div>
-              <div className="mt-4 text-base font-semibold text-zinc-950 dark:text-zinc-50">
+              <div className="mt-4 text-base font-semibold text-zinc-950">
                 {app.name}
               </div>
-              <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+              <p className="mt-2 text-sm leading-6 text-zinc-600">
                 {app.desc}
               </p>
             </div>
@@ -122,11 +128,11 @@ export function OneScreenSoftwareSuite() {
           className="mb-3 h-1.5 w-1.5 rounded-full bg-red-600"
           aria-hidden
         />
-        <p className="max-w-xl text-center text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+        <p className="max-w-xl text-center text-sm leading-6 text-zinc-600">
           Looking for the right OneScreen configuration?{" "}
           <a
             href="/contact"
-            className="font-bold text-red-600 transition hover:text-red-700 dark:text-red-500 dark:hover:text-red-400"
+            className="font-bold text-red-600 transition hover:text-red-700"
           >
             Talk to your Virtual rep →
           </a>

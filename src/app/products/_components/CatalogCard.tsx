@@ -41,7 +41,7 @@ export function CatalogCard({
   specCheckItems?: string[];
 }) {
   const ctaClassName =
-    "text-sm font-semibold text-red-600 hover:text-red-700 dark:text-red-500 dark:hover:text-red-400";
+    "text-sm font-semibold text-red-600 hover:text-red-700";
   const ctaInner = (
     <>
       {ctaLabel} <span aria-hidden="true">→</span>
@@ -49,8 +49,8 @@ export function CatalogCard({
   );
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-sm shadow-zinc-950/5 dark:border-zinc-800 dark:bg-zinc-950 dark:shadow-none">
-      <div className="relative aspect-[16/9] w-full bg-zinc-100 dark:bg-zinc-900/40">
+    <div className="overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-sm shadow-zinc-950/5">
+      <div className="relative aspect-[16/9] w-full bg-zinc-100">
         <Image
           src={imageSrc}
           alt={name}
@@ -62,19 +62,19 @@ export function CatalogCard({
 
       <div className="p-6">
         <div className="flex items-start justify-between gap-3 sm:items-center">
-          <div className="inline-flex min-w-0 max-w-[min(100%,14rem)] items-center gap-1.5 rounded-full border border-red-600 bg-white px-2.5 py-0.5 text-[10px] font-extrabold uppercase leading-tight tracking-[0.12em] text-red-600 dark:border-red-500 dark:bg-zinc-950 dark:text-red-500">
-            <StarIcon className="h-3.5 w-3.5 text-red-600 dark:text-red-500" />
+          <div className="inline-flex min-w-0 max-w-[min(100%,14rem)] items-center gap-1.5 rounded-full border border-red-600 bg-white px-2.5 py-0.5 text-[10px] font-extrabold uppercase leading-tight tracking-[0.12em] text-red-600">
+            <StarIcon className="h-3.5 w-3.5 text-red-600" />
             <span className="break-words">{badge}</span>
           </div>
-          <div className="shrink-0 text-right text-[12px] font-semibold tracking-wide text-zinc-500 tabular-nums dark:text-zinc-400">
+          <div className="shrink-0 text-right text-[12px] font-semibold tracking-wide text-zinc-500 tabular-nums">
             {sizes}
           </div>
         </div>
 
-        <div className="mt-4 text-base font-semibold text-zinc-950 dark:text-zinc-50">
+        <div className="mt-4 text-base font-semibold text-zinc-950">
           {name}
         </div>
-        <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+        <p className="mt-2 text-sm leading-6 text-zinc-600">
           {desc}
         </p>
 

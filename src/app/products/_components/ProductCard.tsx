@@ -72,8 +72,8 @@ export function ProductCard({
   actions?: readonly { label: string; href: string }[];
 }) {
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white transition-shadow hover:shadow-md hover:shadow-zinc-950/5 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:shadow-zinc-950/20">
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900/40">
+    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white transition-shadow hover:shadow-md hover:shadow-zinc-950/5">
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-100">
         {imageSrc ? (
           <Image
             src={imageSrc}
@@ -89,7 +89,7 @@ export function ProductCard({
       <div className="flex flex-1 flex-col p-6">
         <div className="flex min-h-[1.5rem] items-center justify-between gap-3">
           {badge ? (
-            <span className="inline-flex min-w-0 items-center gap-1 rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-red-600 dark:bg-red-950/40 dark:text-red-400">
+            <span className="inline-flex min-w-0 items-center gap-1 rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-red-600">
               <StarIcon className="h-3 w-3" />
               {badge}
             </span>
@@ -97,7 +97,7 @@ export function ProductCard({
           {sizes ? (
             <span
               className={cn(
-                "shrink-0 text-xs font-medium text-zinc-500 dark:text-zinc-400",
+                "shrink-0 text-xs font-medium text-zinc-500",
                 !badge && "ml-auto text-right",
               )}
             >
@@ -106,15 +106,15 @@ export function ProductCard({
           ) : null}
         </div>
 
-        <h3 className="mt-4 text-left text-xl font-bold leading-snug text-zinc-950 dark:text-zinc-50">
+        <h3 className="mt-4 text-left text-xl font-bold leading-snug text-zinc-950">
           {name}
         </h3>
 
-        <p className="mt-2 text-left text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+        <p className="mt-2 text-left text-sm leading-6 text-zinc-600">
           {desc}
         </p>
 
-        <ul className="mt-4 grid list-none grid-cols-1 gap-x-3 gap-y-1.5 p-0 text-xs text-zinc-800 sm:grid-cols-2 sm:text-[0.85rem] dark:text-zinc-200/90">
+        <ul className="mt-4 grid list-none grid-cols-1 gap-x-3 gap-y-1.5 p-0 text-xs text-zinc-800 sm:grid-cols-2 sm:text-[0.85rem]">
           {highlights.slice(0, 6).map((h) => (
             <li key={h} className="flex items-start gap-2">
               <CircleCheckIcon />
@@ -130,7 +130,7 @@ export function ProductCard({
                 <Link
                   key={a.label}
                   href={a.href}
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 transition-colors hover:text-red-700 hover:underline dark:text-red-500 dark:hover:text-red-400"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 transition-colors hover:text-red-700 hover:underline"
                 >
                   {a.label}
                   <ArrowRightIcon className="h-3.5 w-3.5" />
