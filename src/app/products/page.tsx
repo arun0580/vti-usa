@@ -520,10 +520,10 @@ export default function ProductsPage() {
         {showSoftware ? (
           <section className="mt-14 sm:mt-16 scroll-mt-24" id="software">
             <div className="text-center">
-              <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl text-zinc-950">
                 The software is included. The learning content is, too.
               </h2>
-              <p className="mx-auto mt-3 max-w-[760px] text-[12px] leading-5 text-zinc-500">
+              <p className="mx-auto mt-3 max-w-[760px] text-sm leading-5 text-zinc-500">
                 Every Virtual panel ships with built-in collaboration tools,
                 palm-rejection touch tech, and — for K-12 — our Get Curious
                 Together OER content platform.
@@ -534,7 +534,7 @@ export default function ProductsPage() {
               {softwareFeatures.map((f) => (
                 <div
                   key={f.title}
-                  className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm shadow-zinc-950/5"
+                  className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm shadow-zinc-950/5 text-zinc-950"
                 >
                   <div className="flex items-center gap-3">
                     <div
