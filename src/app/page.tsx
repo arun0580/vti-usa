@@ -240,7 +240,7 @@ export default function Home() {
       </section>
 
       <section>
-        <Container className="py-16 sm:py-24">
+        <Container className="py-16 sm:py-24 border-b border-zinc-200">
           <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
             <div className="max-w-xl">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
@@ -282,7 +282,7 @@ export default function Home() {
                 {
                   title: "Stocked & ready to ship",
                   desc: "US warehouses keep our top SKUs on the shelf for fast reseller fulfillment.",
-                  icon: <Truck className="h-5 w-5" />
+                  icon: <Truck className="h-5 w-5" />,
                 },
                 {
                   title: "Full replacement warranty",
@@ -341,39 +341,48 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          <div className="mt-10 grid gap-6 lg:grid-cols-4">
             {[
               {
                 quote:
-                  "We rolled VTI panels into 42 classrooms over the summer. Zero RMAs, zero help-desk tickets from teachers. That's never happened before.",
-                name: "Marcus Reed",
-                role: "Director of IT · Westbrook Unified School District",
-                tag: "K-12 Classroom",
-                image:
-                  "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80",
+                  "It's the fastest panel we've used with our kids — they tap, it responds, and the lessons just flow. No lag, no frustration, no excuses to stop learning.",
+                name: "Amira",
+                role: "Program Director",
+                tag: "Youth Program",
+                image: "/testimonials/amira-thumb.jpg",
+                org: "Boys & Girls Club of Faulkner County",
               },
               {
                 quote:
-                  "The 21:9 collaboration display transformed how our faculty run hybrid lectures. Students in the back row finally feel like they're in the room.",
-                name: "Dr. Priya Sundaram",
-                role: "AV Systems Specialist · State University Learning Commons",
+                  "We outfitted our science labs with multiple VTI panels per room so every student has a clear sightline — no more crowding around one screen. The install was clean, the picture is sharp, and our faculty picked it up on day one.",
+                name: "AV & Instructional Technology Team",
+                role: "Science & Technology Division",
                 tag: "Higher Ed Lecture Hall",
-                image:
-                  "https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1400&q=80",
+                image: "/testimonials/gulf-coast-state-college.jpg",
+                org: "Gulf Coast State College",
               },
               {
                 quote:
-                  "VTI is the only manufacturer where I can text the engineer who designed the panel. My margins stay healthy and my clients stay happy.",
-                name: "Tony Alvarez",
-                role: "Principal & Founder · Northstar AV Integrators",
-                tag: "Reseller Partner",
-                image:
-                  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=80",
+                  "Our LED poster in the student center grabs attention the moment people walk in. We push transit info, campus events, and program promos in minutes — no printing, no reprinting, just a sharp, always-current message.",
+                name: "Student Engagement & Communications",
+                role: "Campus Marketing",
+                tag: "DvLED Poster Signage",
+                image: "/testimonials/gulf-coast-led-poster.jpg",
+                org: "Gulf Coast State College",
+              },
+              {
+                quote:
+                  "Our instructors are pumped to bring these panels into the training center — side-by-side annotation, live mission rehearsal, and replay all on one screen. It's going to take our flight training to the next level.",
+                name: "Training Cadre",
+                role: "Airman Leadership School",
+                tag: "Government / Military",
+                image: "/testimonials/jacksonville-afb-training.jpg",
+                org: "Jacksonville AFB Training Center",
               },
             ].map((t) => (
               <figure
                 key={t.name}
-                className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
+                className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm"
               >
                 <div className="relative aspect-[16/9] w-full">
                   <Image
@@ -403,11 +412,11 @@ export default function Home() {
                   <blockquote className="mt-3 text-[13px] leading-6 text-zinc-700">
                     “{t.quote}”
                   </blockquote>
-                  <div className="mt-6 border-t border-zinc-200 pt-5 dark:border-zinc-800">
+                  <div className="mt-6 border-t border-zinc-200 pt-5">
                     <figcaption>
                       <div className="text-sm font-semibold">{t.name}</div>
-                      <div className="text-xs text-zinc-600 dark:text-zinc-400">
-                        {t.role}
+                      <div className="text-xs text-zinc-600">
+                        {t.role} - {t.org}
                       </div>
                     </figcaption>
                   </div>
@@ -427,12 +436,12 @@ export default function Home() {
         </Container>
       </section>
 
-      <section className="border-t border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950/30">
+      <section className="border-t border-zinc-200 bg-zinc-50">
         <Container className="py-16">
-          <div className="rounded-3xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-950 sm:p-10">
+          <div className="rounded-3xl border border-zinc-200 bg-white p-8 sm:p-10">
             <div className="grid items-center gap-8 lg:grid-cols-2">
               <div className="space-y-3">
-                <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                <div className="text-sm font-semibold text-zinc-900">
                   Ready to spec your space?
                 </div>
                 <p className="text-zinc-600">
