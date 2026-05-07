@@ -5,17 +5,17 @@ import { ContactForm } from "./ContactForm";
 export default function ContactPage() {
   return (
     <main>
-      <section className="bg-white dark:bg-zinc-950">
+      <section className="bg-white">
         <Container className="py-12 sm:py-16">
           <div className="grid items-center gap-10 lg:grid-cols-[1fr_460px]">
             <div>
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 CONTACT
               </div>
-              <h1 className="mt-3 text-4xl font-extrabold leading-[0.95] tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-6xl">
+              <h1 className="mt-3 text-4xl font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-6xl">
                 Let&apos;s talk about your space.
               </h1>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-300 sm:text-[18px]">
+              <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 sm:text-[18px]">
                 Classroom, conference room, lecture hall, gallery, lobby, or
                 government facility — our team will help you spec the right
                 display solution for any space.
@@ -39,7 +39,7 @@ export default function ContactPage() {
         </Container>
       </section>
 
-      <section className="bg-zinc-50 dark:bg-zinc-950">
+      <section className="bg-zinc-50">
         <Container className="pb-10">
           <div className="grid gap-4 sm:grid-cols-3">
             {[
@@ -100,17 +100,17 @@ export default function ContactPage() {
               <a
                 key={card.k}
                 href={card.href}
-                className="group rounded-3xl border border-zinc-200 bg-white p-6 transition-colors hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900/40"
+                className="group rounded-3xl border border-zinc-200 bg-white p-6 transition-colors hover:bg-zinc-50"
               >
                 <div className="flex items-start gap-3">
-                  <div className="mt-0.5 rounded-2xl bg-red-500/10 p-2 dark:bg-red-500/15">
+                  <div className="mt-0.5 rounded-2xl bg-red-500/10 p-2">
                     {card.icon}
                   </div>
                   <div className="min-w-0">
-                    <div className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">
+                    <div className="text-sm font-semibold text-zinc-950">
                       {card.k}
                     </div>
-                    <div className="mt-1 whitespace-pre-line text-sm text-zinc-600 dark:text-zinc-300">
+                    <div className="mt-1 whitespace-pre-line text-sm text-zinc-600">
                       {card.v}
                     </div>
                   </div>
@@ -121,26 +121,24 @@ export default function ContactPage() {
         </Container>
       </section>
 
-      <section className="bg-white dark:bg-zinc-950">
+      <section className="bg-white">
         <Container className="py-14 sm:py-16">
           <div className="grid gap-10 lg:grid-cols-[1fr_560px] lg:items-start">
             <div>
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 REQUEST A QUOTE
               </div>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-zinc-50 sm:text-4xl">
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">
                 Tell us about your project.
               </h2>
-              <p className="mt-3 max-w-xl text-zinc-600 dark:text-zinc-300">
+              <p className="mt-3 max-w-xl text-zinc-600">
                 Share a few details and the right person on our team will follow
                 up — usually within one business day.
               </p>
 
-              <ul className="mt-6 space-y-3 text-sm text-zinc-700 dark:text-zinc-200">
+              <ul className="mt-6 space-y-3 text-sm text-zinc-700">
                 {[
                   "Side-by-side spec packets",
-                  "Reseller pricing on request",
-                  "Loaner / demo units available",
                   "Local installation referrals",
                 ].map((item) => (
                   <li key={item} className="flex gap-3">

@@ -77,14 +77,14 @@ export function ContactForm() {
   return (
     <form
       onSubmit={onSubmit}
-      className="grid gap-4 rounded-3xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950 sm:grid-cols-2"
+      className="grid gap-4 rounded-3xl border border-zinc-200 bg-white p-6 sm:grid-cols-2 text-zinc-950"
     >
       <label className="grid gap-2 text-sm">
         <span className="font-medium">
           Full name <span className="text-red-600">*</span>
         </span>
         <input
-          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2 dark:border-zinc-800 dark:bg-zinc-950"
+          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2"
           name="fullName"
           autoComplete="name"
           required
@@ -97,7 +97,7 @@ export function ContactForm() {
           Organization <span className="text-red-600">*</span>
         </span>
         <input
-          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2 dark:border-zinc-800 dark:bg-zinc-950"
+          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2"
           name="organization"
           autoComplete="organization"
           required
@@ -110,7 +110,7 @@ export function ContactForm() {
           Email <span className="text-red-600">*</span>
         </span>
         <input
-          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2 dark:border-zinc-800 dark:bg-zinc-950"
+          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2"
           name="email"
           type="email"
           autoComplete="email"
@@ -122,7 +122,7 @@ export function ContactForm() {
       <label className="grid gap-2 text-sm">
         <span className="font-medium">Phone</span>
         <input
-          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2 dark:border-zinc-800 dark:bg-zinc-950"
+          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2"
           name="phone"
           autoComplete="tel"
           disabled={isSubmitting}
@@ -134,7 +134,7 @@ export function ContactForm() {
           I am a… <span className="text-red-600">*</span>
         </span>
         <select
-          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2 dark:border-zinc-800 dark:bg-zinc-950"
+          className="h-11 rounded-2xl border border-zinc-200 bg-white px-4 text-sm outline-none ring-zinc-400/40 focus:ring-2"
           name="persona"
           required
           defaultValue=""
@@ -143,18 +143,19 @@ export function ContactForm() {
           <option value="" disabled>
             Select one
           </option>
-          <option value="education">Education</option>
-          <option value="business">Business</option>
-          <option value="government">Government</option>
-          <option value="reseller">Reseller / Partner</option>
-          <option value="other">Other</option>
+          <option>K-12 educator / IT</option>
+          <option>Higher education</option>
+          <option>Corporate / boardroom</option>
+          <option>Government / municipal</option>
+          <option>Reseller / integrator</option>
+          <option>Other</option>
         </select>
       </label>
 
       <label className="grid gap-2 text-sm sm:col-span-2">
         <span className="font-medium">Tell us about your project</span>
         <textarea
-          className="min-h-32 rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none ring-zinc-400/40 focus:ring-2 dark:border-zinc-800 dark:bg-zinc-950"
+          className="min-h-32 rounded-2xl border border-zinc-200 bg-white px-4 py-3 text-sm outline-none ring-zinc-400/40 focus:ring-2"
           name="message"
           placeholder="Number of rooms, panel sizes, timeline, anything else we should know…"
           disabled={isSubmitting}
@@ -166,8 +167,8 @@ export function ContactForm() {
           className={[
             "sm:col-span-2 rounded-2xl border px-4 py-3 text-sm font-medium",
             status.type === "success"
-              ? "border-green-200 bg-green-50 text-green-900 dark:border-green-900/40 dark:bg-green-950/30 dark:text-green-200"
-              : "border-red-200 bg-red-50 text-red-900 dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-200",
+              ? "border-green-200 bg-green-50 text-green-900"
+              : "border-red-200 bg-red-50 text-red-900",
           ].join(" ")}
           role={status.type === "error" ? "alert" : "status"}
           aria-live={status.type === "error" ? "assertive" : "polite"}
@@ -176,12 +177,12 @@ export function ContactForm() {
         </div>
       ) : null}
 
-      <div className="sm:col-span-2 flex items-center justify-between gap-4">
+      <div className="">
         <div className="min-h-[1px]" />
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="!bg-red-600 hover:!bg-red-700 disabled:opacity-60 dark:!bg-red-600 dark:hover:!bg-red-700"
+          className="!bg-red-600 hover:!bg-red-700 disabled:opacity-60 !text-white"
         >
           {isSubmitting ? "Sending…" : "Send Request"}
           <span aria-hidden="true" className="ml-1">
