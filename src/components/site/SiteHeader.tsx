@@ -9,9 +9,9 @@ const nav = [
   { href: "/", label: "Home" },
   { href: "/products", label: "Products" },
   { href: "/gallery", label: "Gallery" },
+  { href: "/events", label: "Events" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
-  { href: "/resellers", label: "Reseller Portal" },
 ];
 
 export function SiteHeader() {

@@ -13,7 +13,6 @@ export default function GalleryPage() {
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 9 }).map((_, idx) => (
                 <div
-                  // eslint-disable-next-line react/no-array-index-key
                   key={idx}
                   className="aspect-[4/3] overflow-hidden rounded-3xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/20"
                 />

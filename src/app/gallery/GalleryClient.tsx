@@ -4,7 +4,7 @@ import { ButtonLink } from "@/components/site/Button";
 import { Container } from "@/components/site/Container";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 type GallerySegment =
   | "All"
@@ -140,33 +140,15 @@ export function GalleryClient() {
     [searchParams],
   );
 
-  const [activeSegment, setActiveSegment] = useState<GallerySegment>(segmentFromUrl);
+  const activeSegment = segmentFromUrl;
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
-
-  useEffect(() => {
-    setActiveSegment(segmentFromUrl);
-  }, [segmentFromUrl]);
 
   const visibleInstallations = useMemo(() => {
     if (activeSegment === "All") return installations;
     return installations.filter((x) => x.segment === activeSegment);
   }, [activeSegment]);
 
-  const countsBySegment = useMemo(() => {
-    const counts: Record<GallerySegment, number> = {
-      All: installations.length,
-      "K-12": 0,
-      "Higher Ed": 0,
-      Corporate: 0,
-      Government: 0,
-      "LED & Signage": 0,
-    };
-    for (const i of installations) counts[i.segment] += 1;
-    return counts;
-  }, []);
-
   function updateSegment(next: GallerySegment) {
-    setActiveSegment(next);
     const nextParams = new URLSearchParams(searchParams.toString());
     if (next === "All") nextParams.delete("segment");
     else nextParams.set("segment", segmentToQueryValue(next));

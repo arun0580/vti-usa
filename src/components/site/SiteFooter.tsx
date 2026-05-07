@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Container } from "@/components/site/Container";
+import { Logo } from "@/components/site/Logo";
 
 export function SiteFooter() {
   return (
@@ -8,16 +8,7 @@ export function SiteFooter() {
       <Container className="py-16">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="space-y-4 lg:col-span-4">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <Image
-                src="/logo.png"
-                alt=""
-                width={180}
-                height={60}
-                className="rounded-md object-contain"
-                priority
-              />
-            </Link>
+            <Logo className="inline-flex items-center gap-3" priority={false} />
 
             <p className="max-w-sm text-sm leading-6 text-zinc-400">
               Interactive flat panel displays and LED solutions for K-12, higher
@@ -33,7 +24,7 @@ export function SiteFooter() {
               <ul className="space-y-2 text-xs text-zinc-400">
                 <li>
                   <Link className="hover:text-zinc-200" href="/products">
-                    VT13-IR Series
+                    VT-IR Series
                   </Link>
                 </li>
                 <li>
@@ -48,7 +39,7 @@ export function SiteFooter() {
                 </li>
                 <li>
                   <Link className="hover:text-zinc-200" href="/products">
-                    LED Cabinet Displays
+                    DvLED Displays
                   </Link>
                 </li>
               </ul>
@@ -67,11 +58,6 @@ export function SiteFooter() {
                 <li>
                   <Link className="hover:text-zinc-200" href="/gallery">
                     Installation Gallery
-                  </Link>
-                </li>
-                <li>
-                  <Link className="hover:text-zinc-200" href="/resellers">
-                    Reseller Portal
                   </Link>
                 </li>
                 <li>
@@ -97,9 +83,19 @@ export function SiteFooter() {
                 </li>
                 <li>(877) 853-8478</li>
                 <li className="leading-6">
-                  111 Buffs St, Ste C
+                  111 Bluffs Ct, Ste C
                   <br />
                   Canton, GA 30114
+                </li>
+                <li>
+                  <a
+                    className="hover:text-zinc-200"
+                    href="https://www.linkedin.com/company/virtual-technologies-inc/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    LinkedIn
+                  </a>
                 </li>
               </ul>
             </div>

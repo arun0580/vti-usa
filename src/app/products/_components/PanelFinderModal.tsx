@@ -38,11 +38,6 @@ export function PanelFinderModal({
   const titleId = useId();
   /** 0..(STEPS.length-1) = questions, STEPS.length = done */
   const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<{
-    location?: (typeof STEP1_OPTIONS)[number];
-    people?: (typeof STEP2_OPTIONS)[number];
-    priority?: (typeof STEP3_OPTIONS)[number];
-  }>({});
   const closeRef = useRef<HTMLButtonElement>(null);
   const prevOpen = useRef(open);
 
@@ -52,7 +47,6 @@ export function PanelFinderModal({
 
   const handleClose = useCallback(() => {
     setStep(0);
-    setAnswers({});
     onClose();
   }, [onClose]);
 
@@ -69,7 +63,6 @@ export function PanelFinderModal({
   useEffect(() => {
     if (open && !prevOpen.current) {
       setStep(0);
-      setAnswers({});
     }
     prevOpen.current = open;
   }, [open]);
@@ -90,7 +83,6 @@ export function PanelFinderModal({
   }, [open, handleClose]);
 
   const startOver = useCallback(() => {
-    setAnswers({});
     setStep(0);
   }, []);
 
@@ -98,12 +90,6 @@ export function PanelFinderModal({
 
   const selectOption = useCallback(
     (label: string) => {
-      setAnswers((prev) => {
-        if (step === 0) return { ...prev, location: label as never };
-        if (step === 1) return { ...prev, people: label as never };
-        if (step === 2) return { ...prev, priority: label as never };
-        return prev;
-      });
       if (isLastStep) setStep(STEPS.length);
       else goNext();
     },
@@ -114,7 +100,6 @@ export function PanelFinderModal({
 
   const inQuiz = step < STEPS.length;
   const current = inQuiz ? STEPS[step] : null;
-  const isLast = isLastStep;
 
   return (
     <div
