@@ -475,7 +475,7 @@ export default function ProductsPage() {
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 VIRTUAL LINE
               </div>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl text-zinc-950">
                 Digital signage that talks to your customers.
               </h2>
               <p className="mx-auto mt-3 max-w-3xl text-sm leading-6 text-zinc-600">
