@@ -95,7 +95,8 @@ export function AnnouncementBanner() {
             Turn LED Video Walls Into Your Next Revenue Driver
           </span>
           <Link
-            href="/events"
+            href="https://zoom.us/webinar/register/WN_PgpqF8ZsRsud0AqVsXiTNQ?utm_campaign=Resellers&utm_medium=email&_hsenc=p2ANqtz-_sZdl7JUE-pr6Znj8wactmUeRLnrF_RnyvIqA3V-C_2xdMcyiFPRNbGmAx3CBYsppWE_5QmuGJ_2pMjqev8nlJGTZIUQ&_hsmi=416838137&utm_content=416838137&utm_source=hs_email#/registration"
+            target="_blank"
             className="ml-1 inline-flex items-center gap-0.5 font-medium underline underline-offset-2 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-red-600"
           >
             Reserve your spot

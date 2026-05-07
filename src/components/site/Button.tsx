@@ -46,16 +46,25 @@ export function ButtonLink({
   size = "md",
   className,
   children,
+  target,
+  rel,
 }: {
   href: string;
   variant?: ButtonVariant;
   size?: ButtonSize;
   className?: string;
   children: React.ReactNode;
+  target?: React.HTMLAttributeAnchorTarget;
+  rel?: string;
 }) {
+  const computedRel =
+    rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
+
   return (
     <Link
       href={href}
+      target={target}
+      rel={computedRel}
       className={cn(
         "inline-flex items-center justify-center gap-2 rounded-lg text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50",
         variantClass[variant],

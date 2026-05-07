@@ -92,7 +92,7 @@ const upcoming = [
       "How to confidently step into the category",
       "Pricing, install, and support: what reps need to know",
     ],
-    cta: { label: "Reserve your spot", href: "/contact" },
+    cta: { label: "Reserve your spot", href: "https://zoom.us/webinar/register/WN_PgpqF8ZsRsud0AqVsXiTNQ?utm_campaign=Resellers&utm_medium=email&_hsenc=p2ANqtz-_sZdl7JUE-pr6Znj8wactmUeRLnrF_RnyvIqA3V-C_2xdMcyiFPRNbGmAx3CBYsppWE_5QmuGJ_2pMjqev8nlJGTZIUQ&_hsmi=416838137&utm_content=416838137&utm_source=hs_email#/registration" },
   },
 ];
 
@@ -195,6 +195,7 @@ export default function EventsPage() {
                 <div className="mt-6">
                   <ButtonLink
                     href={e.cta.href}
+                    target="_blank"
                     variant="ghost"
                     className="!bg-red-600 !text-white shadow-sm hover:!bg-red-700 hover:!text-white focus-visible:ring-2 focus-visible:ring-red-500/40"
                     size="sm"
