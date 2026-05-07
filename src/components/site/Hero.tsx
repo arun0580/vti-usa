@@ -19,37 +19,41 @@ export function Hero() {
             </h1>
 
             <p className="max-w-xl text-base leading-7 text-zinc-600 sm:text-[18px]">
-              Interactive panels, LED posters, and digital signage solutions for
-              education, business, government, and public spaces — delivered
+              Interactive panels, DvLED displays, and digital signage solutions
+              for education, business, government, and public spaces — delivered
               through a nationwide partner network.
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <ButtonLink
                 href="/products"
-                className="!bg-red-600 hover:!bg-red-700 dark:!bg-red-600 dark:hover:!bg-red-700"
+                className="!bg-red-600 hover:!bg-red-700 !text-white"
               >
                 Explore Products
                 <span aria-hidden="true" className="ml-1">
                   →
                 </span>
               </ButtonLink>
-              <ButtonLink href="/contact" variant="secondary">
+              <ButtonLink
+                href="/contact"
+                className="!text-zinc-950 !bg-white hover:!bg-zinc-100"
+                variant="secondary"
+              >
                 Request a Quote
               </ButtonLink>
             </div>
 
             <div className="grid max-w-xl grid-cols-3 gap-6 pt-3">
               {[
-                { k: "50+", v: "STATES SERVED" },
+                { k: "Nationwide", v: "Coverage" },
                 { k: "10K+", v: "DISPLAYS INSTALLED" },
-                { k: "5-Yr", v: "WARRANTY STANDARD" },
+                { k: "Industry", v: "STANDARD WARRANTY" },
               ].map((stat) => (
                 <div key={stat.v} className="space-y-1">
-                  <div className="text-3xl font-extrabold tracking-tight text-zinc-950">
+                  <div className="text-3xl font-extrabold tracking-tight text-zinc-950 uppercase">
                     {stat.k}
                   </div>
-                  <div className="text-[12px] font-semibold tracking-[0.18em] text-zinc-500">
+                  <div className="text-[12px] font-semibold tracking-[0.18em] text-zinc-500 uppercase">
                     {stat.v}
                   </div>
                 </div>
