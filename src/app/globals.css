@@ -3,26 +3,17 @@
 :root {
   --background: #ffffff;
   --foreground: #ffffff;
-  --primary: #d62d2a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
   --font-sans: var(--font-urbanist);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #ededed;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
+  background: #ffffff;
   color: var(--foreground);
   font-family: "Urbanist", ui-sans-serif, system-ui, sans-serif;
 }

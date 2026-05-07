@@ -1,6 +1,14 @@
 import { ButtonLink } from "@/components/site/Button";
 import { Container } from "@/components/site/Container";
 import { Hero } from "@/components/site/Hero";
+import {
+  Building2,
+  GraduationCap,
+  ImageIcon,
+  Landmark,
+  MonitorPlay,
+  School,
+} from "lucide-react";
 import Image from "next/image";
 
 export default function Home() {
@@ -53,92 +61,38 @@ export default function Home() {
               {
                 title: "K-12 Classroom",
                 desc: "Durable touch panels designed for classrooms — from kindergarten to senior year.",
-                image:
-                  "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=80",
-                icon: (
-                  <path
-                    d="M6 6h12v9H6zM8 18h8"
-                    stroke="currentColor"
-                    strokeWidth="2.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                ),
+                image: "/solutions/students.jpg",
+                icon: <School className="h-5 w-5" />,
               },
               {
                 title: "Higher Ed Lecture Hall",
                 desc: "Ultra-wide displays and LED walls for lecture halls, labs, and student commons.",
-                image:
-                  "https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1400&q=80",
-                icon: (
-                  <path
-                    d="M4 7h16M6 7v10h12V7M8 17l-2 3m10-3 2 3"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                ),
+                image: "/solutions/higher-ed-lecture-hall.jpg",
+                icon: <GraduationCap className="h-5 w-5" />,
               },
               {
                 title: "Corporate Boardroom",
                 desc: "Boardroom-grade displays for hybrid meetings, presentations, and collaboration.",
-                image:
-                  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=80",
-                icon: (
-                  <path
-                    d="M7 20V10m10 10V10M4 10h16M9 6h6"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                ),
+                image: "/solutions/corporate-boardroom-panel.jpg",
+                icon: <Building2 className="h-5 w-5" />,
               },
               {
                 title: "Government Facility",
                 desc: "Secure, reliable display systems for federal, state, and municipal facilities.",
-                image:
-                  "https://images.unsplash.com/photo-1528909514045-2fa4ac7a08ba?auto=format&fit=crop&w=1400&q=80",
-                icon: (
-                  <path
-                    d="M12 3l8 4v6c0 5-3.5 8-8 8s-8-3-8-8V7l8-4Z"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                ),
+                image: "/solutions/government-corporate-room.jpg",
+                icon: <Landmark className="h-5 w-5" />,
               },
               {
                 title: "Galleries & Conference Centers",
                 desc: "Seamless LED video walls that turn lobbies, galleries, and event spaces into showpieces.",
-                image:
-                  "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1400&q=80",
-                icon: (
-                  <path
-                    d="M5 7h14v12H5zM8 10h8M8 13h8"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                ),
+                image: "/solutions/led-art-gallery.jpg",
+                icon: <ImageIcon className="h-5 w-5" />,
               },
               {
                 title: "Digital Signage",
                 desc: "High-bright displays and scoreboards for gyms, atriums, and high-traffic public spaces.",
-                image:
-                  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1400&q=80",
-                icon: (
-                  <path
-                    d="M7 5h10M9 5v14m6-14v14M5 19h14"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                ),
+                image: "/solutions/digital-signage-gym.jpg",
+                icon: <MonitorPlay className="h-5 w-5" />,
               },
             ].map((card) => (
               <div
