@@ -10,17 +10,19 @@ export default function Home() {
 
       <section className="bg-gradient-to-b from-zinc-950 to-zinc-900 text-white">
         <Container className="py-8 sm:py-10">
-          <div className="text-center text-[12px] font-semibold tracking-[0.28em] text-zinc-300">
+          <div className="text-center text-[12px] font-semibold tracking-[0.28em] uppercase text-white/55">
             TRUSTED ACROSS EDUCATION, ENTERPRISE, AND GOVERNMENT
           </div>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium tracking-wide text-white sm:text-sm">
             {[
               "K-12 Districts",
               "State Universities",
+              "Community Colleges",
               "Fortune 500",
               "Federal Agencies",
-              "Community Colleges",
               "Municipal Govt",
+              "Retail & Hospitality",
+              "Sports Venues",
             ].map((item) => (
               <span key={item} className="opacity-90 hover:opacity-100">
                 {item}
