@@ -16,7 +16,7 @@ export function SimplePage({
           {title}
         </h1>
         {lead ? (
-          <p className="mt-3 text-zinc-600 dark:text-zinc-300">{lead}</p>
+          <p className="mt-3 text-zinc-600">{lead}</p>
         ) : null}
       </div>
       {children ? <div className="mt-10">{children}</div> : null}
