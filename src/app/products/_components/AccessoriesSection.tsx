@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { ButtonLink } from "@/components/site/Button";
-import { cn } from "@/lib/cn";
 import { accessoriesLineup } from "../_data/lineups";
 
 /* Icon paths from Lucide (v0.460) — ISC, https://lucide.dev */
@@ -117,10 +116,10 @@ export function AccessoriesSection() {
   return (
     <section className="mt-14 scroll-mt-24 sm:mt-16" id="accessories">
       <div className="text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl dark:text-zinc-50">
+        <h2 className="text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
           Everything that goes around the panel.
         </h2>
-        <p className="mx-auto mt-3 max-w-3xl text-sm leading-6 text-zinc-600 dark:text-zinc-400 sm:text-base">
+        <p className="mx-auto mt-3 max-w-3xl text-sm leading-6 text-zinc-600 sm:text-base">
           Stands, cameras, keyboards, OPS computers, and the cables in between.
           Order it all from the same rep who sold you the display — no hunting
           across vendors.
@@ -133,21 +132,18 @@ export function AccessoriesSection() {
           return (
             <div
               key={item.name}
-              className={cn(
-                "flex h-full min-h-0 flex-col rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-sm shadow-zinc-950/5",
-                "dark:border-zinc-800 dark:bg-zinc-950 dark:shadow-none",
-              )}
+              className="flex h-full min-h-0 flex-col rounded-2xl border border-zinc-200/90 bg-white p-6 shadow-sm shadow-zinc-950/5"
             >
               <div
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rose-100/90 bg-rose-50/90 text-red-600 dark:border-red-900/35 dark:bg-red-950/30 dark:text-red-400"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-rose-100/90 bg-rose-50/90 text-red-600"
                 aria-hidden
               >
                 <Icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-4 text-base font-semibold leading-snug text-zinc-950 dark:text-zinc-50">
+              <h3 className="mt-4 text-base font-semibold leading-snug text-zinc-950">
                 {item.name}
               </h3>
-              <p className="mt-2 flex-1 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+              <p className="mt-2 flex-1 text-sm leading-6 text-zinc-600">
                 {item.desc}
               </p>
             </div>
@@ -155,22 +151,25 @@ export function AccessoriesSection() {
         })}
       </div>
 
-      <div className="mt-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/20 sm:p-8">
+      <div className="mt-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="text-base font-semibold text-zinc-950 dark:text-zinc-50">
+            <div className="text-base font-semibold text-zinc-950">
               Need a full kit?
             </div>
-            <p className="mt-1 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
-              Tell us the room — we&apos;ll spec the panel, OPS, mount, camera, and
-              cabling as one bundle.
+            <p className="mt-1 text-sm leading-6 text-zinc-600">
+              Tell us the room — we&apos;ll spec the panel, OPS, mount, camera,
+              and cabling as one bundle.
             </p>
           </div>
           <ButtonLink
             href="/contact"
-            className="bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+            className="!text-primary"
           >
             Request a kit quote
+            <span aria-hidden="true" className="ml-1">
+              →
+            </span>
           </ButtonLink>
         </div>
       </div>
