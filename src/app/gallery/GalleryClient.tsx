@@ -28,14 +28,20 @@ const installations: Installation[] = [
     segment: "K-12",
     title: "Elementary STEM Lab",
     location: "Westbrook USD, TX",
-    image: { src: "/gallery/digital-signage-gym-C_i5SOLS.jpg", alt: "Elementary STEM Lab" },
+    image: {
+      src: "/gallery/digital-signage-gym-C_i5SOLS.jpg",
+      alt: "Elementary STEM Lab",
+    },
   },
   {
     id: "zuni-learning-tree-pilot",
     segment: "K-12",
     title: "Zuni Learning Tree Pilot",
     location: "Albuquerque, NM",
-    image: { src: "/gallery/zuni-learning-tree-hemgstmT.jpg", alt: "Zuni Learning Tree Pilot" },
+    image: {
+      src: "/gallery/zuni-learning-tree-hemgstmT.jpg",
+      alt: "Zuni Learning Tree Pilot",
+    },
   },
   {
     id: "faculty-lounge-display",
@@ -49,63 +55,90 @@ const installations: Installation[] = [
     segment: "Higher Ed",
     title: "Auditorium Lecture Hall",
     location: "State University",
-    image: { src: "/gallery/higher-ed-lecture-hall-D17z15Sc.jpg", alt: "Auditorium lecture hall" },
+    image: {
+      src: "/gallery/higher-ed-lecture-hall-D17z15Sc.jpg",
+      alt: "Auditorium lecture hall",
+    },
   },
   {
     id: "collaboration-studio-105",
     segment: "Higher Ed",
     title: `105" Collaboration Studio`,
     location: "Engineering Dept.",
-    image: { src: "/gallery/vt105-specs-CtRtYt8g.jpg", alt: `105" collaboration studio` },
+    image: {
+      src: "/gallery/vt105-specs-CtRtYt8g.jpg",
+      alt: `105" collaboration studio`,
+    },
   },
   {
     id: "executive-boardroom",
     segment: "Corporate",
     title: "Executive Boardroom",
     location: "Northstar Capital, NY",
-    image: { src: "/gallery/corporate-boardroom-panel-2wOF230t.jpg", alt: "Executive boardroom" },
+    image: {
+      src: "/gallery/corporate-boardroom-panel-2wOF230t.jpg",
+      alt: "Executive boardroom",
+    },
   },
   {
     id: "vt-pro-hybrid-meeting-room",
     segment: "Corporate",
     title: "VT Pro Hybrid Meeting Room",
     location: "Atlas Logistics",
-    image: { src: "/gallery/vt-pro-boardroom-DDA_XYew.jpg", alt: "VT Pro hybrid meeting room" },
+    image: {
+      src: "/gallery/vt-pro-boardroom-DDA_XYew.jpg",
+      alt: "VT Pro hybrid meeting room",
+    },
   },
   {
     id: "boardroom-219-spec-wall",
     segment: "Corporate",
     title: "Boardroom 21:9 Spec Wall",
     location: "Aspen Holdings",
-    image: { src: "/gallery/vt105-mountain-B4KMOGJb.jpg", alt: "Boardroom spec wall" },
+    image: {
+      src: "/gallery/vt105-mountain-B4KMOGJb.jpg",
+      alt: "Boardroom spec wall",
+    },
   },
   {
     id: "police-briefing-room",
     segment: "Government",
     title: "Police Briefing Room",
     location: "Municipal Police HQ",
-    image: { src: "/gallery/government-corporate-room-DYtrAlvA.jpg", alt: "Police briefing room" },
+    image: {
+      src: "/gallery/government-corporate-room-DYtrAlvA.jpg",
+      alt: "Police briefing room",
+    },
   },
   {
     id: "modern-art-led-wall",
     segment: "LED & Signage",
     title: "Modern Art LED Wall",
     location: "Civic Art Gallery",
-    image: { src: "/gallery/led-art-gallery-D-SqUNsK.jpg", alt: "Modern art LED wall" },
+    image: {
+      src: "/gallery/led-art-gallery-D-SqUNsK.jpg",
+      alt: "Modern art LED wall",
+    },
   },
   {
     id: "lobby-led-cabinet-wall",
     segment: "LED & Signage",
     title: "Lobby LED Cabinet Wall",
     location: "Convention Center",
-    image: { src: "/gallery/led-cabinet-integration-Db-ZWsBf.jpg", alt: "Lobby LED cabinet wall" },
+    image: {
+      src: "/gallery/led-cabinet-integration-Db-ZWsBf.jpg",
+      alt: "Lobby LED cabinet wall",
+    },
   },
   {
     id: "stadium-scoreboard",
     segment: "LED & Signage",
     title: "Stadium Scoreboard",
     location: "High School Athletics",
-    image: { src: "/gallery/digital-signage-gym-C_i5SOLS.jpg", alt: "Stadium scoreboard" },
+    image: {
+      src: "/gallery/digital-signage-gym-C_i5SOLS.jpg",
+      alt: "Stadium scoreboard",
+    },
   },
 ];
 
@@ -141,7 +174,9 @@ export function GalleryClient() {
   );
 
   const activeSegment = segmentFromUrl;
-  const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "error">(
+    "idle",
+  );
 
   const visibleInstallations = useMemo(() => {
     if (activeSegment === "All") return installations;
@@ -158,7 +193,8 @@ export function GalleryClient() {
 
   async function copyCuratedLink() {
     try {
-      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const origin =
+        typeof window !== "undefined" ? window.location.origin : "";
       const params = new URLSearchParams(searchParams.toString());
       if (activeSegment === "All") params.delete("segment");
       else params.set("segment", segmentToQueryValue(activeSegment));
@@ -175,24 +211,25 @@ export function GalleryClient() {
 
   return (
     <div>
-      <div className="border-b border-zinc-200 bg-zinc-50/60 dark:border-zinc-800 dark:bg-zinc-950/20">
+      <div className="border-b border-zinc-200 bg-white">
         <Container className="py-14 sm:py-16">
           <div className="max-w-3xl">
             <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
               GALLERY
             </div>
-            <h1 className="mt-2 text-[44px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[64px] dark:text-zinc-50">
+            <h1 className="mt-2 text-[44px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[64px]">
               See VTI in the spaces that matter.
             </h1>
-            <p className="mt-4 max-w-2xl text-zinc-600 dark:text-zinc-300">
-              Filter installations by setting — classroom, boardroom, lecture hall, or
-              government office — and share a curated link with your client in seconds.
+            <p className="mt-4 max-w-2xl text-zinc-600">
+              Filter installations by setting — classroom, boardroom, lecture
+              hall, or government office — and share a curated link with your
+              client in seconds.
             </p>
           </div>
         </Container>
       </div>
 
-      <Container className="py-8">
+      <Container className="py-8 bg-white">
         <div className="flex flex-wrap gap-2">
           {segments.map((seg) => {
             const isActive = seg === activeSegment;
@@ -205,7 +242,7 @@ export function GalleryClient() {
                   "inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-semibold transition",
                   isActive
                     ? "border-red-600 bg-red-600 text-white"
-                    : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-900/40",
+                    : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50",
                 ].join(" ")}
               >
                 {seg}
@@ -216,7 +253,7 @@ export function GalleryClient() {
           <button
             type="button"
             onClick={copyCuratedLink}
-            className="ml-auto hidden items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-900/40 sm:inline-flex"
+            className="ml-auto hidden items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 sm:inline-flex"
           >
             {copyState === "copied"
               ? "Link copied"
@@ -232,9 +269,9 @@ export function GalleryClient() {
           {visibleInstallations.map((item) => (
             <article
               key={item.id}
-              className="group overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-zinc-950/10 dark:border-zinc-800 dark:bg-zinc-950 dark:shadow-none"
+              className="group overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-zinc-950/10"
             >
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900/40">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-100">
                 {item.image ? (
                   <Image
                     src={item.image.src}
@@ -249,14 +286,13 @@ export function GalleryClient() {
                     className="absolute inset-0 bg-[radial-gradient(700px_circle_at_20%_10%,rgba(239,68,68,0.20),transparent_55%),radial-gradient(700px_circle_at_80%_90%,rgba(24,24,27,0.18),transparent_55%)]"
                   />
                 )}
-                <div className="absolute left-3 top-3 inline-flex items-center rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-extrabold tracking-[0.22em] text-zinc-900 shadow-sm dark:bg-zinc-950/85 dark:text-zinc-50">
-                  {item.segment.toUpperCase()}
-                </div>
               </div>
 
               <div className="p-5">
-                <div className="text-base font-semibold tracking-tight">{item.title}</div>
-                <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+                <div className="text-base font-semibold tracking-tight text-zinc-950">
+                  {item.title}
+                </div>
+                <div className="mt-1 text-sm text-zinc-600">
                   {item.location}
                 </div>
               </div>
@@ -267,13 +303,14 @@ export function GalleryClient() {
         <section className="mt-14 overflow-hidden rounded-3xl bg-zinc-950 p-8 text-white sm:p-10">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-              <div className="text-[12px] font-semibold tracking-[0.22em] text-white/70">
-                HAVE AN INSTALLATION TO SHARE?
+              <div className="text-3xl font-bold text-white">
+                Have an installation to share?
               </div>
-              <div className="mt-2 text-2xl font-semibold tracking-tight">
-                Resellers and end-customers — send us photos of your VTI deployment.
+              <div className="mt-2 text-lg tracking-tight text-white/75">
+                Resellers and end-customers — send us photos of your VTI
+                deployment.
               </div>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-white/75">
+              <p className="max-w-2xl text-lg leading-6 text-white/75">
                 Featured installations get co-marketing across our channels.
               </p>
             </div>
@@ -281,7 +318,7 @@ export function GalleryClient() {
               <ButtonLink
                 href="/contact"
                 size="sm"
-                className="bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                className="!bg-primary !text-white !hover:!bg-primary/70"
               >
                 Submit a project →
               </ButtonLink>
@@ -292,4 +329,3 @@ export function GalleryClient() {
     </div>
   );
 }
-
