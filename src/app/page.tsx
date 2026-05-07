@@ -4,10 +4,14 @@ import { Hero } from "@/components/site/Hero";
 import {
   Building2,
   GraduationCap,
+  Headphones,
   ImageIcon,
   Landmark,
   MonitorPlay,
   School,
+  Wrench,
+  Truck,
+  ShieldCheck,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -247,13 +251,17 @@ export default function Home() {
                 <br />
                 <span className="text-red-600">Boutique service.</span>
               </h2>
-              <p className="mt-4 text-[16px] leading-7 text-zinc-600 dark:text-zinc-300">
+              <p className="mt-4 text-[16px] leading-7 text-zinc-600">
                 Resellers and buyers choose VTI over other brands because we
                 give every partner direct access to the people who actually
                 built the product — no call centers, no chatbots, no runaround.
               </p>
               <div className="mt-8">
-                <ButtonLink href="/about" variant="secondary">
+                <ButtonLink
+                  href="/about"
+                  className="!bg-white !text-zinc-950 hover:!bg-zinc-100"
+                  variant="secondary"
+                >
                   About our company <span aria-hidden="true">→</span>
                 </ButtonLink>
               </div>
@@ -263,62 +271,30 @@ export default function Home() {
               {[
                 {
                   title: "Engineered for daily use",
-                  desc: "Hardened glass, anti-glare coating, and components rated for 50,000+ hours.",
-                  icon: (
-                    <path
-                      d="M14.7 6.3 18 3m-1 6 3.3-3.3M3 21l5.7-1.2L19 9.5a2 2 0 0 0 0-2.8L17.3 5a2 2 0 0 0-2.8 0L4.2 15.3 3 21Z"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  ),
+                  desc: "Hardened glass, anti-glare coating, and components rated for 100,000 hours.",
+                  icon: <Wrench className="h-5 w-5" />,
                 },
                 {
-                  title: "Real human support",
-                  desc: "Talk to engineers and account leads — not chatbots or call centers.",
-                  icon: (
-                    <path
-                      d="M6 12a6 6 0 1 1 12 0v6a2 2 0 0 1-2 2h-2m-8-8v6a2 2 0 0 0 2 2h2"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  ),
+                  title: "Personalized human support",
+                  desc: "Get a dedicated rep who knows your account — not chatbots or call centers.",
+                  icon: <Headphones className="h-5 w-5" />,
                 },
                 {
                   title: "Stocked & ready to ship",
                   desc: "US warehouses keep our top SKUs on the shelf for fast reseller fulfillment.",
-                  icon: (
-                    <path
-                      d="M3 7h12v10H3V7Zm12 3h4l2 3v4h-6v-7Zm4.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM7.5 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  ),
+                  icon: <Truck className="h-5 w-5" />
                 },
                 {
-                  title: "5-year standard warranty",
-                  desc: "Industry-leading coverage included on every interactive flat panel.",
-                  icon: (
-                    <path
-                      d="M12 3l8 4v6c0 5-3.5 8-8 8s-8-3-8-8V7l8-4Z"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  ),
+                  title: "Full replacement warranty",
+                  desc: "Full replacement warranty coverage included on every interactive flat panel — no upsell required.",
+                  icon: <ShieldCheck className="h-5 w-5" />,
                 },
               ].map((card) => (
                 <div
                   key={card.title}
-                  className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
+                  className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm"
                 >
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-red-50 text-red-600">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
@@ -328,10 +304,10 @@ export default function Home() {
                       {card.icon}
                     </svg>
                   </span>
-                  <div className="mt-4 text-sm font-semibold text-zinc-950 dark:text-zinc-50">
+                  <div className="mt-4 text-sm font-semibold text-zinc-950">
                     {card.title}
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+                  <p className="mt-2 text-sm leading-6 text-zinc-600">
                     {card.desc}
                   </p>
                 </div>
@@ -352,7 +328,7 @@ export default function Home() {
                 Spec sheets tell. Installations sell.{" "}
                 <span className="text-red-600">See the results.</span>
               </h2>
-              <p className="mt-3 text-zinc-600 dark:text-zinc-300">
+              <p className="mt-3 text-zinc-600">
                 Hear from IT directors, AV specialists, and reseller partners
                 who put VTI displays into rooms across the country.
               </p>
@@ -424,7 +400,7 @@ export default function Home() {
                       <path d="M7.5 10.5c0-1.657 1.343-3 3-3h.5v2H10.5c-.552 0-1 .448-1 1v.5H12v5H7.5v-5.5Zm9 0c0-1.657 1.343-3 3-3h.5v2h-.5c-.552 0-1 .448-1 1v.5H21v5h-4.5v-5.5Z" />
                     </svg>
                   </div>
-                  <blockquote className="mt-3 text-[13px] leading-6 text-zinc-700 dark:text-zinc-300">
+                  <blockquote className="mt-3 text-[13px] leading-6 text-zinc-700">
                     “{t.quote}”
                   </blockquote>
                   <div className="mt-6 border-t border-zinc-200 pt-5 dark:border-zinc-800">
@@ -459,7 +435,7 @@ export default function Home() {
                 <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
                   Ready to spec your space?
                 </div>
-                <p className="text-zinc-600 dark:text-zinc-300">
+                <p className="text-zinc-600">
                   Whether you&apos;re a reseller pitching a district or a buyer
                   outfitting a single room — the VTI team is ready to help.
                 </p>
