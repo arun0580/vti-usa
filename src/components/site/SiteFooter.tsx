@@ -8,7 +8,20 @@ export function SiteFooter() {
       <Container className="py-16">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="space-y-4 lg:col-span-4">
-            <Logo className="inline-flex items-center gap-3" priority={false} />
+            <Link
+              href="/"
+              className="flex items-center gap-2.5"
+              aria-label="VTI home"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground font-extrabold tracking-tighter">
+                VTI
+              </span>
+              <span className="hidden sm:flex flex-col leading-none">
+                <span className="text-sm font-bold tracking-tight text-white">
+                  Virtual Technologies
+                </span>
+              </span>
+            </Link>
 
             <p className="max-w-sm text-sm leading-6 text-zinc-400">
               Interactive flat panel displays and LED solutions for K-12, higher
@@ -58,6 +71,11 @@ export function SiteFooter() {
                 <li>
                   <Link className="hover:text-zinc-200" href="/gallery">
                     Installation Gallery
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:text-zinc-200" href="/reseller-portal">
+                    Reseller Portal
                   </Link>
                 </li>
                 <li>
