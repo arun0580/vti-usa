@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,13 +18,30 @@ export function SiteHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+    <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white">
       <Container className="flex h-16 items-center gap-4">
-        <div className="flex shrink-0 items-center">
+        {/* <div className="flex shrink-0 items-center">
           <Logo />
-        </div>
+        </div> */}
+        <Link
+          href="/"
+          className="flex items-center gap-2.5"
+          aria-label="VTI home"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground font-extrabold tracking-tighter">
+            VTI
+          </span>
+          <span className="hidden sm:flex flex-col leading-none">
+            <span className="text-sm font-bold tracking-tight text-zinc-700">
+              Virtual Technologies
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-700">
+              Interactive Displays
+            </span>
+          </span>
+        </Link>
 
-        <nav className="hidden flex-1 items-center justify-center gap-6 text-sm text-zinc-600 dark:text-zinc-300 md:flex">
+        <nav className="hidden flex-1 items-center justify-center gap-6 text-sm text-zinc-600 md:flex">
           {nav.map((item) => {
             const isActive =
               item.href === "/"
@@ -37,7 +54,7 @@ export function SiteHeader() {
                 className={
                   isActive
                     ? "font-medium text-red-600"
-                    : "transition-colors hover:text-zinc-950 dark:hover:text-zinc-50"
+                    : "transition-colors hover:text-zinc-950"
                 }
               >
                 {item.label}
@@ -50,7 +67,7 @@ export function SiteHeader() {
           <Link
             href="/cart"
             aria-label="Cart"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-zinc-50"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
           >
             <svg
               viewBox="0 0 24 24"
@@ -79,4 +96,3 @@ export function SiteHeader() {
     </header>
   );
 }
-

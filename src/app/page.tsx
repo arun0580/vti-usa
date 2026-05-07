@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
+    <div className="bg-white text-zinc-950">
       <Hero />
 
       <section className="bg-gradient-to-b from-zinc-950 to-zinc-900 text-white">
