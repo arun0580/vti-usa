@@ -153,13 +153,20 @@ export default function Home() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               {[
-                { label: "OPTION A · CIRCLE", variant: "circle" as const },
                 {
-                  label: "OPTION B · ROUNDED SQUARE",
+                  id: 1,
+                  variant: "circle" as const,
+                  image: "/5s-services-circle.png",
+                  alt: "5S Services Circle",
+                },
+                {
+                  id: 2,
                   variant: "rounded" as const,
+                  image: "/5s-services-square.png",
+                  alt: "5S Services Square",
                 },
               ].map((opt) => (
-                <div key={opt.label} className="space-y-3">
+                <div key={opt.id} className="space-y-3">
                   <div
                     className={[
                       "relative aspect-[4/3] w-full overflow-hidden border border-white/10 bg-zinc-950/40 shadow-sm",
@@ -167,8 +174,8 @@ export default function Home() {
                     ].join(" ")}
                   >
                     <Image
-                      src="/vt-panel-hero-BbQvghRM.png"
-                      alt=""
+                      src={opt.image}
+                      alt={opt.alt}
                       fill
                       className={[
                         "object-cover opacity-90",
@@ -179,9 +186,6 @@ export default function Home() {
                       sizes="(min-width: 1024px) 300px, 90vw"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/35" />
-                  </div>
-                  <div className="text-center text-[10px] font-semibold tracking-[0.22em] text-zinc-300">
-                    {opt.label}
                   </div>
                 </div>
               ))}
