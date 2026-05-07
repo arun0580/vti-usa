@@ -30,6 +30,8 @@ import { SoftwareFeatureIcon } from "./_components/SoftwareFeatureIcon";
 import { interactivePanels } from "./_data/interactivePanels";
 import { compareRows, dimensionRows } from "./_data/tables";
 import { ledLineup, signageLineup, softwareFeatures } from "./_data/lineups";
+import { ArrowRight, GraduationCap } from "lucide-react";
+import Link from "next/link";
 
 export default function ProductsPage() {
   const [activeCategory, setActiveCategory] = useState<
@@ -91,7 +93,7 @@ export default function ProductsPage() {
             />
             <CategoryCard
               onClick={() => setActiveCategory("led")}
-              label="LED Posters & Video Walls"
+              label="DVLED Posters & Video Walls"
               isActive={showLed}
               icon={<IconLayoutPanelTop />}
             />
@@ -170,8 +172,8 @@ export default function ProductsPage() {
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 Virtual line — exclusive
               </div>
-              <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                LED posters & video walls — from a single panel to an entire
+              <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl text-zinc-950">
+                DvLED posters & video walls — from a single panel to an entire
                 wall.
               </h2>
               <p className="mx-auto mt-3 max-w-3xl text-sm leading-6 text-zinc-600">
@@ -197,11 +199,16 @@ export default function ProductsPage() {
             </div>
 
             <div className="mt-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div>
-                  <div className="text-sm font-semibold">
+              {/* <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <GraduationCap className="h-5 w-5" />
+                  </span>
+                  <div className="text-sm font-bold text-zinc-950">
                     Customer story · University of Central Arkansas
                   </div>
+                </div>
+                <div>
                   <p className="mt-1 text-sm leading-6 text-zinc-600">
                     UCA runs 6 Virtual LED posters across campus alongside 11 VT
                     Pro p-cap panels. The poster photos throughout our gallery?
@@ -211,6 +218,31 @@ export default function ProductsPage() {
                 <ButtonLink href="/gallery" variant="secondary" size="sm">
                   See the UCA install
                 </ButtonLink>
+              </div> */}
+              <div className="flex items-start gap-4">
+                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <GraduationCap className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="text-lg font-bold text-zinc-950">
+                    Customer story · University of Central Arkansas
+                  </h3>
+                  <p className="my-2 text-sm text-zinc-600">
+                    UCA runs{" "}
+                    <strong className="text-zinc-950">
+                      6 Virtual DvLED posters
+                    </strong>{" "}
+                    across campus alongside{" "}
+                    <strong className="text-zinc-950">
+                      11 VT Pro p-cap panels
+                    </strong>
+                    . The poster photos throughout our gallery? All from this
+                    install.
+                  </p>
+                  <Link href="/gallery" className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 hover:text-red-700">
+                    See the UCA install <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
               </div>
             </div>
           </section>

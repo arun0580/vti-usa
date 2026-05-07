@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 export const ledLineup = [
   {
@@ -6,7 +6,7 @@ export const ledLineup = [
     badge: "Bestseller",
     sizes: `75" portrait · P1.8 / P2.5`,
     desc: "Standalone, freestanding LED poster. Built-in player, hot-swappable. Deployed at UCA (6 units) — the photos in our gallery are from this install.",
-    imageSrc: "/products/led-poster-portrait-BDyzoSlM.png",
+    imageSrc: "/products/led-poster-portrait.png",
   },
   {
     name: "Virtual LED Video Wall",
@@ -16,11 +16,11 @@ export const ledLineup = [
     imageSrc: "/products/led-cabinet-integration-Db-ZWsBf.jpg",
   },
   {
-    name: "Gym Scoreboard Display",
-    badge: "Sports",
-    sizes: "Custom configurations",
-    desc: "Indoor LED scoreboards and team-info displays for high school and college gyms. Designed for high-brightness, wide-angle visibility.",
-    imageSrc: "/products/led-scoreboard-gym-DcOkbaOy.png",
+    name: "All-in-One LED Video Wall",
+    badge: "All-in-One",
+    sizes: '138" · 165" · 220"',
+    desc: "Pre-configured all-in-one LED video wall — ships ready to mount, with stand, wall-mount, and ceiling-mount options. Front-service access for easy maintenance.",
+    imageSrc: "/products/led-video-wall-aio.png",
   },
 ] as const;
 
@@ -103,4 +103,3 @@ export const softwareFeatures = [
     icon: "users",
   },
 ] as const;
-
