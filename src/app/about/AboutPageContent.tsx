@@ -160,6 +160,13 @@ const teamMembers: {
     imageSrc: "/about/zarrar-khan-DuLJC3xb.jpg",
     imageAlt: "Zarrar Khan, OneScreen Liaison",
   },
+  {
+    name: "Dr. David Weems Sr.",
+    role: "Sales Rep · K-12 Educator",
+    location: "Pecos, TX",
+    imageSrc: "/about/david-weems.jpg",
+    imageAlt: "Dr. David Weems Sr., Sales Rep · K-12 Educator",
+  },
 ];
 
 type ValueIconId =
@@ -184,7 +191,7 @@ const valueCards: { title: string; desc: string; icon: ValueIconId }[] = [
   {
     icon: "award",
     title: "Quality without compromise",
-    desc: "Hardened glass, anti-glare coatings, components rated for 50,000+ hours, and a 5-year warranty as standard.",
+    desc: "Hardened glass, anti-glare coatings, components rated for 100,000 hours, and full replacement warranty coverage.",
   },
   {
     icon: "lightbulb",
@@ -193,8 +200,8 @@ const valueCards: { title: string; desc: string; icon: ValueIconId }[] = [
   },
   {
     icon: "support",
-    title: "Real human support",
-    desc: "Talk to engineers and account leads — not chatbots, ticket queues, or overseas call centers.",
+    title: "Personalized human support",
+    desc: "Get a dedicated rep who knows your account — not chatbots, ticket queues, or overseas call centers.",
   },
   {
     icon: "globe",
@@ -354,11 +361,7 @@ export function AboutPageContent() {
         setActive(t);
         requestAnimationFrame(() => {
           const anchor =
-            t === "team"
-              ? "our-team"
-              : t === "values"
-                ? "our-values"
-                : null;
+            t === "team" ? "our-team" : t === "values" ? "our-values" : null;
           if (anchor) {
             document.getElementById(anchor)?.scrollIntoView({
               block: "start",
@@ -374,16 +377,19 @@ export function AboutPageContent() {
   }, []);
 
   return (
-    <div className="bg-white text-zinc-950 dark:bg-zinc-950 dark:text-zinc-50">
+    <div className="bg-white text-zinc-950">
       <Container className="pt-14 pb-6 sm:pt-16 sm:pb-8">
         <div className="max-w-3xl">
           <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
             ABOUT VTI
           </div>
-          <h1 className="mt-2 text-[40px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px] dark:text-zinc-50">
-            Built by pioneers. Trusted nationwide.
+          <h1 className="mt-2 text-[40px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]">
+            Built by pioneers.
           </h1>
-          <p className="mt-4 max-w-2xl text-[18px] leading-7 text-zinc-600 dark:text-zinc-300">
+          <h1 className="mt-1 text-[40px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]">
+            Trusted nationwide.
+          </h1>
+          <p className="mt-4 max-w-2xl text-[18px] leading-7 text-zinc-600">
             From the earliest days of interactive technology to today&apos;s
             classrooms, boardrooms, and government spaces—VTI delivers displays
             people rely on every day, powered by a coast-to-coast reseller
@@ -392,10 +398,13 @@ export function AboutPageContent() {
         </div>
       </Container>
 
-      <div className="border-b border-zinc-200 dark:border-zinc-800">
-        <Container className="pb-0">
+      <div className="border-b border-zinc-200 bg-zinc-50/60">
+        <Container className="py-5">
+          <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
+            Explore VTI — pick a section
+          </p>
           <div
-            className="flex flex-wrap gap-1 sm:gap-2"
+            className="flex h-auto w-full flex-wrap justify-center gap-3"
             role="tablist"
             aria-label="About sections"
           >
@@ -412,14 +421,14 @@ export function AboutPageContent() {
                   onClick={() => setActive(t.id)}
                   className={
                     isActive
-                      ? "flex items-center gap-2 border-b-2 border-red-600 px-1 py-3 text-sm font-semibold text-red-600 sm:px-2"
-                      : "flex items-center gap-2 border-b-2 border-transparent px-1 py-3 text-sm font-semibold text-zinc-500 transition-colors hover:text-zinc-800 dark:hover:text-zinc-200 sm:px-2"
+                      ? "group relative flex min-w-[140px] flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-xl border-2 border-red-600 bg-red-600 px-5 py-3.5 text-sm font-bold text-white shadow-md shadow-red-600/20 transition-all sm:min-w-[180px] sm:text-base"
+                      : "group relative flex min-w-[140px] flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-xl border-2 border-zinc-200 bg-white px-5 py-3.5 text-sm font-bold text-zinc-950 shadow-sm transition-all hover:-translate-y-0.5 hover:border-red-300 hover:shadow-md sm:min-w-[180px] sm:text-base"
                   }
                 >
-                  <span className={isActive ? "text-red-600" : "text-zinc-400"}>
+                  <span className={isActive ? "text-white" : "text-red-600"}>
                     {t.icon}
                   </span>
-                  {t.label}
+                  <span>{t.label}</span>
                 </button>
               );
             })}
@@ -443,25 +452,26 @@ export function AboutPageContent() {
                 From the early days of interactive — to the &ldquo;wegend&rdquo;
                 who built VTI.
               </h2>
-              <div className="mt-6 space-y-4 text-base leading-7 text-zinc-600 dark:text-zinc-300">
+              <div className="mt-6 space-y-4 text-base leading-7 text-zinc-600">
                 <p>
                   Kevin Talentino entered the industry at the very beginning.
                   Among manufacturers in China, he&apos;s known simply as the
                   &ldquo;wegend.&rdquo; He was one of the first to bring SMART
                   Board and Promethean interactive whiteboards to North
-                  America—back when classrooms still relied on chalk and overhead
-                  projectors.
+                  America—back when classrooms still relied on chalk and
+                  overhead projectors.
                 </p>
                 <p>
-                  Over the decades, Kevin went on to lead multiple AV companies as
-                  CEO, helping bring the technology that defined modern
+                  Over the decades, Kevin went on to lead multiple AV companies
+                  as CEO, helping bring the technology that defined modern
                   collaboration into classrooms and boardrooms around the world.
                 </p>
                 <p>
                   In 2013, he founded Virtual Technologies, Inc. Drawing on
-                  decades of experience, he built a company focused on delivering
-                  best-in-class interactive displays, LED walls, and digital
-                  signage—designed for the people who use them every day.
+                  decades of experience, he built a company focused on
+                  delivering best-in-class interactive displays, LED walls, and
+                  digital signage—designed for the people who use them every
+                  day.
                 </p>
                 <p>
                   Today, VTI displays are installed in K–12 districts,
@@ -473,7 +483,7 @@ export function AboutPageContent() {
             </div>
             <div className="mx-auto w-full max-w-md lg:mx-0">
               <figure>
-                <div className="overflow-hidden rounded-2xl shadow-lg shadow-zinc-950/10 ring-1 ring-zinc-200/80 dark:ring-zinc-800">
+                <div className="overflow-hidden rounded-2xl shadow-lg shadow-zinc-950/10 ring-1 ring-zinc-200/80">
                   <Image
                     src="/about/kevin-talentino-real-BeHsZ5xT.png"
                     alt="Kevin Talentino, founder of Virtual Technologies, Inc."
@@ -484,8 +494,8 @@ export function AboutPageContent() {
                     priority
                   />
                 </div>
-                <figcaption className="mt-4 text-center lg:text-left">
-                  <div className="text-lg font-bold text-zinc-950 dark:text-zinc-50">
+                <figcaption className="mt-4 text-center">
+                  <div className="text-lg font-bold text-zinc-950">
                     Kevin Talentino
                   </div>
                   <div className="text-sm font-semibold text-red-600">
@@ -513,7 +523,7 @@ export function AboutPageContent() {
             <h2 className="mt-2 max-w-4xl text-2xl font-bold tracking-tight sm:text-3xl">
               Family-owned. Veteran-owned. Woman-owned.
             </h2>
-            <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-600 dark:text-zinc-300">
+            <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-600">
               In business since 2013 with over 100 years of combined industry
               experience — meet the people behind every VTI quote, install, and
               support call.
@@ -522,7 +532,7 @@ export function AboutPageContent() {
             <ul className="mt-10 grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4">
               {teamMembers.map((m) => (
                 <li key={m.name}>
-                  <article className="h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+                  <article className="h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
                     <div className="relative aspect-[3/4] w-full">
                       <Image
                         src={m.imageSrc}
@@ -532,8 +542,8 @@ export function AboutPageContent() {
                         sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
                       />
                     </div>
-                    <div className="p-4">
-                      <h3 className="text-base font-bold text-zinc-950 dark:text-zinc-50">
+                    <div className="p-4 text-center">
+                      <h3 className="text-base font-bold text-zinc-950">
                         {m.name}
                       </h3>
                       <p className="mt-1 text-sm font-semibold leading-snug text-red-600">
@@ -568,19 +578,17 @@ export function AboutPageContent() {
               <ul className="grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-3">
                 {valueCards.map((v) => (
                   <li key={v.title}>
-                    <article
-                      className="flex h-full flex-col rounded-2xl border border-zinc-100 bg-white p-7 shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none"
-                    >
+                    <article className="flex h-full flex-col rounded-2xl border border-zinc-100 bg-white p-7 shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
                       <div
-                        className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#FDF2F2] dark:bg-red-950/30"
+                        className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#FDF2F2]"
                         aria-hidden
                       >
                         <ValueIcon id={v.icon} />
                       </div>
-                      <h3 className="text-base font-bold leading-snug text-zinc-950 dark:text-zinc-50">
+                      <h3 className="text-base font-bold leading-snug text-zinc-950">
                         {v.title}
                       </h3>
-                      <p className="mt-2 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+                      <p className="mt-2 text-sm leading-6 text-zinc-600">
                         {v.desc}
                       </p>
                     </article>
@@ -605,21 +613,20 @@ export function AboutPageContent() {
               <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
                 Tell us about you and your business.
               </h2>
-              <p className="mt-4 text-base leading-7 text-zinc-600 dark:text-zinc-300">
+              <p className="mt-4 text-base leading-7 text-zinc-600">
                 VTI sells exclusively through certified resellers and
                 integrators. Share a few details and the right person on our
                 team will reach out — usually within one business day.
               </p>
 
-              <ul className="mt-8 space-y-3 text-sm text-zinc-700 dark:text-zinc-300">
+              <ul className="mt-8 space-y-3 text-sm text-zinc-700">
                 {[
                   "Local support, backed by direct factory access",
                   "Deal registration and territory protection",
                   "Technical training and certification",
-                  "Loaner units for end-customer demos",
                 ].map((item) => (
                   <li key={item} className="flex gap-3">
-                    <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-red-200 text-red-600 dark:border-red-900/40 dark:text-red-400">
+                    <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-red-200 text-red-600">
                       <svg
                         viewBox="0 0 24 24"
                         fill="none"
@@ -641,7 +648,7 @@ export function AboutPageContent() {
               </ul>
             </div>
 
-            <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-950 sm:p-8">
+            <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
               <form
                 className="grid gap-4"
                 onSubmit={(e) => {
@@ -692,8 +699,13 @@ export function AboutPageContent() {
                   <Field label="City" required>
                     <input required name="city" className={inputClass} />
                   </Field>
-                  <Field label="State" required hint="e.g. GA">
-                    <input required name="state" className={inputClass} />
+                  <Field label="State">
+                    <input
+                      required
+                      name="state"
+                      className={inputClass}
+                      placeholder="e.g. GA"
+                    />
                   </Field>
                 </div>
 
@@ -723,12 +735,13 @@ export function AboutPageContent() {
                   </Field>
                 </div>
 
-                <Field
-                  label="Markets you serve"
-                  required
-                  hint="e.g. K-12, higher ed, corporate, government, houses of worship"
-                >
-                  <input required name="markets" className={inputClass} />
+                <Field label="Markets you serve" required>
+                  <input
+                    required
+                    name="markets"
+                    className={inputClass}
+                    placeholder="e.g. K-12, higher ed, corporate, government, houses of worship"
+                  />
                 </Field>
 
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -750,10 +763,12 @@ export function AboutPageContent() {
                     </select>
                   </Field>
                   <Field label="Interactive display experience">
-                    <select name="experience" className={inputClass} defaultValue="">
-                      <option value="">
-                        Select one
-                      </option>
+                    <select
+                      name="experience"
+                      className={inputClass}
+                      defaultValue=""
+                    >
+                      <option value="">Select one</option>
                       <option>None yet</option>
                       <option>Some</option>
                       <option>Experienced</option>
@@ -762,13 +777,11 @@ export function AboutPageContent() {
                   </Field>
                 </div>
 
-                <Field
-                  label="Anything else we should know?"
-                  hint="Customer base, current vendors, certifications, upcoming projects…"
-                >
+                <Field label="Anything else we should know?">
                   <textarea
                     name="notes"
                     className={cn(inputClass, "min-h-[120px] resize-y py-2")}
+                    placeholder="Customer base, current vendors, certifications, upcoming projects…"
                   />
                 </Field>
 
@@ -812,7 +825,7 @@ export function AboutPageContent() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <ButtonLink
                 href="/contact"
-                className="!bg-red-600 !text-white border-0 shadow-sm hover:!bg-red-700 focus-visible:ring-red-500/40 dark:!bg-red-600 dark:!text-white dark:hover:!bg-red-700"
+                className="!bg-red-600 !text-white border-0 shadow-sm hover:!bg-red-700 focus-visible:ring-red-500/40"
               >
                 Talk to VTI <span aria-hidden="true">→</span>
               </ButtonLink>
@@ -820,7 +833,7 @@ export function AboutPageContent() {
                 <ButtonLink
                   href="/products"
                   variant="secondary"
-                  className="border-0 bg-white text-zinc-950 hover:bg-zinc-100 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100"
+                  className="border-0 bg-white text-zinc-950 hover:bg-zinc-100"
                 >
                   View product lineup
                 </ButtonLink>
@@ -834,7 +847,7 @@ export function AboutPageContent() {
 }
 
 const inputClass =
-  "mt-2 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 shadow-sm outline-none placeholder:text-zinc-400 focus:border-red-400 focus:ring-2 focus:ring-red-500/15 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:border-red-500";
+  "mt-2 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 shadow-sm outline-none placeholder:text-zinc-400 focus:border-red-400 focus:ring-2 focus:ring-red-500/15";
 
 function cn(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(" ");
@@ -853,12 +866,14 @@ function Field({
 }) {
   return (
     <label className="block text-sm">
-      <span className="flex items-baseline gap-2 text-[11px] font-semibold tracking-[0.08em] text-zinc-700 dark:text-zinc-300">
+      <span className="flex items-baseline gap-2 text-[11px] font-semibold tracking-[0.08em] text-zinc-700">
         <span>
           {label}
           {required ? <span className="text-red-600"> *</span> : null}
         </span>
-        {hint ? <span className="font-medium text-zinc-400">{hint}</span> : null}
+        {hint ? (
+          <span className="font-medium text-zinc-400">{hint}</span>
+        ) : null}
       </span>
       {children}
     </label>
