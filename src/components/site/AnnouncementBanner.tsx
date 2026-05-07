@@ -99,7 +99,7 @@ export function AnnouncementBanner() {
             target="_blank"
             className="ml-1 inline-flex items-center gap-0.5 font-medium underline underline-offset-2 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-red-600"
           >
-            Reserve your spot
+            Reserve Your Spot
             <span aria-hidden="true">→</span>
           </Link>
         </span>
