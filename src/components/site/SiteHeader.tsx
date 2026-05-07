@@ -20,26 +20,9 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white">
       <Container className="flex h-16 items-center gap-4">
-        {/* <div className="flex shrink-0 items-center">
+        <div className="flex shrink-0 items-center">
           <Logo />
-        </div> */}
-        <Link
-          href="/"
-          className="flex items-center gap-2.5"
-          aria-label="VTI home"
-        >
-          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground font-extrabold tracking-tighter">
-            VTI
-          </span>
-          <span className="hidden sm:flex flex-col leading-none">
-            <span className="text-sm font-bold tracking-tight text-zinc-700">
-              Virtual Technologies
-            </span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-zinc-700">
-              Interactive Displays
-            </span>
-          </span>
-        </Link>
+        </div>
 
         <nav className="hidden flex-1 items-center justify-center gap-6 text-sm text-zinc-600 md:flex">
           {nav.map((item) => {
