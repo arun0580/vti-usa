@@ -109,7 +109,7 @@ export default function ContactPage() {
                     <div className="text-sm font-semibold text-zinc-950">
                       {card.k}
                     </div>
-                    <div className="mt-1 whitespace-pre-line text-sm text-zinc-600">
+                    <div className="mt-1 whitespace-pre-line text-sm text-zinc-600 normal-case">
                       {card.v}
                     </div>
                   </div>

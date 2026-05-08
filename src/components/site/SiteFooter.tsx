@@ -80,7 +80,7 @@ export function SiteFooter() {
               <ul className="space-y-2 text-xs text-zinc-400">
                 <li>
                   <a
-                    className="hover:text-zinc-200"
+                    className="normal-case hover:text-zinc-200"
                     href="mailto:info@vtiusa.com"
                   >
                     info@vtiusa.com

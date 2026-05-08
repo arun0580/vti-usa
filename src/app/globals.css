@@ -34,6 +34,22 @@ body {
   padding-inline: 1.25rem;
 }
 
+/*
+ * Global capitalization for interactive text.
+ *
+ * `text-transform: capitalize` is a purely visual transform — the underlying
+ * DOM text is unchanged, so screen readers, copy/paste, and dynamic content
+ * (variables, translations, API responses) are unaffected.
+ *
+ * Element selectors have lower specificity than Tailwind utility classes,
+ * so any explicit `uppercase`, `lowercase`, or `normal-case` utility on a
+ * specific link/button still wins (used as an opt-out for emails, etc.).
+ */
+a,
+button {
+  text-transform: capitalize;
+}
+
 @keyframes products-ticker-anim {
   from {
     transform: translateX(0);
