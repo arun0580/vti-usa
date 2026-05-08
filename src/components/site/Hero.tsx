@@ -50,7 +50,7 @@ export function Hero() {
                 { k: "Industry", v: "STANDARD WARRANTY" },
               ].map((stat) => (
                 <div key={stat.v} className="space-y-1">
-                  <div className="text-3xl font-extrabold tracking-tight text-zinc-950 uppercase">
+                  <div className="text-3xl font-extrabold tracking-tight text-zinc-950">
                     {stat.k}
                   </div>
                   <div className="text-[12px] font-semibold tracking-[0.18em] text-zinc-500 uppercase">
