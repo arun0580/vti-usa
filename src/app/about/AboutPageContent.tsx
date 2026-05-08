@@ -122,7 +122,7 @@ const teamMembers: {
     name: "Tyler King",
     role: "Sales & Operations",
     location: "Woodstock, GA",
-    imageSrc: "/about/tyler-king-CM_-X8Rm.jpg",
+    imageSrc: "/about/tyler-king.png",
     imageAlt: "Tyler King, Sales & Operations",
   },
   {
@@ -449,32 +449,33 @@ export function AboutPageContent() {
                 OUR STORY
               </div>
               <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-                From the early days of interactive — to the &ldquo;wegend&rdquo;
-                who built VTI.
+                From the early days of interactive — to current days'
+                technology.
               </h2>
               <div className="mt-6 space-y-4 text-base leading-7 text-zinc-600">
                 <p>
-                  Kevin Talentino entered the industry at the very beginning.
-                  Among manufacturers in China, he&apos;s known simply as the
-                  &ldquo;wegend.&rdquo; He was one of the first to bring SMART
-                  Board and Promethean interactive whiteboards to North
-                  America—back when classrooms still relied on chalk and
-                  overhead projectors.
+                  We entered the industry at the very beginning. Among
+                  manufacturers in China, we are known simply as the company
+                  that sells. We were the first to bring Promethean interactive
+                  whiteboards to North America—back when classrooms still relied
+                  on chalk, overhead projectors, and whiteboards. There is not a
+                  major whiteboard we have not sold or handled.
                 </p>
                 <p>
-                  Over the decades, Kevin went on to lead multiple AV companies
-                  as CEO, helping bring the technology that defined modern
+                  Over the decades, we have built several AV technology
+                  companies, designed short cuts to help speed the installation
+                  process and helped bring the technology that defined modern
                   collaboration into classrooms and boardrooms around the world.
                 </p>
                 <p>
-                  In 2013, he founded Virtual Technologies, Inc. Drawing on
-                  decades of experience, he built a company focused on
+                  In 2013, we founded Virtual Technologies, Inc. Drawing on
+                  decades of experience, we built a company focused on
                   delivering best-in-class interactive displays, LED walls, and
                   digital signage—designed for the people who use them every
                   day.
                 </p>
                 <p>
-                  Today, VTI displays are installed in K–12 districts,
+                  Today, VTI displays have been installed in K–12 districts,
                   universities, Fortune 500 boardrooms, and federal facilities
                   across all 50 states—supported by a nationwide reseller
                   network.
@@ -485,8 +486,8 @@ export function AboutPageContent() {
               <figure>
                 <div className="overflow-hidden rounded-2xl shadow-lg shadow-zinc-950/10 ring-1 ring-zinc-200/80">
                   <Image
-                    src="/about/kevin-talentino-real-BeHsZ5xT.png"
-                    alt="Kevin Talentino, founder of Virtual Technologies, Inc."
+                    src="/about/bandit-mascot.jpg"
+                    alt="Bandit, the VTI mascot"
                     width={560}
                     height={700}
                     className="h-auto w-full object-cover"
@@ -495,14 +496,12 @@ export function AboutPageContent() {
                   />
                 </div>
                 <figcaption className="mt-4 text-center">
-                  <div className="text-lg font-bold text-zinc-950">
-                    Kevin Talentino
-                  </div>
+                  <div className="text-lg font-bold text-zinc-950">Bandit</div>
                   <div className="text-sm font-semibold text-red-600">
-                    Founder &amp; CEO
+                    VTI Mascot
                   </div>
                   <div className="mt-1 text-[11px] font-semibold tracking-[0.2em] text-zinc-500">
-                    THE &ldquo;WEGEND&rdquo;
+                    Chief Morale Officer
                   </div>
                 </figcaption>
               </figure>
