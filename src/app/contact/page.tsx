@@ -5,7 +5,7 @@ import { ContactForm } from "./ContactForm";
 export default function ContactPage() {
   return (
     <main>
-      <section className="bg-white">
+      <section className="bg-zinc-100">
         <Container className="py-12 sm:py-16">
           <div className="grid items-center gap-10 lg:grid-cols-[1fr_460px]">
             <div>
@@ -23,11 +23,10 @@ export default function ContactPage() {
             </div>
 
             <div className="relative mx-auto w-full max-w-[460px] lg:mx-0 lg:ml-auto">
-              <div className="absolute -right-8 -top-10 h-40 w-40 rounded-full bg-red-500/10 blur-2xl" />
               <div className="relative aspect-square w-full">
                 <Image
-                  src="/contact page.png"
-                  alt="Robot holding contact plans"
+                  src="/mascot-puppies-trio.png"
+                  alt="VTI mascot puppies trio"
                   fill
                   priority
                   className="object-contain"
@@ -156,4 +155,3 @@ export default function ContactPage() {
     </main>
   );
 }
-
