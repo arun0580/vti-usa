@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 export default function ResellersPage() {
   return (
-    <div className="min-h-[70vh] bg-white dark:bg-zinc-950">
-      <Container className="py-12 sm:py-16 lg:py-20">
+    <div className="min-h-[70vh] bg-white">
+      <Container className="py-12 sm:py-16">
         <ResellerPortalClient />
       </Container>
     </div>

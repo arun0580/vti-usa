@@ -3,12 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
+import { Container } from "@/components/site/Container";
 
 const benefits = [
   "Pricing sheets & current price lists",
   "Generate customer quotes",
   "Deal registration & territory protection",
-  "Loaner / demo unit requests",
   "Spec sheets, brochures & marketing assets",
   "Direct line to your dedicated VTI rep",
 ] as const;
@@ -61,7 +61,7 @@ function IconCheck({ className }: { className?: string }) {
       strokeLinejoin="round"
       aria-hidden
     >
-      <circle cx="12" cy="12" r="10" className="fill-red-600 dark:fill-red-500" />
+      <circle cx="12" cy="12" r="10" className="fill-red-600" />
       <path
         d="M8.2 12.1 10.7 15 16 7.2"
         stroke="white"
@@ -91,16 +91,16 @@ function IconInfo({ className }: { className?: string }) {
 }
 
 const inputClass =
-  "h-12 w-full rounded-lg border border-zinc-200 bg-white pl-11 pr-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:border-red-500/50";
+  "h-12 w-full rounded-lg border border-zinc-200 bg-white pl-11 pr-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
 const fieldClass =
-  "h-12 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:border-red-500/50";
+  "h-12 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
 const textareaClass =
-  "min-h-[140px] w-full rounded-lg border border-zinc-200 bg-white px-3 py-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50 dark:placeholder:text-zinc-500 dark:focus:border-red-500/50";
+  "min-h-[140px] w-full rounded-lg border border-zinc-200 bg-white px-3 py-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
 const selectClass =
-  "h-12 w-full appearance-none rounded-lg border border-zinc-200 bg-white bg-[length:1.25rem] bg-[right_0.75rem_center] bg-no-repeat pr-10 text-sm text-zinc-950 shadow-sm focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-50 dark:focus:border-red-500/50 " +
+  "h-12 w-full appearance-none rounded-lg border border-zinc-200 bg-white bg-[length:1.25rem] bg-[right_0.75rem_center] bg-no-repeat pr-10 text-sm text-zinc-950 shadow-sm focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20 " +
   "[background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")]";
 
 const businessTypeOptions = [
@@ -120,111 +120,128 @@ export function ResellerPortalClient() {
   const [signupSent, setSignupSent] = useState(false);
 
   return (
-    <div className="grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-10 xl:gap-16">
-      <div>
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-600 dark:text-red-500">
-          Reseller portal access
-        </p>
-        <h1 className="mt-3 text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl dark:text-zinc-50">
-          {mode === "signin" ? (
-            <>Already a VTI reseller?</>
-          ) : (
-            <>Interested in becoming a reseller?</>
-          )}
-        </h1>
-        <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600 dark:text-zinc-300">
-          {mode === "signin" ? (
-            <>
-              Sign in to access pricing sheets, generate quotes, register deals,
-              request loaner units, and download marketing assets.
-            </>
-          ) : (
-            <>
-              Tell us about your business and we&apos;ll set up portal access
-              for your team. Most applications get a response within one
-              business day.
-            </>
-          )}
-        </p>
+    <div className="bg-white">
+      <Container className="px-0 pb-12 sm:pb-16 sm:px-0 border-b border-zinc-200">
+        <div className="max-w-3xl">
+          <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
+            For Partners
+          </div>
+          <h1 className="mt-3 text-4xl font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-6xl">
+            Built around real partnership.
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 sm:text-[18px]">
+            VTI sells exclusively through certified resellers and integrators.
+            Local support, direct factory access, and a team that picks up the
+            phone.
+          </p>
+        </div>
+      </Container>
+      <div className="grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-10 xl:gap-16 py-12 sm:py-16">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-600">
+            Reseller portal access
+          </p>
+          <h1 className="mt-3 text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
+            {mode === "signin" ? (
+              <>Already a VTI reseller?</>
+            ) : (
+              <>Interested in becoming a reseller?</>
+            )}
+          </h1>
+          <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600">
+            {mode === "signin" ? (
+              <>
+                Sign in to access pricing sheets, generate quotes, register
+                deals, and download marketing assets.
+              </>
+            ) : (
+              <>
+                Tell us about your business and we'll set up portal access for
+                your team. Most applications get a response within one business
+                day.
+              </>
+            )}
+          </p>
 
-        <div
-          className="mt-8 flex flex-col gap-2 rounded-2xl bg-zinc-100 p-1.5 sm:flex-row dark:bg-zinc-800/80"
-          role="tablist"
-          aria-label="Sign in or sign up"
-        >
-          <button
-            type="button"
-            role="tab"
-            id="tab-signin"
-            aria-selected={mode === "signin"}
-            aria-controls="tabpanel-auth"
-            onClick={() => {
-              setMode("signin");
-              setSignupSent(false);
-            }}
-            className={cn(
-              "inline-flex flex-1 items-center justify-center gap-2 rounded-xl border px-5 py-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40",
-              mode === "signin"
-                ? "border-zinc-300/80 bg-white text-red-600 shadow-sm dark:border-zinc-600 dark:bg-zinc-950"
-                : "border-transparent bg-transparent text-zinc-700 hover:bg-zinc-200/50 dark:text-zinc-300 dark:hover:bg-zinc-700/50",
-            )}
+          <div
+            className="mt-8 flex flex-col gap-2 rounded-2xl bg-zinc-100 p-1.5 sm:flex-row w-[50%]"
+            role="tablist"
+            aria-label="Sign in or sign up"
           >
-            <IconLogIn className="h-5 w-5 shrink-0" />
-            Sign In
-          </button>
-          <button
-            type="button"
-            role="tab"
-            id="tab-signup"
-            aria-selected={mode === "signup"}
-            aria-controls="tabpanel-auth"
-            onClick={() => {
-              setMode("signup");
-              setSignedIn(false);
-            }}
-            className={cn(
-              "inline-flex flex-1 items-center justify-center gap-2 rounded-xl border px-5 py-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40",
-              mode === "signup"
-                ? "border-zinc-300/80 bg-white text-red-600 shadow-sm dark:border-zinc-600 dark:bg-zinc-950"
-                : "border-transparent bg-transparent text-zinc-700 hover:bg-zinc-200/50 dark:text-zinc-300 dark:hover:bg-zinc-700/50",
-            )}
-          >
-            <IconUserPlus className="h-5 w-5 shrink-0" />
-            Sign Up
-          </button>
+            <button
+              type="button"
+              role="tab"
+              id="tab-signin"
+              aria-selected={mode === "signin"}
+              aria-controls="tabpanel-auth"
+              onClick={() => {
+                setMode("signin");
+                setSignupSent(false);
+              }}
+              className={cn(
+                "inline-flex flex-1 items-center justify-center gap-2 rounded-xl border px-5 py-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 cursor-pointer",
+                mode === "signin"
+                  ? "border-zinc-300/80 bg-white text-red-600 shadow-sm"
+                  : "border-transparent bg-transparent text-zinc-700 hover:bg-zinc-200/50 cursor-pointer",
+              )}
+            >
+              <IconLogIn className="h-5 w-5 shrink-0" />
+              Sign In
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="tab-signup"
+              aria-selected={mode === "signup"}
+              aria-controls="tabpanel-auth"
+              onClick={() => {
+                setMode("signup");
+                setSignedIn(false);
+              }}
+              className={cn(
+                "inline-flex flex-1 items-center justify-center gap-2 rounded-xl border px-5 py-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 cursor-pointer",
+                mode === "signup"
+                  ? "border-zinc-300/80 bg-white text-red-600 shadow-sm"
+                  : "border-transparent bg-transparent text-zinc-700 hover:bg-zinc-200/50 cursor-pointer",
+              )}
+            >
+              <IconUserPlus className="h-5 w-5 shrink-0" />
+              Sign Up
+            </button>
+          </div>
+
+          <ul className="mt-10 space-y-3.5">
+            {benefits.map((line) => (
+              <li key={line} className="flex gap-3 text-sm text-zinc-800">
+                <span className="mt-0.5 shrink-0">
+                  <IconCheck className="h-5 w-5" />
+                </span>
+                <span>{line}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <ul className="mt-10 space-y-3.5">
-          {benefits.map((line) => (
-            <li key={line} className="flex gap-3 text-sm text-zinc-800 dark:text-zinc-200">
-              <span className="mt-0.5 shrink-0">
-                <IconCheck className="h-5 w-5" />
-              </span>
-              <span>{line}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div
-        id="tabpanel-auth"
-        role="tabpanel"
-        aria-labelledby={mode === "signin" ? "tab-signin" : "tab-signup"}
-        className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8 dark:border-zinc-800 dark:bg-zinc-950"
-      >
-        {mode === "signin" ? (
-          <SignInForm
-            onSuccess={() => setSignedIn(true)}
-            signedIn={signedIn}
-            onReset={() => setSignedIn(false)}
-          />
-        ) : (
-          <SignUpForm
-            onSuccess={() => setSignupSent(true)}
-            sent={signupSent}
-            onReset={() => setSignupSent(false)}
-          />
-        )}
+        <div
+          id="tabpanel-auth"
+          role="tabpanel"
+          aria-labelledby={mode === "signin" ? "tab-signin" : "tab-signup"}
+          className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
+        >
+          {mode === "signin" ? (
+            <SignInForm
+              onSuccess={() => setSignedIn(true)}
+              signedIn={signedIn}
+              onReset={() => setSignedIn(false)}
+            />
+          ) : (
+            <SignUpForm
+              onSuccess={() => setSignupSent(true)}
+              sent={signupSent}
+              onReset={() => setSignupSent(false)}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -242,16 +259,16 @@ function SignInForm({
   if (signedIn) {
     return (
       <div className="space-y-4 text-center">
-        <p className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+        <p className="text-lg font-semibold text-zinc-950">
           You&apos;re signed in (demo).
         </p>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600">
           A live portal would show pricing, assets, and your rep tools here.
         </p>
         <button
           type="button"
           onClick={onReset}
-          className="text-sm font-semibold text-red-600 hover:text-red-700 dark:text-red-500"
+          className="text-sm font-semibold text-red-600 hover:text-red-700"
         >
           Sign out
         </button>
@@ -267,21 +284,19 @@ function SignInForm({
         onSuccess();
       }}
     >
-      <div className="flex gap-3 rounded-xl bg-zinc-100 p-4 text-sm text-zinc-600 dark:bg-zinc-800/80 dark:text-zinc-300">
+      <div className="flex gap-3 rounded-xl bg-zinc-100 p-4 text-sm text-zinc-600">
         <IconInfo className="mt-0.5 h-5 w-5 shrink-0 text-zinc-500" />
         <p>
-          <span className="font-medium text-zinc-800 dark:text-zinc-200">
-            Demo mode:
-          </span>{" "}
-          any email and password will sign you in. Real authentication is
-          coming soon.
+          <span className="font-medium text-zinc-800">Demo mode:</span> any
+          email and password will sign you in. Real authentication is coming
+          soon.
         </p>
       </div>
 
       <div>
         <label
           htmlFor="portal-email"
-          className="text-sm font-medium text-zinc-950 dark:text-zinc-100"
+          className="text-sm font-medium text-zinc-950"
         >
           Work email <span className="text-red-600">*</span>
         </label>
@@ -317,7 +332,7 @@ function SignInForm({
         <div className="flex items-baseline justify-between gap-2">
           <label
             htmlFor="portal-password"
-            className="text-sm font-medium text-zinc-950 dark:text-zinc-100"
+            className="text-sm font-medium text-zinc-950"
           >
             Password <span className="text-red-600">*</span>
           </label>
@@ -352,7 +367,7 @@ function SignInForm({
         <div className="mt-2 text-right">
           <a
             href="mailto:info@vtiusa.com?subject=Reseller%20portal%20password%20help"
-            className="text-sm font-medium text-red-600 hover:text-red-700 dark:text-red-500"
+            className="text-sm font-medium text-red-600 hover:text-red-700"
           >
             Forgot password?
           </a>
@@ -361,7 +376,7 @@ function SignInForm({
 
       <button
         type="submit"
-        className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 dark:bg-red-600 dark:hover:bg-red-500"
+        className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50"
       >
         Sign in to portal
         <svg
@@ -379,8 +394,7 @@ function SignInForm({
   );
 }
 
-const labelClass =
-  "text-sm font-medium text-zinc-950 dark:text-zinc-100";
+const labelClass = "text-sm font-medium text-zinc-950";
 const requiredMark = <span className="text-red-600">*</span>;
 
 function SignUpForm({
@@ -395,10 +409,10 @@ function SignUpForm({
   if (sent) {
     return (
       <div className="space-y-4 text-center">
-        <p className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+        <p className="text-lg font-semibold text-zinc-950">
           Application received (demo).
         </p>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600">
           A live flow would email our partner team. You can also reach us via{" "}
           <Link href="/contact" className="font-medium text-red-600">
             contact
@@ -424,15 +438,13 @@ function SignUpForm({
         onSuccess();
       }}
     >
-      <div className="flex gap-3 rounded-xl bg-zinc-100 p-4 text-sm leading-relaxed text-zinc-600 dark:bg-zinc-800/80 dark:text-zinc-300">
+      <div className="flex gap-3 rounded-xl bg-zinc-100 p-4 text-sm leading-relaxed text-zinc-600">
         <IconInfo className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
         <p>
-          Tell us about your business below. A VTI team member will reach out
-          to confirm your application — typically within{" "}
-          <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-            24–48 hours
-          </span>
-          . No password needed yet; we&apos;ll set up your portal access once
+          Tell us about your business below. A VTI team member will reach out to
+          confirm your application — typically within{" "}
+          <span className="font-semibold text-zinc-800">24–48 hours</span>. No
+          password needed yet; we&apos;ll set up your portal access once
           you&apos;re approved.
         </p>
       </div>
@@ -555,7 +567,7 @@ function SignUpForm({
           id="su-message"
           name="about"
           rows={5}
-          placeholder="A bit about your business, the markets you serve, and why you&apos;re interested in partnering with VTI."
+          placeholder="A bit about your business, the markets you serve, and why you're interested in partnering with VTI."
           className={cn("mt-1.5", textareaClass)}
         />
       </div>
@@ -568,7 +580,7 @@ function SignUpForm({
           Submit application
           <IconUserPlus className="h-4 w-4" />
         </button>
-        <p className="text-center text-xs leading-relaxed text-zinc-500 dark:text-zinc-400">
+        <p className="text-xs leading-relaxed text-zinc-500">
           A member of our partner team will reach out to you, usually within
           24–48 hours, to confirm your application and set up portal access.
         </p>
