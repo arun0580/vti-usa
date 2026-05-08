@@ -15,7 +15,7 @@ export const interactivePanels = [
       "Screen share + extend",
       "Annotate & multitask",
     ],
-    actions: [{ label: "Download spec sheet", href: "/contact" }],
+    actions: [{ label: "Download Spec Sheet", href: "#" }],
   },
   // {
   //   name: "VT16-IR Series",
@@ -31,7 +31,7 @@ export const interactivePanels = [
   //     "Screen share + extend",
   //     "Annotate & multitask",
   //   ],
-  //   actions: [{ label: "Download spec sheet", href: "/contact" }],
+  //   actions: [{ label: "Download Spec Sheet", href: "/contact" }],
   // },
   {
     name: "VT Pro Series (P-Cap)",
@@ -47,7 +47,9 @@ export const interactivePanels = [
       "Screen share + extend",
       "Annotate & multitask",
     ],
-    actions: [{ label: "Download spec sheet", href: "/contact" }],
+    actions: [
+      { label: "Download Spec Sheet", href: "/pdf/virtual_VT_pro.pdf" },
+    ],
   },
   {
     name: `105" Collaboration Display`,
@@ -63,7 +65,7 @@ export const interactivePanels = [
       "Screen share + extend",
       "Annotate & multitask",
     ],
-    actions: [{ label: "Download spec sheet", href: "/contact" }],
+    actions: [{ label: "Download Spec Sheet", href: "/contact" }],
   },
   {
     name: `Virtual Scooter 32"`,
@@ -79,6 +81,11 @@ export const interactivePanels = [
       "180° rotation stand",
       "Detachable 5MP camera",
     ],
-    actions: [{ label: "Download spec sheet", href: "/contact" }],
+    actions: [
+      {
+        label: "Download Spec Sheet",
+        href: "/pdf/Virtual_32inch mobile screen.pdf",
+      },
+    ],
   },
 ] as const;

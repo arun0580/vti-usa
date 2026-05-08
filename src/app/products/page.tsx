@@ -192,7 +192,7 @@ export default function ProductsPage() {
                   sizes={p.sizes}
                   desc={p.desc}
                   imageSrc={p.imageSrc}
-                  ctaLabel="Download spec sheet"
+                  ctaLabel="Download Spec Sheet"
                   ctaHref="/contact"
                 />
               ))}
@@ -326,13 +326,21 @@ export default function ProductsPage() {
                     ))}
                   </div>
 
-                  <div className="mt-6">
+                  <div className="mt-6 flex justify-start gap-8">
                     <a
-                      href="/pdf/vti-spec-packet.pdf"
-                      download="vti-spec-packet.pdf"
-                      className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50"
+                      href="/pdf/OneScreen_T7-Business-105_Spec_Sheet.pdf"
+                      target="_blank"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 transition-colors hover:text-red-700 hover:underline border-b border-red-600/20"
                     >
-                      Download spec sheet
+                      105&quot; Business Spec
+                      <span aria-hidden>→</span>
+                    </a>
+                    <a
+                      href="/pdf/OneScreen_T7-Education-86_Spec_Sheet.pdf"
+                      target="_blank"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 transition-colors hover:text-red-700 hover:underline border-b border-red-600/20"
+                    >
+                      86&quot; Education Spec
                       <span aria-hidden>→</span>
                     </a>
                   </div>
@@ -424,7 +432,7 @@ export default function ProductsPage() {
                 sizes={`65" · 75" · 86"`}
                 desc="Versatile interactive panel with 4K display, intuitive whiteboard software, and quick-access Cast, White Board, File Manager, and Applications."
                 imageSrc="/products/infocus-jtouch-CvBKjMP8.png"
-                ctaLabel="Download spec sheet"
+                ctaLabel="Download Spec Sheet"
                 ctaHref="/pdf/vti-spec-packet.pdf"
                 ctaDownload="vti-spec-packet.pdf"
               />
@@ -435,7 +443,7 @@ export default function ProductsPage() {
                 sizes={`65" · 75" · 86"`}
                 desc="Next-gen JTouch with refreshed Android UI, integrated Google apps, and Play Store access — plus the same Cast, White Board, and File Manager workflow teachers already know."
                 imageSrc="/products/infocus-jtouch-13e-DvR8j-aL.png"
-                ctaLabel="Download spec sheet"
+                ctaLabel="Download Spec Sheet"
                 ctaHref="/pdf/vti-spec-packet.pdf"
                 ctaDownload="vti-spec-packet.pdf"
               />
@@ -454,7 +462,7 @@ export default function ProductsPage() {
                   "Available in US only",
                 ]}
                 imageSrc="/products/infocus-jtouch-pro-01-CMN2qRY6.png"
-                ctaLabel="Download spec sheet"
+                ctaLabel="Download Spec Sheet"
                 ctaHref="/pdf/vti-spec-packet.pdf"
                 ctaDownload="vti-spec-packet.pdf"
               />
@@ -497,7 +505,7 @@ export default function ProductsPage() {
                   sizes={p.sizes}
                   desc={p.desc}
                   imageSrc={p.imageSrc}
-                  ctaLabel="Download spec sheet"
+                  ctaLabel="Download Spec Sheet"
                   ctaHref="/contact"
                 />
               ))}

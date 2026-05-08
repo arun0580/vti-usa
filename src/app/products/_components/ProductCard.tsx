@@ -54,6 +54,15 @@ function ArrowRightIcon({ className }: { className?: string }) {
   );
 }
 
+function isExternalHref(href: string) {
+  return (
+    /^(https?:)?\/\//.test(href) ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:") ||
+    /\.(pdf|zip|docx?|xlsx?|pptx?)(\?|#|$)/i.test(href)
+  );
+}
+
 export function ProductCard({
   name,
   badge,
@@ -125,11 +134,20 @@ export function ProductCard({
 
         {actions?.length ? (
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
-            {actions.map((a, idx) =>
-              idx === 0 ? (
+            {actions.map((a, idx) => {
+              const external = isExternalHref(a.href);
+              const targetProps = external
+                ? {
+                    target: "_blank" as const,
+                    rel: "noopener noreferrer",
+                  }
+                : {};
+
+              return idx === 0 ? (
                 <Link
                   key={a.label}
                   href={a.href}
+                  {...targetProps}
                   className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 transition-colors hover:text-red-700 hover:underline"
                 >
                   {a.label}
@@ -141,11 +159,12 @@ export function ProductCard({
                   href={a.href}
                   variant="secondary"
                   size="sm"
+                  {...targetProps}
                 >
                   {a.label}
                 </ButtonLink>
-              ),
-            )}
+              );
+            })}
           </div>
         ) : null}
       </div>
