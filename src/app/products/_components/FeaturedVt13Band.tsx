@@ -165,16 +165,16 @@ export function FeaturedVt13Band() {
             </div>
 
             <h3 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-white md:text-4xl">
-              VT13-IR Series
+              VT-IR Series
             </h3>
             <p className="mt-2 text-sm font-medium text-white/70 md:text-base">
-              Interactive flat panel · 65&quot; · 75&quot; · 86&quot;
+              Interactive flat panel · 65&quot; · 75&quot; · 86&quot; · 98&quot;
             </p>
 
             <p className="mt-4 max-w-xl text-base leading-relaxed text-white/80">
               The display of choice for thousands of K-12 classrooms across the
-              country. Built for daily use, backed by a 5-year warranty, and
-              supported by a team you can actually reach.
+              country. Built for daily use, fully warrantied to industry
+              standards, and supported by a team you can actually reach.
             </p>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -197,7 +197,7 @@ export function FeaturedVt13Band() {
               <ButtonLink
                 href="/contact"
                 size="sm"
-                className="rounded-md border-0 bg-[#E53E3E] text-white shadow-sm hover:bg-red-600 dark:bg-[#E53E3E] dark:hover:bg-red-600"
+                className="rounded-md border-0 !bg-primary !text-white shadow-sm hover:!bg-primary/80"
               >
                 <span>Request a quote</span>
                 <svg
@@ -226,8 +226,8 @@ export function FeaturedVt13Band() {
           <div className="order-1 min-w-0 rounded-2xl bg-[#1a1a1a] p-4 ring-1 ring-inset ring-white/10 lg:order-2">
             <div className="relative mx-auto aspect-square w-full max-w-[min(100%,22rem)] overflow-hidden rounded-full bg-zinc-950">
               <Image
-                src="/vt-panel-hero-BbQvghRM.png"
-                alt="VTI VT13-IR interactive flat panel display"
+                src="/vt-panel-hero.png"
+                alt="VTI VT-IR interactive flat panel display"
                 fill
                 className="object-cover"
                 sizes="(min-width: 1024px) 400px, 80vw"

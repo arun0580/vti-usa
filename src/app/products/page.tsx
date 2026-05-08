@@ -644,7 +644,7 @@ export default function ProductsPage() {
               <DataTable
                 columns={[
                   "Specification",
-                  "VT13-IR",
+                  "VT-IR",
                   "VT Pro",
                   `105" Ultra-Wide`,
                 ]}

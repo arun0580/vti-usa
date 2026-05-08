@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 export const compareRows = [
   {
     label: "Display sizes",
-    a: `65" / 75" / 86"`,
-    b: `75" / 86" / 98"`,
+    a: `65" / 75" / 86" / 98"`,
+    b: `65" / 75" / 86"`,
     c: `105"`,
   },
   {
@@ -14,7 +14,12 @@ export const compareRows = [
     c: "5K (5120×2160)",
   },
   { label: "Aspect ratio", a: "16:9", b: "16:9", c: "21:9" },
-  { label: "Touch points", a: "20-point IR", b: "40-point IR", c: "20-point IR" },
+  {
+    label: "Touch points",
+    a: "20-point IR",
+    b: "40-point IR",
+    c: "20-point IR",
+  },
   {
     label: "Built-in conferencing",
     a: "Add-on",
@@ -23,7 +28,12 @@ export const compareRows = [
   },
   { label: "Wireless casting", a: "Yes", b: "Yes (multi-source)", c: "Yes" },
   { label: "OPS PC slot", a: "Yes", b: "Yes", c: "Yes" },
-  { label: "Warranty", a: "5 years", b: "5 years", c: "5 years" },
+  {
+    label: "Warranty",
+    a: "Full replacement",
+    b: "Full replacement",
+    c: "Full replacement",
+  },
 ] as const;
 
 export const dimensionRows = [
@@ -63,4 +73,3 @@ export const dimensionRows = [
     vesa: "VESA 800 × 600",
   },
 ] as const;
-

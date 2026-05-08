@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
 export const interactivePanels = [
   {
-    name: "VT13-IR Series",
+    name: "VT-IR Series",
     badge: "Bestseller",
     imageSrc: "/products/vt13-ir-product-BT-uvSbc.png",
-    sizes: `65" · 75" · 86"`,
-    desc: "Our flagship interactive flat panel — 4K UHD, 20-point IR touch, classroom-ready out of the box.",
+    sizes: `65" · 75" · 86" · 98"`,
+    desc: "Our flagship interactive flat panel — 4K UHD, 40-point touch, classroom-ready out of the box.",
     highlights: [
       "Octa-core processor",
       "8GB RAM · 128GB storage",
-      "Android 13",
+      "Android 16",
       "Google EDLA certified",
       "Screen share + extend",
       "Annotate & multitask",
@@ -36,13 +36,13 @@ export const interactivePanels = [
   {
     name: "VT Pro Series (P-Cap)",
     badge: "Premium",
-    imageSrc: "/products/vt-pro-product-x1Pbk6mI.png",
-    sizes: `75" · 86" · 98"`,
+    imageSrc: "/products/vt-pro-product.png",
+    sizes: `65" · 75" · 86"`,
     desc: "Pro-grade projected-capacitive panels with built-in conferencing, wireless casting, and advanced annotation. Deployed at UCA (11 units).",
     highlights: [
       "Octa-core processor",
       "8GB RAM · 128GB storage",
-      "Android 13",
+      "Android 16",
       "Google EDLA certified",
       "Screen share + extend",
       "Annotate & multitask",
@@ -58,7 +58,7 @@ export const interactivePanels = [
     highlights: [
       "Octa-core processor",
       "8GB RAM · 128GB storage",
-      "Android 13",
+      "Android 16",
       "Google EDLA certified",
       "Screen share + extend",
       "Annotate & multitask",
@@ -68,18 +68,17 @@ export const interactivePanels = [
   {
     name: `Virtual Scooter 32"`,
     badge: "Portable",
-    imageSrc: "/products/scooter-32-DnwYwNdC.png",
+    imageSrc: "/products/scooter-32.jpg",
     sizes: `32" · battery + wheels`,
-    desc: "Smart portable 1080p touchscreen on a rolling stand. 360° rotation, 38,400 mAh battery, built-in 5MP camera. Move it room to room — no install required.",
+    desc: "Smart portable 1080p touchscreen on a rolling stand. 180° rotation, ~6-hour battery life, detachable 5MP camera. Move it room to room — no install required.",
     highlights: [
       "Octa-core processor",
       "8GB RAM · 128GB storage",
       "Android 15",
-      "38,400 mAh battery",
-      "360° rotation stand",
-      "Built-in 5MP camera",
+      "~6-hour battery life",
+      "180° rotation stand",
+      "Detachable 5MP camera",
     ],
     actions: [{ label: "Download spec sheet", href: "/contact" }],
   },
 ] as const;
-
