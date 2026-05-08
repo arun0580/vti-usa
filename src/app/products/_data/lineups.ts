@@ -2,10 +2,10 @@
 
 export const ledLineup = [
   {
-    name: "Virtual LED Poster",
+    name: "Virtual DvLED Poster",
     badge: "Bestseller",
     sizes: `75" portrait · P1.8 / P2.5`,
-    desc: "Standalone, freestanding LED poster. Built-in player, hot-swappable. Deployed at UCA (6 units) — the photos in our gallery are from this install.",
+    desc: "Standalone, freestanding direct-view LED display. Built-in player, hot-swappable. Manufacturer's warranty on parts, spare parts included, extended warranty available.",
     imageSrc: "/products/led-poster-portrait.png",
   },
   {

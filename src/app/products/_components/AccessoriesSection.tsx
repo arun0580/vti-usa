@@ -1,6 +1,14 @@
 import type { ReactNode } from "react";
 import { ButtonLink } from "@/components/site/Button";
 import { accessoriesLineup } from "../_data/lineups";
+import {
+  Cable,
+  Camera,
+  Hand,
+  HardDrive,
+  Keyboard,
+  Speaker,
+} from "lucide-react";
 
 /* Icon paths from Lucide (v0.460) — ISC, https://lucide.dev */
 
@@ -29,78 +37,27 @@ function SvgFrame({
 }
 
 function IconCpu({ className }: { className?: string }) {
-  return (
-    <SvgFrame className={className}>
-      <rect width="16" height="16" x="4" y="4" rx="2" />
-      <rect width="6" height="6" x="9" y="9" rx="1" />
-      <path d="M15 2v2" />
-      <path d="M15 20v2" />
-      <path d="M2 15h2" />
-      <path d="M2 9h2" />
-      <path d="M20 15h2" />
-      <path d="M20 9h2" />
-      <path d="M9 2v2" />
-      <path d="M9 20v2" />
-    </SvgFrame>
-  );
+  return <HardDrive className={className} />;
 }
 
 function IconVideo({ className }: { className?: string }) {
-  return (
-    <SvgFrame className={className}>
-      <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5" />
-      <rect x="2" y="6" width="14" height="12" rx="2" />
-    </SvgFrame>
-  );
+  return <Camera className={className} />;
 }
 
 function IconVolume({ className }: { className?: string }) {
-  return (
-    <SvgFrame className={className}>
-      <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" />
-      <path d="M16 9a5 5 0 0 1 0 6" />
-      <path d="M19.364 18.364a9 9 0 0 0 0-12.728" />
-    </SvgFrame>
-  );
+  return <Speaker className={className} />;
 }
 
 function IconKeyboard({ className }: { className?: string }) {
-  return (
-    <SvgFrame className={className}>
-      <path d="M10 8h.01" />
-      <path d="M12 12h.01" />
-      <path d="M14 8h.01" />
-      <path d="M16 12h.01" />
-      <path d="M18 8h.01" />
-      <path d="M6 8h.01" />
-      <path d="M7 16h10" />
-      <path d="M8 12h.01" />
-      <rect width="20" height="16" x="2" y="4" rx="2" />
-    </SvgFrame>
-  );
+  return <Keyboard className={className} />;
 }
 
 function IconHand({ className }: { className?: string }) {
-  return (
-    <SvgFrame className={className}>
-      <path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2" />
-      <path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2" />
-      <path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8" />
-      <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
-    </SvgFrame>
-  );
+  return <Hand className={className} />;
 }
 
 function IconCable({ className }: { className?: string }) {
-  return (
-    <SvgFrame className={className}>
-      <path d="M17 21v-2a1 1 0 0 1-1-1v-1a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1a1 1 0 0 1-1 1" />
-      <path d="M19 15V6.5a1 1 0 0 0-7 0v11a1 1 0 0 1-7 0V9" />
-      <path d="M21 21v-2h-4" />
-      <path d="M3 5h4V3" />
-      <path d="M7 5a1 1 0 0 1 1 1v1a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1V3" />
-    </SvgFrame>
-  );
+  return <Cable className={className} />;
 }
 
 const ACCESSORY_ICONS = {
@@ -162,10 +119,7 @@ export function AccessoriesSection() {
               and cabling as one bundle.
             </p>
           </div>
-          <ButtonLink
-            href="/contact"
-            className="!text-primary"
-          >
+          <ButtonLink href="/contact" className="!text-primary">
             Request a kit quote
             <span aria-hidden="true" className="ml-1">
               →

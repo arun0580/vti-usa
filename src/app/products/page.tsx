@@ -622,11 +622,11 @@ export default function ProductsPage() {
                 <div className="relative overflow-hidden rounded-2xl bg-white/5 p-4 ring-1 ring-inset ring-white/10">
                   <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-white ring-1 ring-white/10">
                     <Image
-                      src="/products/led-cabinet-integration-Db-ZWsBf.jpg"
+                      src="/products/vt13ir-living-room.jpg"
                       alt="Get Curious Together"
                       fill
-                      className="object-cover"
-                      sizes="(min-width: 1024px) 420px, 90vw"
+                      className="object-contain"
+                      sizes="100%"
                     />
                   </div>
                 </div>
