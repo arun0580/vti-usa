@@ -61,7 +61,7 @@ export function SiteFooter() {
                   </Link>
                 </li>
                 <li>
-                  <Link className="hover:text-zinc-200" href="/reseller-portal">
+                  <Link className="hover:text-zinc-200" href="/resellers">
                     Reseller Portal
                   </Link>
                 </li>
