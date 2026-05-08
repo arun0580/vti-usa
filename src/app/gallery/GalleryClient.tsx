@@ -6,13 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
-type GallerySegment =
-  | "All"
-  | "K-12"
-  | "Higher Ed"
-  | "Corporate"
-  | "Government"
-  | "LED & Signage";
+type GallerySegment = "All" | "K-12" | "Higher Ed" | "Corporate" | "Government";
 
 type Installation = {
   id: string;
@@ -24,60 +18,113 @@ type Installation = {
 
 const installations: Installation[] = [
   {
-    id: "elementary-stem-lab",
+    id: "its-all-about-the-students",
     segment: "K-12",
-    title: "Elementary STEM Lab",
+    title: "It's All About the Students",
+    location: "We believe students belong at the boards more than teachers.",
+    image: {
+      src: "/gallery/students-at-board.jpg",
+      alt: "It's All About the Students",
+    },
+  },
+  {
+    id: "elementary-spanish-class",
+    segment: "K-12",
+    title: "Elementary Spanish Class",
     location: "Westbrook USD, TX",
     image: {
-      src: "/gallery/digital-signage-gym-C_i5SOLS.jpg",
-      alt: "Elementary STEM Lab",
+      src: "/gallery/stem-lab-classroom.jpg",
+      alt: "Elementary Spanish Class",
+    },
+  },
+  {
+    id: "dual-display-stem-lab",
+    segment: "K-12",
+    title: "Dual-Display STEM Lab",
+    location: "Regional High School PD Day",
+    image: {
+      src: "/gallery/dual-screen-stem.jpg",
+      alt: "Dual-Display STEM Lab",
     },
   },
   {
     id: "zuni-learning-tree-pilot",
     segment: "K-12",
-    title: "Zuni Learning Tree Pilot",
+    title: "ZUNI Learning Tree Pilot",
     location: "Albuquerque, NM",
     image: {
-      src: "/gallery/zuni-learning-tree-hemgstmT.jpg",
-      alt: "Zuni Learning Tree Pilot",
+      src: "/gallery/zuni-booth.jpg",
+      alt: "ZUNI Learning Tree Pilot",
     },
   },
   {
-    id: "faculty-lounge-display",
+    id: "zuni-on-a-mobile-cart",
     segment: "K-12",
-    title: "Faculty Lounge Display",
-    location: "Cedar Heights HS, OH",
-    image: { src: "/gallery/faculty.jpg", alt: "Faculty Lounge Display" },
-  },
-  {
-    id: "auditorium-lecture-hall",
-    segment: "Higher Ed",
-    title: "Auditorium Lecture Hall",
-    location: "State University",
+    title: "ZUNI on a Mobile Cart",
+    location: "Community Learning Center, AR",
     image: {
-      src: "/gallery/higher-ed-lecture-hall-D17z15Sc.jpg",
-      alt: "Auditorium lecture hall",
+      src: "/gallery/zuni-rolling-cart.jpg",
+      alt: "ZUNI on a Mobile Cart",
     },
   },
   {
-    id: "collaboration-studio-105",
-    segment: "Higher Ed",
-    title: `105" Collaboration Studio`,
-    location: "Engineering Dept.",
+    id: "boys-girls-club-family-night",
+    segment: "K-12",
+    title: "Boys & Girls Club Family Night",
+    location: "Faulkner County, AR",
     image: {
-      src: "/gallery/vt105-specs-CtRtYt8g.jpg",
-      alt: `105" collaboration studio`,
+      src: "/gallery/boys-girls-club.jpg",
+      alt: "Boys & Girls Club Family Night",
     },
   },
   {
-    id: "executive-boardroom",
+    id: "campus-welcome-center-led-wall",
+    segment: "Higher Ed",
+    title: "Campus Welcome Center LED Wall",
+    location: "Auburn, AL",
+    image: {
+      src: "/gallery/auburn-led-wall.jpg",
+      alt: "Campus Welcome Center LED Wall",
+    },
+  },
+  {
+    id: "gulf-coast-state-college-bayway",
+    segment: "Higher Ed",
+    title: "Gulf Coast State College Bayway",
+    location: "Panama City, FL",
+    image: {
+      src: "/gallery/gulf-coast-bayway.jpg",
+      alt: "Gulf Coast State College Bayway",
+    },
+  },
+  {
+    id: "conway-symphony-orchestra",
+    segment: "Higher Ed",
+    title: "Conway Symphony Orchestra",
+    location: "Conway, AR",
+    image: {
+      src: "/gallery/conway-symphony.jpg",
+      alt: "Conway Symphony Orchestra",
+    },
+  },
+  {
+    id: "uca-music-pcaps-lineup",
+    segment: "Higher Ed",
+    title: `11 × 86" P-Caps Lineup`,
+    location: "UCA Music Department, Conway, AR",
+    image: {
+      src: "/gallery/uca-music-pcaps.jpg",
+      alt: `11 × 86" P-Caps Lineup`,
+    },
+  },
+  {
+    id: "edge-business-office",
     segment: "Corporate",
-    title: "Executive Boardroom",
-    location: "Northstar Capital, NY",
+    title: "Edge Business Office",
+    location: "Atlanta, GA",
     image: {
-      src: "/gallery/corporate-boardroom-panel-2wOF230t.jpg",
-      alt: "Executive boardroom",
+      src: "/gallery/edge-business-office.jpg",
+      alt: "Edge Business Office",
     },
   },
   {
@@ -86,58 +133,38 @@ const installations: Installation[] = [
     title: "VT Pro Hybrid Meeting Room",
     location: "Atlas Logistics",
     image: {
-      src: "/gallery/vt-pro-boardroom-DDA_XYew.jpg",
-      alt: "VT Pro hybrid meeting room",
+      src: "/gallery/vt-pro-led-wall.jpg",
+      alt: "VT Pro Hybrid Meeting Room",
     },
   },
   {
-    id: "boardroom-219-spec-wall",
+    id: "immersive-reef-led-wall",
     segment: "Corporate",
-    title: "Boardroom 21:9 Spec Wall",
-    location: "Aspen Holdings",
+    title: "Immersive Reef LED Wall",
+    location: "Executive Lounge",
     image: {
-      src: "/gallery/vt105-mountain-B4KMOGJb.jpg",
-      alt: "Boardroom spec wall",
+      src: "/gallery/led-underwater-wall.jpg",
+      alt: "Immersive Reef LED Wall",
     },
   },
   {
-    id: "police-briefing-room",
+    id: "portrait-dvled-showcase",
+    segment: "Corporate",
+    title: "Portrait DvLED Showcase",
+    location: "Demo Experience Center",
+    image: {
+      src: "/gallery/led-portrait-boats.jpg",
+      alt: "Portrait DvLED Showcase",
+    },
+  },
+  {
+    id: "panama-city-navy-base",
     segment: "Government",
-    title: "Police Briefing Room",
-    location: "Municipal Police HQ",
+    title: "Panama City Navy Base",
+    location: "NAVSEA Panama City, FL",
     image: {
-      src: "/gallery/government-corporate-room-DYtrAlvA.jpg",
-      alt: "Police briefing room",
-    },
-  },
-  {
-    id: "modern-art-led-wall",
-    segment: "LED & Signage",
-    title: "Modern Art LED Wall",
-    location: "Civic Art Gallery",
-    image: {
-      src: "/gallery/led-art-gallery-D-SqUNsK.jpg",
-      alt: "Modern art LED wall",
-    },
-  },
-  {
-    id: "lobby-led-cabinet-wall",
-    segment: "LED & Signage",
-    title: "Lobby LED Cabinet Wall",
-    location: "Convention Center",
-    image: {
-      src: "/gallery/led-cabinet-integration-Db-ZWsBf.jpg",
-      alt: "Lobby LED cabinet wall",
-    },
-  },
-  {
-    id: "stadium-scoreboard",
-    segment: "LED & Signage",
-    title: "Stadium Scoreboard",
-    location: "High School Athletics",
-    image: {
-      src: "/gallery/digital-signage-gym-C_i5SOLS.jpg",
-      alt: "Stadium scoreboard",
+      src: "/gallery/navsea-panama-city.jpg",
+      alt: "Panama City Navy Base",
     },
   },
 ];
@@ -148,7 +175,6 @@ const segments: GallerySegment[] = [
   "Higher Ed",
   "Corporate",
   "Government",
-  "LED & Signage",
 ];
 
 function segmentToQueryValue(segment: GallerySegment) {
@@ -250,7 +276,7 @@ export function GalleryClient() {
             );
           })}
 
-          <button
+          {/* <button
             type="button"
             onClick={copyCuratedLink}
             className="ml-auto hidden items-center rounded-full border border-zinc-200 bg-white px-3 py-1.5 text-sm font-semibold text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50 sm:inline-flex"
@@ -260,7 +286,7 @@ export function GalleryClient() {
               : copyState === "error"
                 ? "Copy failed"
                 : "Copy link"}
-          </button>
+          </button> */}
         </div>
       </Container>
 
@@ -288,13 +314,18 @@ export function GalleryClient() {
                 )}
               </div>
 
-              <div className="p-5">
-                <div className="text-base font-semibold tracking-tight text-zinc-950">
-                  {item.title}
+              <div className="flex items-start justify-between gap-3 p-5">
+                <div>
+                  <div className="text-base font-semibold tracking-tight text-zinc-950">
+                    {item.title}
+                  </div>
+                  <div className="mt-1 text-sm text-zinc-600">
+                    {item.location}
+                  </div>
                 </div>
-                <div className="mt-1 text-sm text-zinc-600">
-                  {item.location}
-                </div>
+                <span className="inline-flex flex-shrink-0 items-center rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-red-600">
+                  {item.segment}
+                </span>
               </div>
             </article>
           ))}
