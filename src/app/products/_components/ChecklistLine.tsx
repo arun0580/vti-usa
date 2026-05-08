@@ -66,7 +66,7 @@ export function FilledChecklistLine({
   return (
     <div className={cn("flex items-start gap-2.5", className)}>
       <FilledCircleCheckIcon />
-      <span className="text-sm leading-6 text-zinc-600 dark:text-zinc-300">
+      <span className="text-sm leading-6 text-zinc-600">
         {children}
       </span>
     </div>

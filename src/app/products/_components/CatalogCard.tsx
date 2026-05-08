@@ -40,8 +40,7 @@ export function CatalogCard({
   /** Filled red checkmarks in a 2-col grid, below description (e.g. pro-series specs). */
   specCheckItems?: string[];
 }) {
-  const ctaClassName =
-    "text-sm font-semibold text-red-600 hover:text-red-700";
+  const ctaClassName = "text-sm font-semibold text-red-600 hover:text-red-700";
   const ctaInner = (
     <>
       {ctaLabel} <span aria-hidden="true">→</span>
@@ -62,21 +61,17 @@ export function CatalogCard({
 
       <div className="p-6">
         <div className="flex items-start justify-between gap-3 sm:items-center">
-          <div className="inline-flex min-w-0 max-w-[min(100%,14rem)] items-center gap-1.5 rounded-full border border-red-600 bg-white px-2.5 py-0.5 text-[10px] font-extrabold uppercase leading-tight tracking-[0.12em] text-red-600">
+          <div className="inline-flex min-w-0 items-center gap-1 rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-red-600">
             <StarIcon className="h-3.5 w-3.5 text-red-600" />
-            <span className="break-words">{badge}</span>
+            {badge}
           </div>
           <div className="shrink-0 text-right text-[12px] font-semibold tracking-wide text-zinc-500 tabular-nums">
             {sizes}
           </div>
         </div>
 
-        <div className="mt-4 text-base font-semibold text-zinc-950">
-          {name}
-        </div>
-        <p className="mt-2 text-sm leading-6 text-zinc-600">
-          {desc}
-        </p>
+        <div className="mt-4 text-base font-semibold text-zinc-950">{name}</div>
+        <p className="mt-2 text-sm leading-6 text-zinc-600">{desc}</p>
 
         {specCheckItems && specCheckItems.length > 0 ? (
           <div className="mt-4 grid gap-2 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2">
@@ -88,11 +83,7 @@ export function CatalogCard({
 
         <div className="mt-4">
           {ctaDownload ? (
-            <a
-              href={ctaHref}
-              download={ctaDownload}
-              className={ctaClassName}
-            >
+            <a href={ctaHref} download={ctaDownload} className={ctaClassName}>
               {ctaInner}
             </a>
           ) : (

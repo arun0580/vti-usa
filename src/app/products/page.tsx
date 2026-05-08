@@ -239,7 +239,10 @@ export default function ProductsPage() {
                     . The poster photos throughout our gallery? All from this
                     install.
                   </p>
-                  <Link href="/gallery" className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 hover:text-red-700">
+                  <Link
+                    href="/gallery"
+                    className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 hover:text-red-700"
+                  >
                     See the UCA install <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
@@ -419,7 +422,7 @@ export default function ProductsPage() {
                 name="InFocus JTouch"
                 badge="Interactive panel"
                 sizes={`65" · 75" · 86"`}
-                desc="Versatile 4K display with whiteboard software and quick access to Cast, White Board, File Manager, and Applications — built for classrooms and meeting rooms that need a flexible interactive surface."
+                desc="Versatile interactive panel with 4K display, intuitive whiteboard software, and quick-access Cast, White Board, File Manager, and Applications."
                 imageSrc="/products/infocus-jtouch-CvBKjMP8.png"
                 ctaLabel="Download spec sheet"
                 ctaHref="/pdf/vti-spec-packet.pdf"
@@ -430,7 +433,7 @@ export default function ProductsPage() {
                 name="InFocus JTouch 13 E"
                 badge="Latest release"
                 sizes={`65" · 75" · 86"`}
-                desc="Refreshed Android experience with Google apps and Play Store access, plus the same Cast, White Board, and File Manager workflow your teams already use."
+                desc="Next-gen JTouch with refreshed Android UI, integrated Google apps, and Play Store access — plus the same Cast, White Board, and File Manager workflow teachers already know."
                 imageSrc="/products/infocus-jtouch-13e-DvR8j-aL.png"
                 ctaLabel="Download spec sheet"
                 ctaHref="/pdf/vti-spec-packet.pdf"
@@ -441,7 +444,7 @@ export default function ProductsPage() {
                 name="InFocus JTouch Pro-01"
                 badge="Pro series"
                 sizes={`65" · 75" · 86"`}
-                desc="Pro-series for high-use rooms: 4K UHD, capacitive touch, and 50,000+ hour lifetime for daily classroom and conference duty."
+                desc="Pro-series interactive panel built for high-use rooms — 4K UHD, capacitive touch, and a 50,000-hour-plus lifetime rating for daily classroom and conference duty."
                 specCheckItems={[
                   "4K UHD · 3840 x 2160",
                   "16:9 aspect ratio",
