@@ -712,16 +712,15 @@ export default function ProductsPage() {
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-600 sm:text-base">
                   We&apos;ll send a tailored spec packet for the rooms
                   you&apos;re outfitting — across Virtual, OneScreen, or
-                  InFocus. Usually within one business day.
+                  InFocus.
                 </p>
               </div>
               <div className="md:pt-1 md:text-right">
                 <a
-                  href="/pdf/vti-spec-packet.pdf"
-                  download="vti-spec-packet.pdf"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-800 transition hover:text-red-900 hover:underline"
+                  href="/contact"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition hover:text-red-500 hover:underline"
                 >
-                  Download spec packet
+                  Contact Us
                   <span aria-hidden="true" className="inline-block">
                     <svg
                       className="h-4 w-4"
@@ -740,7 +739,7 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            <div className="mt-8 grid gap-4 border-t border-zinc-200 pt-8 sm:mt-9 sm:grid-cols-3 sm:gap-6 sm:pt-9">
+            {/* <div className="mt-8 grid gap-4 border-t border-zinc-200 pt-8 sm:mt-9 sm:grid-cols-3 sm:gap-6 sm:pt-9">
               {(
                 [
                   "Plain-English spec sheets",
@@ -770,7 +769,7 @@ export default function ProductsPage() {
                   </span>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </section>
       </Container>
