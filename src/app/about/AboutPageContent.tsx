@@ -811,7 +811,7 @@ export function AboutPageContent() {
           <div className="absolute inset-0 bg-black/70" aria-hidden />
         </div>
         <Container className="relative z-10 py-14 sm:py-16">
-          <div className="grid items-center gap-8 lg:grid-cols-[1fr_auto]">
+          <div className="grid items-center gap-8 lg:grid-cols-[1fr_auto_auto]">
             <div>
               <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
                 Ready to see VTI for yourself?
@@ -837,6 +837,16 @@ export function AboutPageContent() {
                   View product lineup
                 </ButtonLink>
               )}
+            </div>
+            <div className="hidden lg:flex lg:justify-end">
+              <Image
+                src="/mascot-puppy.png"
+                alt="VTI mascot puppy"
+                width={680}
+                height={1024}
+                className="h-auto w-36 drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)] xl:w-44"
+                priority={false}
+              />
             </div>
           </div>
         </Container>

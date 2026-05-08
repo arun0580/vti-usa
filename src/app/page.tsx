@@ -437,9 +437,19 @@ export default function Home() {
       </section>
 
       <section className="border-t border-zinc-200 bg-zinc-50">
-        <Container className="py-16">
-          <div className="rounded-3xl border border-zinc-200 bg-white p-8 sm:p-10">
-            <div className="grid items-center gap-8 lg:grid-cols-2">
+        <Container className="py-4 sm:py-6">
+          <div className="rounded-3xl border border-zinc-200 bg-white p-2 sm:p-4">
+            <div className="grid items-center gap-8 lg:grid-cols-[auto_1fr_auto]">
+              <div className="hidden lg:flex lg:justify-start">
+                <Image
+                  src="/mascot-puppy.png"
+                  alt="VTI mascot puppy"
+                  width={680}
+                  height={1024}
+                  className="h-auto w-36 xl:w-44"
+                  priority={false}
+                />
+              </div>
               <div className="space-y-3">
                 <div className="text-sm font-semibold text-zinc-900">
                   Ready to spec your space?
