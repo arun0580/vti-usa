@@ -81,7 +81,7 @@ export function CatalogCard({
           </div>
         ) : null}
 
-        <div className="mt-4">
+        {/* <div className="mt-4">
           {ctaDownload ? (
             <a href={ctaHref} download={ctaDownload} className={ctaClassName}>
               {ctaInner}
@@ -91,7 +91,7 @@ export function CatalogCard({
               {ctaInner}
             </a>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
