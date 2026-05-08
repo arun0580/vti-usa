@@ -808,7 +808,7 @@ export function AboutPageContent() {
             sizes="100vw"
             priority={false}
           />
-          <div className="absolute inset-0 bg-black/70" aria-hidden />
+          <div className="absolute inset-0 bg-black/10" aria-hidden />
         </div>
         <Container className="relative z-10 py-14 sm:py-16">
           <div className="grid items-center gap-8 lg:grid-cols-[1fr_auto_auto]">
