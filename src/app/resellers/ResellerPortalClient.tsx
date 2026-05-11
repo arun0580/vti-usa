@@ -124,12 +124,12 @@ export function ResellerPortalClient() {
 
   return (
     <div className="bg-white">
-      <Container className="px-0 pb-12 sm:pb-16 sm:px-0 border-b border-zinc-200">
+      <Container className="px-0 pb-10 sm:pb-16 sm:px-0 border-b border-zinc-200">
         <Reveal onMount className="max-w-3xl">
           <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
             For Partners
           </div>
-          <h1 className="mt-3 text-4xl font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-6xl">
+          <h1 className="mt-3 text-[34px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-6xl">
             Built around real partnership.
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 sm:text-[18px]">
@@ -139,12 +139,12 @@ export function ResellerPortalClient() {
           </p>
         </Reveal>
       </Container>
-      <div className="grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-10 xl:gap-16 py-12 sm:py-16">
+      <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-10 xl:gap-16 py-10 sm:py-16">
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-600">
             Reseller portal access
           </p>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
+          <h1 className="mt-3 text-2xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
             {mode === "signin" ? (
               <>Already a VTI reseller?</>
             ) : (
@@ -167,7 +167,7 @@ export function ResellerPortalClient() {
           </p>
 
           <div
-            className="mt-8 flex flex-col gap-2 rounded-2xl bg-zinc-100 p-1.5 sm:flex-row w-[50%]"
+            className="mt-8 flex w-full flex-col gap-2 rounded-2xl bg-zinc-100 p-1.5 sm:max-w-md sm:flex-row lg:w-[50%]"
             role="tablist"
             aria-label="Sign in or sign up"
           >

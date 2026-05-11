@@ -58,13 +58,13 @@ export default function ProductsPage() {
 
   return (
     <div>
-      <section className="relative border-b border-zinc-200 bg-zinc-100/50 pb-12 md:pb-14">
+      <section className="relative border-b border-zinc-200 bg-zinc-100/50 pb-8 md:pb-14">
         <Container className="py-8 md:py-10">
           <Reveal onMount className="max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-red-600">
               Products
             </p>
-            <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-zinc-950 md:text-4xl lg:text-5xl">
+            <h1 className="mt-2 text-[28px] font-extrabold leading-tight tracking-tight text-zinc-950 sm:text-3xl md:text-4xl lg:text-5xl">
               The full Virtual lineup.
             </h1>
             <p className="mt-3 max-w-2xl text-sm text-zinc-600 md:text-base">
@@ -76,7 +76,7 @@ export default function ProductsPage() {
               <button
                 type="button"
                 onClick={() => setPanelFinderOpen(true)}
-                className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 text-left text-sm font-semibold text-red-600 hover:underline"
+                className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 text-left text-sm font-semibold text-red-600 hover:underline"
               >
                 <SparklesIcon />
                 Not sure which panel? Take the 30-second finder
@@ -84,7 +84,14 @@ export default function ProductsPage() {
             </div>
           </Reveal>
         </Container>
-        <div className="container-vti pointer-events-auto absolute inset-x-0 bottom-0 translate-y-1/2 px-5">
+        {/*
+         * Category card band:
+         *  - On lg+ (desktop), stays absolutely positioned and bleeds into the
+         *    following section (translate-y-1/2) — preserves desktop look.
+         *  - Below lg (mobile/tablet), it flows in normal layout under the
+         *    hero so it can't visually collide with the section beneath.
+         */}
+        <div className="container-vti pointer-events-auto px-4 sm:px-5 lg:absolute lg:inset-x-0 lg:bottom-0 lg:translate-y-1/2 lg:px-5">
           <RevealGroup
             onMount
             className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-2.5 md:gap-3 lg:grid-cols-5"
@@ -121,7 +128,7 @@ export default function ProductsPage() {
                 icon={<IconWrench />}
               />
             </RevealItem>
-            <RevealItem>
+            <RevealItem className="col-span-2 sm:col-span-1">
               <CategoryCard
                 onClick={() => setActiveCategory("software")}
                 label="Educational & Management Software"
@@ -133,7 +140,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      <Container className="pt-20 pb-14 sm:pb-20 md:pt-24">
+      <Container className="pt-10 pb-14 sm:pb-20 lg:pt-24">
         {showInteractive ? (
           <div className="mx-auto w-full max-w-md">
             <BrandTabs
@@ -342,7 +349,7 @@ export default function ProductsPage() {
                     ))}
                   </div>
 
-                  <div className="mt-6 flex justify-start gap-8">
+                  <div className="mt-6 flex flex-wrap justify-start gap-x-6 gap-y-3 sm:gap-8">
                     <a
                       href="/pdf/OneScreen_T7-Business-105_Spec_Sheet.pdf"
                       target="_blank"

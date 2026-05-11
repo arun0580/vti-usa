@@ -82,7 +82,7 @@ export function AnnouncementBanner() {
       role="region"
       aria-label="Site announcement"
     >
-      <div className="mx-auto flex max-w-[1280px] items-center justify-center gap-2 px-5 py-2.5 pr-12 text-center text-sm leading-snug sm:gap-2.5 sm:pr-14 sm:text-[15px]">
+      <div className="mx-auto flex max-w-[1280px] items-center justify-center gap-2 px-4 py-2.5 pr-12 text-center text-[13px] leading-snug sm:gap-2.5 sm:px-5 sm:pr-14 sm:text-[15px]">
         <CalendarIcon />
         <span className="inline-flex flex-wrap items-center justify-center gap-x-1 gap-y-1">
           <span className="font-semibold">

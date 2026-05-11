@@ -110,17 +110,17 @@ export default function EventsPage() {
   return (
     <main>
       <section className="bg-white">
-        <Container className="py-12 sm:py-16">
+        <Container className="py-10 sm:py-16">
           <Reveal onMount className="max-w-3xl">
             <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
               EVENTS
             </div>
-            <h1 className="mt-3 text-4xl font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-6xl">
+            <h1 className="mt-3 text-3xl font-extrabold leading-[1.05] tracking-tight text-zinc-950 sm:text-6xl sm:leading-[0.95]">
               Webinars, trade shows,
               <br />
               and training
             </h1>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 sm:text-[18px]">
+            <p className="mt-4 max-w-2xl text-base leading-6 text-zinc-600 sm:text-[18px] sm:leading-7">
               Catch us live, online or on the road. We host partner webinars,
               exhibit at industry events, and run reseller trainings throughout
               the year.
@@ -144,9 +144,9 @@ export default function EventsPage() {
             {upcoming.map((e) => (
               <RevealItem
                 key={e.title}
-                className="rounded-3xl border border-red-200 bg-white p-7 shadow-sm ring-1 ring-red-100/60 transition-shadow hover:shadow-md hover:shadow-red-100/80 sm:p-10"
+                className="rounded-3xl border border-red-200 bg-white p-5 shadow-sm ring-1 ring-red-100/60 transition-shadow hover:shadow-md hover:shadow-red-100/80 sm:p-10"
               >
-                <div className="flex flex-wrap items-center gap-y-2 text-[11px] font-semibold leading-none tracking-[0.24em] text-zinc-500">
+                <div className="flex flex-wrap items-center gap-x-1 gap-y-2 text-[10px] font-semibold leading-none tracking-[0.18em] text-zinc-500 sm:text-[11px] sm:tracking-[0.24em]">
                   <span className="rounded-full border border-red-200/70 bg-red-50 px-3 py-1 text-[10px] font-semibold tracking-[0.22em] text-red-700">
                     {e.type.toUpperCase()}
                   </span>
@@ -173,7 +173,7 @@ export default function EventsPage() {
 
                 <div className="mt-4">
                   <div>
-                    <h3 className="text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
+                    <h3 className="text-xl font-extrabold leading-tight tracking-tight text-zinc-950 sm:text-3xl">
                       {e.title}
                     </h3>
                     <p className="mt-3 text-sm leading-6 text-zinc-600 sm:text-[15px]">

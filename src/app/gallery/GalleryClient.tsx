@@ -241,15 +241,15 @@ export function GalleryClient() {
   return (
     <div>
       <div className="border-b border-zinc-200 bg-white">
-        <Container className="py-14 sm:py-16">
+        <Container className="py-10 sm:py-16">
           <Reveal onMount className="max-w-3xl">
             <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
               GALLERY
             </div>
-            <h1 className="mt-2 text-[44px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[64px]">
+            <h1 className="mt-2 text-[34px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[64px]">
               See VTI in the spaces that matter.
             </h1>
-            <p className="mt-4 max-w-2xl text-zinc-600">
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-600 sm:text-base">
               Filter installations by setting — classroom, boardroom, lecture
               hall, or government office — and share a curated link with your
               client in seconds.
@@ -258,7 +258,7 @@ export function GalleryClient() {
         </Container>
       </div>
 
-      <Container className="py-8 bg-white">
+      <Container className="py-6 sm:py-8 bg-white">
         <RevealGroup onMount className="flex flex-wrap gap-2">
           {segments.map((seg) => {
             const isActive = seg === activeSegment;
@@ -270,7 +270,7 @@ export function GalleryClient() {
                   whileHover={hoverLift}
                   whileTap={tapPress}
                   className={[
-                    "inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors",
+                    "inline-flex min-h-[40px] items-center rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-colors",
                     isActive
                       ? "border-red-600 bg-red-600 text-white"
                       : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50",
@@ -342,17 +342,17 @@ export function GalleryClient() {
           ))}
         </RevealGroup>
 
-        <Reveal as="section" className="mt-14 overflow-hidden rounded-3xl bg-zinc-950 p-8 text-white sm:p-10">
+        <Reveal as="section" className="mt-12 overflow-hidden rounded-3xl bg-zinc-950 p-6 text-white sm:mt-14 sm:p-10">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-              <div className="text-3xl font-bold text-white">
+              <div className="text-2xl font-bold text-white sm:text-3xl">
                 Have an installation to share?
               </div>
-              <div className="mt-2 text-lg tracking-tight text-white/75">
+              <div className="mt-2 text-base tracking-tight text-white/75 sm:text-lg">
                 Resellers and end-customers — send us photos of your VTI
                 deployment.
               </div>
-              <p className="max-w-2xl text-lg leading-6 text-white/75">
+              <p className="max-w-2xl text-base leading-6 text-white/75 sm:text-lg">
                 Featured installations get co-marketing across our channels.
               </p>
             </div>

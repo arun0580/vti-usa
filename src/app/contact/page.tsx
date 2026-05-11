@@ -7,16 +7,16 @@ export default function ContactPage() {
   return (
     <main>
       <section className="bg-zinc-100">
-        <Container className="py-12 sm:py-16">
-          <div className="grid items-center gap-10 lg:grid-cols-[1fr_460px]">
+        <Container className="py-10 sm:py-16">
+          <div className="grid items-center gap-8 sm:gap-10 lg:grid-cols-[1fr_460px]">
             <Reveal onMount>
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 CONTACT
               </div>
-              <h1 className="mt-3 text-4xl font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-6xl">
+              <h1 className="mt-3 text-3xl font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-6xl">
                 Let&apos;s talk about your space.
               </h1>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 sm:text-[18px]">
+              <p className="mt-4 max-w-2xl text-base leading-6 text-zinc-600 sm:text-[18px] sm:leading-7">
                 Classroom, conference room, lecture hall, gallery, lobby, or
                 government facility — our team will help you spec the right
                 display solution for any space.
@@ -26,7 +26,7 @@ export default function ContactPage() {
             <Reveal
               onMount
               delay={0.1}
-              className="relative mx-auto w-full max-w-[460px] lg:mx-0 lg:ml-auto"
+              className="relative mx-auto w-full max-w-[320px] sm:max-w-[460px] lg:mx-0 lg:ml-auto"
             >
               <div className="relative aspect-square w-full">
                 <Image
@@ -35,7 +35,7 @@ export default function ContactPage() {
                   fill
                   priority
                   className="object-contain"
-                  sizes="(min-width: 1024px) 460px, 92vw"
+                  sizes="(min-width: 1024px) 460px, (min-width: 640px) 60vw, 80vw"
                 />
               </div>
             </Reveal>
@@ -44,7 +44,7 @@ export default function ContactPage() {
       </section>
 
       <section className="bg-zinc-50">
-        <Container className="pb-10">
+        <Container className="py-6 sm:py-0 sm:pb-10">
           <RevealGroup className="grid gap-4 sm:grid-cols-3">
             {[
               {
@@ -127,13 +127,13 @@ export default function ContactPage() {
       </section>
 
       <section className="bg-white">
-        <Container className="py-14 sm:py-16">
-          <div className="grid gap-10 lg:grid-cols-[1fr_560px] lg:items-start">
+        <Container className="py-10 sm:py-16">
+          <div className="grid gap-8 lg:grid-cols-[1fr_560px] lg:items-start lg:gap-10">
             <Reveal>
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 REQUEST A QUOTE
               </div>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">
                 Tell us about your project.
               </h2>
               <p className="mt-3 max-w-xl text-zinc-600">

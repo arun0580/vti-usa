@@ -138,3 +138,32 @@ export const pageFade: Variants = {
     transition: { duration: 0.4, ease: EASE_OUT },
   },
 };
+
+/**
+ * "Mask rise" container — editorial headline reveal where each line rises
+ * from behind a clipped baseline. Pair with `maskRiseLine` on a child
+ * `motion.span`, wrapped in a `<span class="block overflow-hidden">` so the
+ * line is hidden until it animates into place.
+ *
+ * This is the standard treatment for big punchy display type (Apple, Stripe,
+ * Linear). It reads as deliberate and confident — fits short, declarative
+ * brand statements like "INFORM. ENGAGE. ELEVATE."
+ */
+export const maskRiseContainer: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+/** A single rising line inside a `maskRiseContainer`. */
+export const maskRiseLine: Variants = {
+  hidden: { y: "110%" },
+  visible: {
+    y: "0%",
+    transition: { duration: 0.75, ease: EASE_OUT },
+  },
+};

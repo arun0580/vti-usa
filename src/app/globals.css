@@ -31,7 +31,54 @@ body {
   width: 100%;
   max-width: 1280px;
   margin-inline: auto;
-  padding-inline: 1.25rem;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-vti {
+    padding-inline: 1.25rem;
+  }
+}
+
+/*
+ * Mobile-first safety net:
+ * - Prevent inadvertent horizontal scroll on any tab/phone width.
+ * - Ensure media never breaks its container (height auto so aspect is kept
+ *   when the parent enforces width — Next.js <Image fill /> wrappers are
+ *   unaffected because they set height explicitly).
+ * - Allow long words / URLs to wrap so they can't push layouts off-screen.
+ */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  /*
+   * On phones, disable horizontal browser-level scroll-snap drift caused by
+   * stray over-wide elements, and let long tokens wrap inside text blocks.
+   */
+  p,
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  a,
+  span,
+  blockquote {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
 }
 
 /*

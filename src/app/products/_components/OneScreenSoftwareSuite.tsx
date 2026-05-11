@@ -88,23 +88,23 @@ const APPS: {
 
 export function OneScreenSoftwareSuite() {
   return (
-    <div className="mt-10 rounded-3xl border border-zinc-200/90 bg-white p-8 shadow-sm shadow-zinc-950/[0.04] sm:p-10">
+    <div className="mt-10 rounded-3xl border border-zinc-200/90 bg-white p-6 shadow-sm shadow-zinc-950/[0.04] sm:p-10">
       <div className="text-center">
         <p className="text-[12px] font-semibold tracking-[0.2em] text-red-600">
           ONESCREEN SOFTWARE SUITE
         </p>
-        <h3 className="mt-2 text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
+        <h3 className="mt-2 text-xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
           Four apps that ship with every panel.
         </h3>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-4">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-4">
         {APPS.map((app) => {
           const { Icon } = app;
           return (
             <div
               key={app.name}
-              className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm shadow-zinc-950/5"
+              className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm shadow-zinc-950/5 sm:p-6"
             >
               <div
                 aria-hidden="true"

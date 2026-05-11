@@ -155,29 +155,29 @@ const FEATURES = [
 
 export function FeaturedVt13Band() {
   return (
-    <section className="mt-14 sm:mt-16">
-      <div className="overflow-hidden rounded-2xl border border-zinc-800/80 bg-[#121212] p-6 text-white shadow-xl shadow-zinc-950/40 sm:p-8 md:p-10 md:rounded-3xl">
-        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.95fr] lg:gap-12">
+    <section className="mt-12 sm:mt-16">
+      <div className="overflow-hidden rounded-2xl border border-zinc-800/80 bg-[#121212] p-5 text-white shadow-xl shadow-zinc-950/40 sm:p-8 md:p-10 md:rounded-3xl">
+        <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.95fr] lg:gap-12">
           <div className="min-w-0 order-2 lg:order-1">
             <div className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white">
               <StarGlyph className="h-3.5 w-3.5 text-white" />
               Featured · Virtual
             </div>
 
-            <h3 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-white md:text-4xl">
+            <h3 className="mt-4 text-2xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl md:text-4xl">
               VT-IR Series
             </h3>
             <p className="mt-2 text-sm font-medium text-white/70 md:text-base">
               Interactive flat panel · 65&quot; · 75&quot; · 86&quot; · 98&quot;
             </p>
 
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-white/80">
+            <p className="mt-4 max-w-xl text-sm leading-6 text-white/80 sm:text-base sm:leading-relaxed">
               The display of choice for thousands of K-12 classrooms across the
               country. Built for daily use, fully warrantied to industry
               standards, and supported by a team you can actually reach.
             </p>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            <div className="mt-6 grid gap-2.5 sm:mt-8 sm:gap-3 sm:grid-cols-2">
               {FEATURES.map(({ label, Icon }) => (
                 <div
                   key={label}
@@ -193,7 +193,7 @@ export function FeaturedVt13Band() {
               ))}
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
               <ButtonLink
                 href="/contact"
                 size="sm"
@@ -223,14 +223,14 @@ export function FeaturedVt13Band() {
             </div>
           </div>
 
-          <div className="order-1 min-w-0 rounded-2xl bg-[#1a1a1a] p-4 ring-1 ring-inset ring-white/10 lg:order-2">
-            <div className="relative mx-auto aspect-square w-full max-w-[min(100%,22rem)] overflow-hidden rounded-full bg-zinc-950">
+          <div className="order-1 min-w-0 rounded-2xl bg-[#1a1a1a] p-3 ring-1 ring-inset ring-white/10 sm:p-4 lg:order-2">
+            <div className="relative mx-auto aspect-square w-full max-w-[min(100%,18rem)] overflow-hidden rounded-full bg-zinc-950 sm:max-w-[min(100%,22rem)]">
               <Image
                 src="/vt-panel-hero.png"
                 alt="VTI VT-IR interactive flat panel display"
                 fill
                 className="object-cover"
-                sizes="(min-width: 1024px) 400px, 80vw"
+                sizes="(min-width: 1024px) 400px, (min-width: 640px) 60vw, 80vw"
                 priority
               />
             </div>

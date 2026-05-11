@@ -6,10 +6,14 @@ import { Reveal } from "@/components/motion";
 export function SiteFooter() {
   return (
     <footer className="bg-gradient-to-b from-zinc-950 to-zinc-900 text-zinc-100">
-      <Container className="py-16">
-        <Reveal className="grid gap-12 lg:grid-cols-12">
+      <Container className="py-10 sm:py-16">
+        <Reveal className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="space-y-4 lg:col-span-4">
-            <Logo className="inline-flex items-center gap-3" priority={false} />
+            <Logo
+              className="inline-flex items-center gap-3"
+              priority={false}
+              imageClassName="rounded-md object-contain h-10 w-auto sm:h-12 md:h-auto"
+            />
 
             <p className="max-w-sm text-sm leading-6 text-zinc-400">
               Interactive flat panel displays and LED solutions for K-12, higher
@@ -17,7 +21,7 @@ export function SiteFooter() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:col-span-8 lg:grid-cols-8">
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-10 lg:col-span-8 lg:grid-cols-8">
             <div className="space-y-3 lg:col-span-3">
               <div className="text-[11px] font-semibold tracking-[0.18em] text-zinc-200">
                 PRODUCTS
@@ -108,7 +112,7 @@ export function SiteFooter() {
           </div>
         </Reveal>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-8 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-zinc-500 sm:mt-12 sm:flex-row sm:items-center sm:justify-between sm:pt-8">
           <div>
             © {new Date().getFullYear()} Virtual Technologies, Inc. All rights
             reserved.

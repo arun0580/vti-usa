@@ -381,18 +381,18 @@ export function AboutPageContent() {
 
   return (
     <div className="bg-white text-zinc-950">
-      <Container className="pt-14 pb-6 sm:pt-16 sm:pb-8">
+      <Container className="pt-10 pb-6 sm:pt-16 sm:pb-8">
         <Reveal onMount className="max-w-3xl">
           <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
             ABOUT VTI
           </div>
-          <h1 className="mt-2 text-[40px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]">
+          <h1 className="mt-2 text-[32px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]">
             Built by pioneers.
           </h1>
-          <h1 className="mt-1 text-[40px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]">
+          <h1 className="mt-1 text-[32px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]">
             Trusted nationwide.
           </h1>
-          <p className="mt-4 max-w-2xl text-[18px] leading-7 text-zinc-600">
+          <p className="mt-4 max-w-2xl text-base leading-6 text-zinc-600 sm:text-[18px] sm:leading-7">
             From the earliest days of interactive technology to today&apos;s
             classrooms, boardrooms, and government spaces—VTI delivers displays
             people rely on every day, powered by a coast-to-coast reseller
@@ -409,7 +409,7 @@ export function AboutPageContent() {
             </p>
             <RevealGroup
               onMount
-              className="flex h-auto w-full flex-wrap justify-center gap-3"
+              className="grid w-full grid-cols-2 gap-2 sm:flex sm:h-auto sm:flex-wrap sm:justify-center sm:gap-3"
               role="tablist"
               aria-label="About sections"
             >
@@ -428,8 +428,8 @@ export function AboutPageContent() {
                       whileTap={tapPress}
                       className={
                         isActive
-                          ? "group relative flex min-w-[140px] flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-xl border-2 border-red-600 bg-red-600 px-5 py-3.5 text-sm font-bold text-white shadow-md shadow-red-600/20 transition-colors sm:min-w-[180px] sm:text-base"
-                          : "group relative flex min-w-[140px] flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-xl border-2 border-zinc-200 bg-white px-5 py-3.5 text-sm font-bold text-zinc-950 shadow-sm transition-colors hover:border-red-300 hover:shadow-md sm:min-w-[180px] sm:text-base"
+                          ? "group relative flex w-full min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-red-600 bg-red-600 px-3 py-3 text-[13px] font-bold text-white shadow-md shadow-red-600/20 transition-colors sm:min-w-[180px] sm:flex-1 sm:gap-2.5 sm:px-5 sm:py-3.5 sm:text-base"
+                          : "group relative flex w-full min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-zinc-200 bg-white px-3 py-3 text-[13px] font-bold text-zinc-950 shadow-sm transition-colors hover:border-red-300 hover:shadow-md sm:min-w-[180px] sm:flex-1 sm:gap-2.5 sm:px-5 sm:py-3.5 sm:text-base"
                       }
                     >
                       <span className={isActive ? "text-white" : "text-red-600"}>
@@ -851,8 +851,8 @@ export function AboutPageContent() {
           />
           <div className="absolute inset-0 bg-black/10" aria-hidden />
         </div>
-        <Container className="relative z-10 py-14 sm:py-16">
-          <Reveal className="grid items-center gap-8 lg:grid-cols-[1fr_auto_auto]">
+        <Container className="relative z-10 py-10 sm:py-16">
+          <Reveal className="grid items-center gap-6 sm:gap-8 lg:grid-cols-[1fr_auto_auto]">
             <div>
               <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
                 Ready to see VTI for yourself?

@@ -52,22 +52,22 @@ export default function Home() {
       </section>
 
       <section>
-        <Container className="py-16 sm:py-20">
+        <Container className="py-12 sm:py-20">
           <Reveal className="max-w-2xl">
             <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
               SOLUTIONS
             </div>
-            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">
+            <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">
               One product family. Every kind of room.
             </h2>
-            <p className="mt-4 max-w-2xl text-[18px] leading-7 text-zinc-600">
+            <p className="mt-4 max-w-2xl text-base leading-6 text-zinc-600 sm:text-[18px] sm:leading-7">
               Whether you&apos;re outfitting a kindergarten classroom, a federal
               conference room, or a stadium-sized LED wall, VTI displays scale
               to meet the demand — without compromise.
             </p>
           </Reveal>
 
-          <RevealGroup className="mt-10 grid gap-6 lg:grid-cols-3">
+          <RevealGroup className="mt-8 grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:mt-10">
             {[
               {
                 title: "K-12 Classroom",
@@ -146,13 +146,13 @@ export default function Home() {
       </section>
 
       <section className="bg-gradient-to-b from-zinc-950 to-zinc-900 text-white">
-        <Container className="py-14 sm:py-16">
-          <div className="grid items-start gap-10 lg:grid-cols-2">
+        <Container className="py-10 sm:py-16">
+          <div className="grid items-start gap-8 sm:gap-10 lg:grid-cols-2">
             <Reveal className="space-y-4">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-400/90">
                 THE 5S PROMISE
               </div>
-              <h2 className="text-3xl font-extrabold tracking-tight sm:text-3xl">
+              <h2 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
                 Five reasons resellers and buyers choose VTI.
               </h2>
               <p className="max-w-xl text-sm leading-6 text-zinc-300 sm:text-[16px]">
@@ -247,23 +247,23 @@ export default function Home() {
       </section>
 
       <section>
-        <Container className="py-16 sm:py-24 border-b border-zinc-200">
-          <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+        <Container className="py-12 sm:py-24 border-b border-zinc-200">
+          <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
             <Reveal className="max-w-xl">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 WHY VTI
               </div>
-              <h2 className="mt-3 text-4xl font-extrabold leading-[1.05] tracking-tight text-zinc-950 sm:text-5xl">
+              <h2 className="mt-3 text-3xl font-extrabold leading-[1.05] tracking-tight text-zinc-950 sm:text-5xl">
                 Big-brand specs.
                 <br />
                 <span className="text-red-600">Boutique service.</span>
               </h2>
-              <p className="mt-4 text-[16px] leading-7 text-zinc-600">
+              <p className="mt-4 text-base leading-6 text-zinc-600 sm:text-[16px] sm:leading-7">
                 Resellers and buyers choose VTI over other brands because we
                 give every partner direct access to the people who actually
                 built the product — no call centers, no chatbots, no runaround.
               </p>
-              <div className="mt-8">
+              <div className="mt-6 sm:mt-8">
                 <ButtonLink
                   href="/about"
                   className="!bg-white !text-zinc-950 hover:!bg-zinc-100"
@@ -325,17 +325,17 @@ export default function Home() {
       </section>
 
       <section>
-        <Container className="py-16 sm:py-20">
-          <Reveal className="flex items-start justify-between gap-6">
+        <Container className="py-12 sm:py-20">
+          <Reveal className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:gap-6">
             <div className="max-w-2xl">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 REAL VOICES
               </div>
-              <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-4xl">
                 Spec sheets tell. Installations sell.{" "}
                 <span className="text-red-600">See the results.</span>
               </h2>
-              <p className="mt-3 text-zinc-600">
+              <p className="mt-3 text-sm leading-6 text-zinc-600 sm:text-base">
                 Hear from IT directors, AV specialists, and reseller partners
                 who put VTI displays into rooms across the country.
               </p>
@@ -348,7 +348,7 @@ export default function Home() {
             </a>
           </Reveal>
 
-          <RevealGroup className="mt-10 grid gap-6 lg:grid-cols-4">
+          <RevealGroup className="mt-8 grid gap-5 sm:gap-6 sm:grid-cols-2 lg:mt-10 lg:grid-cols-4">
             {[
               {
                 quote:
@@ -446,8 +446,8 @@ export default function Home() {
 
       <section className="border-t border-zinc-200 bg-zinc-50">
         <Container className="py-4 sm:py-6">
-          <Reveal className="rounded-3xl border border-zinc-200 bg-white p-2 sm:p-4">
-            <div className="grid items-center gap-8 lg:grid-cols-[auto_1fr_auto]">
+          <Reveal className="rounded-3xl border border-zinc-200 bg-white p-4 sm:p-4">
+            <div className="grid items-center gap-6 lg:grid-cols-[auto_1fr_auto] lg:gap-8">
               <div className="hidden lg:flex lg:justify-start">
                 <Image
                   src="/mascot-puppy.png"
@@ -458,11 +458,11 @@ export default function Home() {
                   priority={false}
                 />
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <div className="text-sm font-semibold text-zinc-900">
                   Ready to spec your space?
                 </div>
-                <p className="text-zinc-600">
+                <p className="text-sm text-zinc-600 sm:text-base">
                   Whether you&apos;re a reseller pitching a district or a buyer
                   outfitting a single room — the VTI team is ready to help.
                 </p>
