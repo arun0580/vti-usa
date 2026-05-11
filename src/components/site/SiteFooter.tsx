@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Container } from "@/components/site/Container";
 import { Logo } from "@/components/site/Logo";
+import { Reveal } from "@/components/motion";
 
 export function SiteFooter() {
   return (
     <footer className="bg-gradient-to-b from-zinc-950 to-zinc-900 text-zinc-100">
       <Container className="py-16">
-        <div className="grid gap-12 lg:grid-cols-12">
+        <Reveal className="grid gap-12 lg:grid-cols-12">
           <div className="space-y-4 lg:col-span-4">
             <Logo className="inline-flex items-center gap-3" priority={false} />
 
@@ -105,7 +106,7 @@ export function SiteFooter() {
               </ul>
             </div>
           </div>
-        </div>
+        </Reveal>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-8 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
           <div>

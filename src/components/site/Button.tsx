@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
+import { hoverLift, tapPress } from "@/lib/motion";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 type ButtonSize = "sm" | "md";
@@ -18,27 +22,34 @@ const sizeClass: Record<ButtonSize, string> = {
   md: "h-11 px-5 text-sm",
 };
 
+const baseClass =
+  "inline-flex items-center justify-center gap-2 rounded-lg text-sm font-semibold capitalize transition-colors will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50 disabled:pointer-events-none disabled:opacity-50";
+
+type MotionButtonProps = Omit<
+  React.ComponentProps<typeof motion.button>,
+  "ref" | "variants"
+> & {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+};
+
 export function Button({
   variant = "primary",
   size = "md",
   className,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-}) {
+}: MotionButtonProps) {
   return (
-    <button
-      className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg text-sm font-semibold capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50 disabled:pointer-events-none disabled:opacity-50",
-        variantClass[variant],
-        sizeClass[size],
-        className,
-      )}
+    <motion.button
+      whileHover={hoverLift}
+      whileTap={tapPress}
+      className={cn(baseClass, variantClass[variant], sizeClass[size], className)}
       {...props}
     />
   );
 }
+
+const MotionLink = motion.create(Link);
 
 export function ButtonLink({
   href,
@@ -61,19 +72,15 @@ export function ButtonLink({
     rel ?? (target === "_blank" ? "noopener noreferrer" : undefined);
 
   return (
-    <Link
+    <MotionLink
       href={href}
       target={target}
       rel={computedRel}
-      className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg text-sm font-semibold capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/50",
-        variantClass[variant],
-        sizeClass[size],
-        className,
-      )}
+      whileHover={hoverLift}
+      whileTap={tapPress}
+      className={cn(baseClass, variantClass[variant], sizeClass[size], className)}
     >
       {children}
-    </Link>
+    </MotionLink>
   );
 }
-

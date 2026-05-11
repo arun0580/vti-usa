@@ -2,6 +2,9 @@
 
 import { ButtonLink } from "@/components/site/Button";
 import { Container } from "@/components/site/Container";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
+import { motion } from "motion/react";
+import { hoverLift, tapPress } from "@/lib/motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -379,7 +382,7 @@ export function AboutPageContent() {
   return (
     <div className="bg-white text-zinc-950">
       <Container className="pt-14 pb-6 sm:pt-16 sm:pb-8">
-        <div className="max-w-3xl">
+        <Reveal onMount className="max-w-3xl">
           <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
             ABOUT VTI
           </div>
@@ -395,44 +398,50 @@ export function AboutPageContent() {
             people rely on every day, powered by a coast-to-coast reseller
             network.
           </p>
-        </div>
+        </Reveal>
       </Container>
 
       <div className="border-b border-zinc-200 bg-zinc-50/60">
         <Container className="py-5">
-          <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
-            Explore VTI — pick a section
-          </p>
-          <div
-            className="flex h-auto w-full flex-wrap justify-center gap-3"
-            role="tablist"
-            aria-label="About sections"
-          >
-            {tabs.map((t) => {
-              const isActive = active === t.id;
-              return (
-                <button
-                  key={t.id}
-                  type="button"
-                  role="tab"
-                  id={`tab-${t.id}`}
-                  aria-selected={isActive}
-                  aria-controls={`panel-${t.id}`}
-                  onClick={() => setActive(t.id)}
-                  className={
-                    isActive
-                      ? "group relative flex min-w-[140px] flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-xl border-2 border-red-600 bg-red-600 px-5 py-3.5 text-sm font-bold text-white shadow-md shadow-red-600/20 transition-all sm:min-w-[180px] sm:text-base"
-                      : "group relative flex min-w-[140px] flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-xl border-2 border-zinc-200 bg-white px-5 py-3.5 text-sm font-bold text-zinc-950 shadow-sm transition-all hover:-translate-y-0.5 hover:border-red-300 hover:shadow-md sm:min-w-[180px] sm:text-base"
-                  }
-                >
-                  <span className={isActive ? "text-white" : "text-red-600"}>
-                    {t.icon}
-                  </span>
-                  <span>{t.label}</span>
-                </button>
-              );
-            })}
-          </div>
+          <Reveal onMount delay={0.1}>
+            <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
+              Explore VTI — pick a section
+            </p>
+            <RevealGroup
+              onMount
+              className="flex h-auto w-full flex-wrap justify-center gap-3"
+              role="tablist"
+              aria-label="About sections"
+            >
+              {tabs.map((t) => {
+                const isActive = active === t.id;
+                return (
+                  <RevealItem key={t.id}>
+                    <motion.button
+                      type="button"
+                      role="tab"
+                      id={`tab-${t.id}`}
+                      aria-selected={isActive}
+                      aria-controls={`panel-${t.id}`}
+                      onClick={() => setActive(t.id)}
+                      whileHover={hoverLift}
+                      whileTap={tapPress}
+                      className={
+                        isActive
+                          ? "group relative flex min-w-[140px] flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-xl border-2 border-red-600 bg-red-600 px-5 py-3.5 text-sm font-bold text-white shadow-md shadow-red-600/20 transition-colors sm:min-w-[180px] sm:text-base"
+                          : "group relative flex min-w-[140px] flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-xl border-2 border-zinc-200 bg-white px-5 py-3.5 text-sm font-bold text-zinc-950 shadow-sm transition-colors hover:border-red-300 hover:shadow-md sm:min-w-[180px] sm:text-base"
+                      }
+                    >
+                      <span className={isActive ? "text-white" : "text-red-600"}>
+                        {t.icon}
+                      </span>
+                      <span>{t.label}</span>
+                    </motion.button>
+                  </RevealItem>
+                );
+              })}
+            </RevealGroup>
+          </Reveal>
         </Container>
       </div>
 
@@ -443,70 +452,72 @@ export function AboutPageContent() {
           aria-labelledby="tab-story"
           hidden={active !== "story"}
         >
-          <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
-            <div>
-              <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-                OUR STORY
-              </div>
-              <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-                From the early days of interactive — to current days'
-                technology.
-              </h2>
-              <div className="mt-6 space-y-4 text-base leading-7 text-zinc-600">
-                <p>
-                  We entered the industry at the very beginning. Among
-                  manufacturers in China, we are known simply as the company
-                  that sells. We were the first to bring Promethean interactive
-                  whiteboards to North America—back when classrooms still relied
-                  on chalk, overhead projectors, and whiteboards. There is not a
-                  major whiteboard we have not sold or handled.
-                </p>
-                <p>
-                  Over the decades, we have built several AV technology
-                  companies, designed short cuts to help speed the installation
-                  process and helped bring the technology that defined modern
-                  collaboration into classrooms and boardrooms around the world.
-                </p>
-                <p>
-                  In 2013, we founded Virtual Technologies, Inc. Drawing on
-                  decades of experience, we built a company focused on
-                  delivering best-in-class interactive displays, LED walls, and
-                  digital signage—designed for the people who use them every
-                  day.
-                </p>
-                <p>
-                  Today, VTI displays have been installed in K–12 districts,
-                  universities, Fortune 500 boardrooms, and federal facilities
-                  across all 50 states—supported by a nationwide reseller
-                  network.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto w-full max-w-md lg:mx-0">
-              <figure>
-                <div className="overflow-hidden rounded-2xl shadow-lg shadow-zinc-950/10 ring-1 ring-zinc-200/80">
-                  <Image
-                    src="/about/bandit-mascot.jpg"
-                    alt="Bandit, the VTI mascot"
-                    width={560}
-                    height={700}
-                    className="h-auto w-full object-cover"
-                    sizes="(min-width: 1024px) 400px, 100vw"
-                    priority
-                  />
+          {active === "story" && (
+            <div key="story" className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
+              <Reveal onMount>
+                <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
+                  OUR STORY
                 </div>
-                <figcaption className="mt-4 text-center">
-                  <div className="text-lg font-bold text-zinc-950">Bandit</div>
-                  <div className="text-sm font-semibold text-red-600">
-                    VTI Mascot
+                <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
+                  From the early days of interactive — to current days'
+                  technology.
+                </h2>
+                <div className="mt-6 space-y-4 text-base leading-7 text-zinc-600">
+                  <p>
+                    We entered the industry at the very beginning. Among
+                    manufacturers in China, we are known simply as the company
+                    that sells. We were the first to bring Promethean interactive
+                    whiteboards to North America—back when classrooms still relied
+                    on chalk, overhead projectors, and whiteboards. There is not a
+                    major whiteboard we have not sold or handled.
+                  </p>
+                  <p>
+                    Over the decades, we have built several AV technology
+                    companies, designed short cuts to help speed the installation
+                    process and helped bring the technology that defined modern
+                    collaboration into classrooms and boardrooms around the world.
+                  </p>
+                  <p>
+                    In 2013, we founded Virtual Technologies, Inc. Drawing on
+                    decades of experience, we built a company focused on
+                    delivering best-in-class interactive displays, LED walls, and
+                    digital signage—designed for the people who use them every
+                    day.
+                  </p>
+                  <p>
+                    Today, VTI displays have been installed in K–12 districts,
+                    universities, Fortune 500 boardrooms, and federal facilities
+                    across all 50 states—supported by a nationwide reseller
+                    network.
+                  </p>
+                </div>
+              </Reveal>
+              <Reveal onMount delay={0.15} className="mx-auto w-full max-w-md lg:mx-0">
+                <figure>
+                  <div className="overflow-hidden rounded-2xl shadow-lg shadow-zinc-950/10 ring-1 ring-zinc-200/80">
+                    <Image
+                      src="/about/bandit-mascot.jpg"
+                      alt="Bandit, the VTI mascot"
+                      width={560}
+                      height={700}
+                      className="h-auto w-full object-cover"
+                      sizes="(min-width: 1024px) 400px, 100vw"
+                      priority
+                    />
                   </div>
-                  <div className="mt-1 text-[11px] font-semibold tracking-[0.2em] text-zinc-500">
-                    Chief Morale Officer
-                  </div>
-                </figcaption>
-              </figure>
+                  <figcaption className="mt-4 text-center">
+                    <div className="text-lg font-bold text-zinc-950">Bandit</div>
+                    <div className="text-sm font-semibold text-red-600">
+                      VTI Mascot
+                    </div>
+                    <div className="mt-1 text-[11px] font-semibold tracking-[0.2em] text-zinc-500">
+                      Chief Morale Officer
+                    </div>
+                  </figcaption>
+                </figure>
+              </Reveal>
             </div>
-          </div>
+          )}
         </div>
 
         <div
@@ -515,48 +526,59 @@ export function AboutPageContent() {
           aria-labelledby="tab-team"
           hidden={active !== "team"}
         >
-          <div id="our-team" className="scroll-mt-28">
-            <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-              OUR TEAM
-            </div>
-            <h2 className="mt-2 max-w-4xl text-2xl font-bold tracking-tight sm:text-3xl">
-              Family-owned. Veteran-owned. Woman-owned.
-            </h2>
-            <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-600">
-              In business since 2013 with over 100 years of combined industry
-              experience — meet the people behind every VTI quote, install, and
-              support call.
-            </p>
+          {active === "team" && (
+            <div key="team" id="our-team" className="scroll-mt-28">
+              <Reveal onMount>
+                <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
+                  OUR TEAM
+                </div>
+                <h2 className="mt-2 max-w-4xl text-2xl font-bold tracking-tight sm:text-3xl">
+                  Family-owned. Veteran-owned. Woman-owned.
+                </h2>
+                <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-600">
+                  In business since 2013 with over 100 years of combined industry
+                  experience — meet the people behind every VTI quote, install, and
+                  support call.
+                </p>
+              </Reveal>
 
-            <ul className="mt-10 grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4">
-              {teamMembers.map((m) => (
-                <li key={m.name}>
-                  <article className="h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-                    <div className="relative aspect-[3/4] w-full">
-                      <Image
-                        src={m.imageSrc}
-                        alt={m.imageAlt}
-                        fill
-                        className="object-cover object-top"
-                        sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                      />
-                    </div>
-                    <div className="p-4 text-center">
-                      <h3 className="text-base font-bold text-zinc-950">
-                        {m.name}
-                      </h3>
-                      <p className="mt-1 text-sm font-semibold leading-snug text-red-600">
-                        {m.role}
-                      </p>
-                      <p className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-zinc-500">
-                        {m.location.toUpperCase()}
-                      </p>
-                    </div>
-                  </article>
-                </li>
-              ))}
-            </ul>
-          </div>
+              <RevealGroup
+                onMount
+                as="ul"
+                className="mt-10 grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4"
+              >
+                {teamMembers.map((m) => (
+                  <RevealItem as="li" key={m.name}>
+                    <motion.article
+                      whileHover={hoverLift}
+                      className="h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md hover:shadow-zinc-950/5"
+                    >
+                      <div className="relative aspect-[3/4] w-full">
+                        <Image
+                          src={m.imageSrc}
+                          alt={m.imageAlt}
+                          fill
+                          className="object-cover object-top"
+                          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                        />
+                      </div>
+                      <div className="p-4 text-center">
+                        <h3 className="text-base font-bold text-zinc-950">
+                          {m.name}
+                        </h3>
+                        <p className="mt-1 text-sm font-semibold leading-snug text-red-600">
+                          {m.role}
+                        </p>
+                        <p className="mt-2 text-[11px] font-semibold tracking-[0.18em] text-zinc-500">
+                          {m.location.toUpperCase()}
+                        </p>
+                      </div>
+                    </motion.article>
+                  </RevealItem>
+                ))}
+              </RevealGroup>
+            </div>
+          )}
         </div>
 
         <div
@@ -565,37 +587,48 @@ export function AboutPageContent() {
           aria-labelledby="tab-values"
           hidden={active !== "values"}
         >
-          <div id="our-values" className="scroll-mt-28">
-            <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-              OUR VALUES
-            </div>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-              Values behind every display we build.
-            </h2>
+          {active === "values" && (
+            <div key="values" id="our-values" className="scroll-mt-28">
+              <Reveal onMount>
+                <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
+                  OUR VALUES
+                </div>
+                <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
+                  Values behind every display we build.
+                </h2>
+              </Reveal>
 
-            <div className="mt-8 sm:mt-10">
-              <ul className="grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-3">
-                {valueCards.map((v) => (
-                  <li key={v.title}>
-                    <article className="flex h-full flex-col rounded-2xl border border-zinc-100 bg-white p-7 shadow-[0_4px_12px_rgba(0,0,0,0.06)]">
-                      <div
-                        className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#FDF2F2]"
-                        aria-hidden
+              <div className="mt-8 sm:mt-10">
+                <RevealGroup
+                  onMount
+                  as="ul"
+                  className="grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-3"
+                >
+                  {valueCards.map((v) => (
+                    <RevealItem as="li" key={v.title}>
+                      <motion.article
+                        whileHover={hoverLift}
+                        className="flex h-full flex-col rounded-2xl border border-zinc-100 bg-white p-7 shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                       >
-                        <ValueIcon id={v.icon} />
-                      </div>
-                      <h3 className="text-base font-bold leading-snug text-zinc-950">
-                        {v.title}
-                      </h3>
-                      <p className="mt-2 text-sm leading-6 text-zinc-600">
-                        {v.desc}
-                      </p>
-                    </article>
-                  </li>
-                ))}
-              </ul>
+                        <div
+                          className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#FDF2F2]"
+                          aria-hidden
+                        >
+                          <ValueIcon id={v.icon} />
+                        </div>
+                        <h3 className="text-base font-bold leading-snug text-zinc-950">
+                          {v.title}
+                        </h3>
+                        <p className="mt-2 text-sm leading-6 text-zinc-600">
+                          {v.desc}
+                        </p>
+                      </motion.article>
+                    </RevealItem>
+                  ))}
+                </RevealGroup>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div
@@ -604,50 +637,55 @@ export function AboutPageContent() {
           aria-labelledby="tab-join"
           hidden={active !== "join"}
         >
-          <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start lg:gap-12">
-            <div>
-              <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-                BECOME A PARTNER
-              </div>
-              <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-                Tell us about you and your business.
-              </h2>
-              <p className="mt-4 text-base leading-7 text-zinc-600">
-                VTI sells exclusively through certified resellers and
-                integrators. Share a few details and the right person on our
-                team will reach out — usually within one business day.
-              </p>
+          {active === "join" && (
+            <div key="join" className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start lg:gap-12">
+              <Reveal onMount>
+                <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
+                  BECOME A PARTNER
+                </div>
+                <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
+                  Tell us about you and your business.
+                </h2>
+                <p className="mt-4 text-base leading-7 text-zinc-600">
+                  VTI sells exclusively through certified resellers and
+                  integrators. Share a few details and the right person on our
+                  team will reach out — usually within one business day.
+                </p>
 
-              <ul className="mt-8 space-y-3 text-sm text-zinc-700">
-                {[
-                  "Local support, backed by direct factory access",
-                  "Deal registration and territory protection",
-                  "Technical training and certification",
-                ].map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-red-200 text-red-600">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        className="h-3.5 w-3.5"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M7 12l3 3 7-7"
-                          stroke="currentColor"
-                          strokeWidth="2.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                <ul className="mt-8 space-y-3 text-sm text-zinc-700">
+                  {[
+                    "Local support, backed by direct factory access",
+                    "Deal registration and territory protection",
+                    "Technical training and certification",
+                  ].map((item) => (
+                    <li key={item} className="flex gap-3">
+                      <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-red-200 text-red-600">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="h-3.5 w-3.5"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M7 12l3 3 7-7"
+                            stroke="currentColor"
+                            strokeWidth="2.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
 
-            <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
+              <Reveal
+                onMount
+                delay={0.15}
+                className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
+              >
               <form
                 className="grid gap-4"
                 onSubmit={(e) => {
@@ -785,16 +823,19 @@ export function AboutPageContent() {
                 </Field>
 
                 <div className="pt-2">
-                  <button
+                  <motion.button
                     type="submit"
+                    whileHover={hoverLift}
+                    whileTap={tapPress}
                     className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
                   >
                     Submit application <span aria-hidden="true">→</span>
-                  </button>
+                  </motion.button>
                 </div>
               </form>
+              </Reveal>
             </div>
-          </div>
+          )}
         </div>
       </Container>
 
@@ -811,7 +852,7 @@ export function AboutPageContent() {
           <div className="absolute inset-0 bg-black/10" aria-hidden />
         </div>
         <Container className="relative z-10 py-14 sm:py-16">
-          <div className="grid items-center gap-8 lg:grid-cols-[1fr_auto_auto]">
+          <Reveal className="grid items-center gap-8 lg:grid-cols-[1fr_auto_auto]">
             <div>
               <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
                 Ready to see VTI for yourself?
@@ -848,7 +889,7 @@ export function AboutPageContent() {
                 priority={false}
               />
             </div>
-          </div>
+          </Reveal>
         </Container>
       </section>
     </div>

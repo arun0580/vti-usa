@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Container } from "@/components/site/Container";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
 import { ContactForm } from "./ContactForm";
 
 export default function ContactPage() {
@@ -8,7 +9,7 @@ export default function ContactPage() {
       <section className="bg-zinc-100">
         <Container className="py-12 sm:py-16">
           <div className="grid items-center gap-10 lg:grid-cols-[1fr_460px]">
-            <div>
+            <Reveal onMount>
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 CONTACT
               </div>
@@ -20,9 +21,13 @@ export default function ContactPage() {
                 government facility — our team will help you spec the right
                 display solution for any space.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="relative mx-auto w-full max-w-[460px] lg:mx-0 lg:ml-auto">
+            <Reveal
+              onMount
+              delay={0.1}
+              className="relative mx-auto w-full max-w-[460px] lg:mx-0 lg:ml-auto"
+            >
               <div className="relative aspect-square w-full">
                 <Image
                   src="/mascot-puppies-trio.png"
@@ -33,14 +38,14 @@ export default function ContactPage() {
                   sizes="(min-width: 1024px) 460px, 92vw"
                 />
               </div>
-            </div>
+            </Reveal>
           </div>
         </Container>
       </section>
 
       <section className="bg-zinc-50">
         <Container className="pb-10">
-          <div className="grid gap-4 sm:grid-cols-3">
+          <RevealGroup className="grid gap-4 sm:grid-cols-3">
             {[
               {
                 k: "Email",
@@ -96,34 +101,35 @@ export default function ContactPage() {
                 ),
               },
             ].map((card) => (
-              <a
-                key={card.k}
-                href={card.href}
-                className="group rounded-3xl border border-zinc-200 bg-white p-6 transition-colors hover:bg-zinc-50"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="mt-0.5 rounded-2xl bg-red-500/10 p-2">
-                    {card.icon}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-sm font-semibold text-zinc-950">
-                      {card.k}
+              <RevealItem key={card.k}>
+                <a
+                  href={card.href}
+                  className="group block rounded-3xl border border-zinc-200 bg-white p-6 transition-colors hover:bg-zinc-50"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="mt-0.5 rounded-2xl bg-red-500/10 p-2">
+                      {card.icon}
                     </div>
-                    <div className="mt-1 whitespace-pre-line text-sm text-zinc-600 normal-case">
-                      {card.v}
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold text-zinc-950">
+                        {card.k}
+                      </div>
+                      <div className="mt-1 whitespace-pre-line text-sm text-zinc-600 normal-case">
+                        {card.v}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </a>
+                </a>
+              </RevealItem>
             ))}
-          </div>
+          </RevealGroup>
         </Container>
       </section>
 
       <section className="bg-white">
         <Container className="py-14 sm:py-16">
           <div className="grid gap-10 lg:grid-cols-[1fr_560px] lg:items-start">
-            <div>
+            <Reveal>
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 REQUEST A QUOTE
               </div>
@@ -146,9 +152,11 @@ export default function ContactPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Reveal>
 
-            <ContactForm />
+            <Reveal delay={0.1}>
+              <ContactForm />
+            </Reveal>
           </div>
         </Container>
       </section>

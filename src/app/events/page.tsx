@@ -1,5 +1,6 @@
 import { Container } from "@/components/site/Container";
 import { ButtonLink } from "@/components/site/Button";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
 
 function Dot() {
   return (
@@ -110,7 +111,7 @@ export default function EventsPage() {
     <main>
       <section className="bg-white">
         <Container className="py-12 sm:py-16">
-          <div className="max-w-3xl">
+          <Reveal onMount className="max-w-3xl">
             <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
               EVENTS
             </div>
@@ -124,26 +125,26 @@ export default function EventsPage() {
               exhibit at industry events, and run reseller trainings throughout
               the year.
             </p>
-          </div>
+          </Reveal>
         </Container>
       </section>
 
       <section className="border-t border-zinc-200 bg-white">
         <Container className="py-12 sm:py-16">
-          <div className="flex items-baseline justify-between gap-6">
+          <Reveal className="flex items-baseline justify-between gap-6">
             <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
               Upcoming
             </h2>
             <div className="text-xs font-medium text-zinc-500">
               {upcoming.length} {upcoming.length === 1 ? "event" : "events"}
             </div>
-          </div>
+          </Reveal>
 
-          <div className="mt-8 space-y-6">
+          <RevealGroup className="mt-8 space-y-6">
             {upcoming.map((e) => (
-              <div
+              <RevealItem
                 key={e.title}
-                className="rounded-3xl border border-red-200 bg-white p-7 shadow-sm ring-1 ring-red-100/60 sm:p-10"
+                className="rounded-3xl border border-red-200 bg-white p-7 shadow-sm ring-1 ring-red-100/60 transition-shadow hover:shadow-md hover:shadow-red-100/80 sm:p-10"
               >
                 <div className="flex flex-wrap items-center gap-y-2 text-[11px] font-semibold leading-none tracking-[0.24em] text-zinc-500">
                   <span className="rounded-full border border-red-200/70 bg-red-50 px-3 py-1 text-[10px] font-semibold tracking-[0.22em] text-red-700">
@@ -204,24 +205,26 @@ export default function EventsPage() {
                     <span aria-hidden="true">→</span>
                   </ButtonLink>
                 </div>
-              </div>
+              </RevealItem>
             ))}
-          </div>
+          </RevealGroup>
         </Container>
       </section>
 
       <section className="border-t border-zinc-200 bg-zinc-50">
         <Container className="py-12 sm:py-16">
-          <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
-            Past events
-          </h2>
+          <Reveal>
+            <h2 className="text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
+              Past events
+            </h2>
+          </Reveal>
 
           <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,560px)_1fr] lg:items-start">
-            <div className="grid gap-6">
+            <RevealGroup className="grid gap-6">
               {past.map((e) => (
-                <div
+                <RevealItem
                   key={e.title}
-                  className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm"
+                  className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md hover:shadow-zinc-950/5"
                 >
                   <div className="text-xs font-semibold tracking-[0.18em] text-zinc-600">
                     {e.date} · {e.where}
@@ -232,9 +235,9 @@ export default function EventsPage() {
                   <p className="mt-2 text-sm leading-6 text-zinc-600">
                     {e.desc}
                   </p>
-                </div>
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
             <div className="hidden lg:block" aria-hidden="true" />
           </div>
         </Container>

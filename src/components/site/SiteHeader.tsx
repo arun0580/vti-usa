@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import { Container } from "@/components/site/Container";
 import { Logo } from "@/components/site/Logo";
+import { hoverLift, tapPress } from "@/lib/motion";
 
 const nav = [
   { href: "/", label: "Home" },
@@ -13,6 +15,8 @@ const nav = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
+
+const MotionLink = motion.create(Link);
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -47,9 +51,11 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-3">
-          <Link
+          <MotionLink
             href="/cart"
             aria-label="Cart"
+            whileHover={hoverLift}
+            whileTap={tapPress}
             className="inline-flex h-10 w-10 items-center justify-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950"
           >
             <svg
@@ -66,14 +72,16 @@ export function SiteHeader() {
               <path d="M9 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
               <path d="M17 20a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" />
             </svg>
-          </Link>
+          </MotionLink>
 
-          <Link
+          <MotionLink
             href="/contact"
+            whileHover={hoverLift}
+            whileTap={tapPress}
             className="inline-flex h-10 items-center justify-center rounded-lg bg-red-600 px-4 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
           >
             Request a Quote
-          </Link>
+          </MotionLink>
         </div>
       </Container>
     </header>

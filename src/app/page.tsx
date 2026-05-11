@@ -1,6 +1,7 @@
 import { ButtonLink } from "@/components/site/Button";
 import { Container } from "@/components/site/Container";
 import { Hero } from "@/components/site/Hero";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
 import {
   Building2,
   GraduationCap,
@@ -22,10 +23,12 @@ export default function Home() {
 
       <section className="bg-gradient-to-b from-zinc-950 to-zinc-900 text-white">
         <Container className="py-8 sm:py-10">
-          <div className="text-center text-[12px] font-semibold tracking-[0.28em] uppercase text-white/55">
-            TRUSTED ACROSS EDUCATION, ENTERPRISE, AND GOVERNMENT
-          </div>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium tracking-wide text-white sm:text-sm">
+          <Reveal>
+            <div className="text-center text-[12px] font-semibold tracking-[0.28em] uppercase text-white/55">
+              TRUSTED ACROSS EDUCATION, ENTERPRISE, AND GOVERNMENT
+            </div>
+          </Reveal>
+          <RevealGroup className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-medium tracking-wide text-white sm:text-sm">
             {[
               "K-12 Districts",
               "State Universities",
@@ -36,17 +39,21 @@ export default function Home() {
               "Retail & Hospitality",
               "Sports Venues",
             ].map((item) => (
-              <span key={item} className="opacity-90 hover:opacity-100">
+              <RevealItem
+                key={item}
+                as="div"
+                className="opacity-90 hover:opacity-100"
+              >
                 {item}
-              </span>
+              </RevealItem>
             ))}
-          </div>
+          </RevealGroup>
         </Container>
       </section>
 
       <section>
         <Container className="py-16 sm:py-20">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
               SOLUTIONS
             </div>
@@ -58,9 +65,9 @@ export default function Home() {
               conference room, or a stadium-sized LED wall, VTI displays scale
               to meet the demand — without compromise.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-3">
+          <RevealGroup className="mt-10 grid gap-6 lg:grid-cols-3">
             {[
               {
                 title: "K-12 Classroom",
@@ -99,9 +106,9 @@ export default function Home() {
                 icon: <MonitorPlay className="h-5 w-5" />,
               },
             ].map((card) => (
-              <div
+              <RevealItem
                 key={card.title}
-                className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm"
+                className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md hover:shadow-zinc-950/5"
               >
                 <div className="relative aspect-[16/10] w-full">
                   <Image
@@ -132,16 +139,16 @@ export default function Home() {
                     {card.desc}
                   </p>
                 </div>
-              </div>
+              </RevealItem>
             ))}
-          </div>
+          </RevealGroup>
         </Container>
       </section>
 
       <section className="bg-gradient-to-b from-zinc-950 to-zinc-900 text-white">
         <Container className="py-14 sm:py-16">
           <div className="grid items-start gap-10 lg:grid-cols-2">
-            <div className="space-y-4">
+            <Reveal className="space-y-4">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-400/90">
                 THE 5S PROMISE
               </div>
@@ -153,9 +160,9 @@ export default function Home() {
                 conferencing cameras, and accessories — VTI delivers a complete
                 5S Services & Stands ecosystem for every room.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <RevealGroup className="grid gap-4 sm:grid-cols-2">
               {[
                 {
                   id: 1,
@@ -170,7 +177,7 @@ export default function Home() {
                   alt: "5S Services Square",
                 },
               ].map((opt) => (
-                <div key={opt.id} className="space-y-3">
+                <RevealItem key={opt.id} className="space-y-3">
                   <div
                     className={[
                       "relative aspect-[4/3] w-full overflow-hidden border border-white/10 bg-zinc-950/40 shadow-sm",
@@ -191,13 +198,13 @@ export default function Home() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/35" />
                   </div>
-                </div>
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </div>
 
           <div className="mt-12 border-t border-white/10 pt-8">
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-0">
+            <RevealGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-0">
               {[
                 {
                   k: "Selection",
@@ -217,7 +224,7 @@ export default function Home() {
                   v: "Backed by educators and resellers nationwide.",
                 },
               ].map((item) => (
-                <div
+                <RevealItem
                   key={item.k}
                   className="lg:border-l lg:border-white/10 lg:px-8 first:lg:border-l-0 first:lg:pl-0 last:lg:pr-0"
                 >
@@ -232,9 +239,9 @@ export default function Home() {
                       {item.v}
                     </div>
                   </div>
-                </div>
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </div>
         </Container>
       </section>
@@ -242,7 +249,7 @@ export default function Home() {
       <section>
         <Container className="py-16 sm:py-24 border-b border-zinc-200">
           <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-            <div className="max-w-xl">
+            <Reveal className="max-w-xl">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 WHY VTI
               </div>
@@ -265,9 +272,9 @@ export default function Home() {
                   About our company <span aria-hidden="true">→</span>
                 </ButtonLink>
               </div>
-            </div>
+            </Reveal>
 
-            <div className="grid gap-5 sm:grid-cols-2">
+            <RevealGroup className="grid gap-5 sm:grid-cols-2">
               {[
                 {
                   title: "Engineered for daily use",
@@ -290,9 +297,9 @@ export default function Home() {
                   icon: <ShieldCheck className="h-5 w-5" />,
                 },
               ].map((card) => (
-                <div
+                <RevealItem
                   key={card.title}
-                  className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm"
+                  className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md hover:shadow-zinc-950/5"
                 >
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-red-50 text-red-600">
                     <svg
@@ -310,16 +317,16 @@ export default function Home() {
                   <p className="mt-2 text-sm leading-6 text-zinc-600">
                     {card.desc}
                   </p>
-                </div>
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </div>
         </Container>
       </section>
 
       <section>
         <Container className="py-16 sm:py-20">
-          <div className="flex items-start justify-between gap-6">
+          <Reveal className="flex items-start justify-between gap-6">
             <div className="max-w-2xl">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 REAL VOICES
@@ -339,9 +346,9 @@ export default function Home() {
             >
               View full gallery <span aria-hidden="true">→</span>
             </a>
-          </div>
+          </Reveal>
 
-          <div className="mt-10 grid gap-6 lg:grid-cols-4">
+          <RevealGroup className="mt-10 grid gap-6 lg:grid-cols-4">
             {[
               {
                 quote:
@@ -380,9 +387,10 @@ export default function Home() {
                 org: "Jacksonville AFB Training Center",
               },
             ].map((t) => (
-              <figure
+              <RevealItem
                 key={t.name}
-                className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm"
+                as="figure"
+                className="overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md hover:shadow-zinc-950/5"
               >
                 <div className="relative aspect-[16/9] w-full">
                   <Image
@@ -421,9 +429,9 @@ export default function Home() {
                     </figcaption>
                   </div>
                 </div>
-              </figure>
+              </RevealItem>
             ))}
-          </div>
+          </RevealGroup>
 
           <div className="mt-10 flex sm:hidden">
             <a
@@ -438,7 +446,7 @@ export default function Home() {
 
       <section className="border-t border-zinc-200 bg-zinc-50">
         <Container className="py-4 sm:py-6">
-          <div className="rounded-3xl border border-zinc-200 bg-white p-2 sm:p-4">
+          <Reveal className="rounded-3xl border border-zinc-200 bg-white p-2 sm:p-4">
             <div className="grid items-center gap-8 lg:grid-cols-[auto_1fr_auto]">
               <div className="hidden lg:flex lg:justify-start">
                 <Image
@@ -466,7 +474,7 @@ export default function Home() {
                 </ButtonLink>
               </div>
             </div>
-          </div>
+          </Reveal>
         </Container>
       </section>
     </div>

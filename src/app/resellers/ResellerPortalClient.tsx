@@ -2,8 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
 import { Container } from "@/components/site/Container";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
+import { hoverLift, tapPress } from "@/lib/motion";
 
 const benefits = [
   "Pricing sheets & current price lists",
@@ -122,7 +125,7 @@ export function ResellerPortalClient() {
   return (
     <div className="bg-white">
       <Container className="px-0 pb-12 sm:pb-16 sm:px-0 border-b border-zinc-200">
-        <div className="max-w-3xl">
+        <Reveal onMount className="max-w-3xl">
           <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
             For Partners
           </div>
@@ -134,10 +137,10 @@ export function ResellerPortalClient() {
             Local support, direct factory access, and a team that picks up the
             phone.
           </p>
-        </div>
+        </Reveal>
       </Container>
       <div className="grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-10 xl:gap-16 py-12 sm:py-16">
-        <div>
+        <Reveal>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-600">
             Reseller portal access
           </p>
@@ -168,7 +171,7 @@ export function ResellerPortalClient() {
             role="tablist"
             aria-label="Sign in or sign up"
           >
-            <button
+            <motion.button
               type="button"
               role="tab"
               id="tab-signin"
@@ -178,6 +181,7 @@ export function ResellerPortalClient() {
                 setMode("signin");
                 setSignupSent(false);
               }}
+              whileTap={tapPress}
               className={cn(
                 "inline-flex flex-1 items-center justify-center gap-2 rounded-xl border px-5 py-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 cursor-pointer",
                 mode === "signin"
@@ -187,8 +191,8 @@ export function ResellerPortalClient() {
             >
               <IconLogIn className="h-5 w-5 shrink-0" />
               Sign In
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               role="tab"
               id="tab-signup"
@@ -198,6 +202,7 @@ export function ResellerPortalClient() {
                 setMode("signup");
                 setSignedIn(false);
               }}
+              whileTap={tapPress}
               className={cn(
                 "inline-flex flex-1 items-center justify-center gap-2 rounded-xl border px-5 py-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 cursor-pointer",
                 mode === "signup"
@@ -207,22 +212,27 @@ export function ResellerPortalClient() {
             >
               <IconUserPlus className="h-5 w-5 shrink-0" />
               Sign Up
-            </button>
+            </motion.button>
           </div>
 
-          <ul className="mt-10 space-y-3.5">
+          <RevealGroup as="ul" className="mt-10 space-y-3.5">
             {benefits.map((line) => (
-              <li key={line} className="flex gap-3 text-sm text-zinc-800">
+              <RevealItem
+                as="li"
+                key={line}
+                className="flex gap-3 text-sm text-zinc-800"
+              >
                 <span className="mt-0.5 shrink-0">
                   <IconCheck className="h-5 w-5" />
                 </span>
                 <span>{line}</span>
-              </li>
+              </RevealItem>
             ))}
-          </ul>
-        </div>
+          </RevealGroup>
+        </Reveal>
 
-        <div
+        <Reveal
+          delay={0.1}
           id="tabpanel-auth"
           role="tabpanel"
           aria-labelledby={mode === "signin" ? "tab-signin" : "tab-signup"}
@@ -241,7 +251,7 @@ export function ResellerPortalClient() {
               onReset={() => setSignupSent(false)}
             />
           )}
-        </div>
+        </Reveal>
       </div>
     </div>
   );
@@ -374,8 +384,10 @@ function SignInForm({
         </div>
       </div>
 
-      <button
+      <motion.button
         type="submit"
+        whileHover={hoverLift}
+        whileTap={tapPress}
         className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50"
       >
         Sign in to portal
@@ -389,7 +401,7 @@ function SignInForm({
         >
           <path d="M5 12h14M13 5l7 7-7 7" />
         </svg>
-      </button>
+      </motion.button>
     </form>
   );
 }
@@ -573,13 +585,15 @@ function SignUpForm({
       </div>
 
       <div className="space-y-3">
-        <button
+        <motion.button
           type="submit"
+          whileHover={hoverLift}
+          whileTap={tapPress}
           className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50"
         >
           Submit application
           <IconUserPlus className="h-4 w-4" />
-        </button>
+        </motion.button>
         <p className="text-xs leading-relaxed text-zinc-500">
           A member of our partner team will reach out to you, usually within
           24–48 hours, to confirm your application and set up portal access.

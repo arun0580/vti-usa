@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { ButtonLink } from "@/components/site/Button";
 import { cn } from "@/lib/cn";
+import { hoverLift } from "@/lib/motion";
 
 function StarIcon({ className }: { className?: string }) {
   return (
@@ -81,7 +83,10 @@ export function ProductCard({
   actions?: readonly { label: string; href: string }[];
 }) {
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white transition-shadow hover:shadow-md hover:shadow-zinc-950/5">
+    <motion.div
+      whileHover={hoverLift}
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white transition-shadow hover:shadow-md hover:shadow-zinc-950/5"
+    >
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-zinc-100">
         {imageSrc ? (
           <Image
@@ -168,6 +173,6 @@ export function ProductCard({
           </div>
         ) : null}
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
+import { hoverLift } from "@/lib/motion";
 import { FilledChecklistLine } from "./ChecklistLine";
 
 function StarIcon({ className }: { className?: string }) {
@@ -48,7 +50,10 @@ export function CatalogCard({
   );
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-sm shadow-zinc-950/5">
+    <motion.div
+      whileHover={hoverLift}
+      className="overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-sm shadow-zinc-950/5 transition-shadow hover:shadow-md hover:shadow-zinc-950/10"
+    >
       <div className="relative aspect-[16/9] w-full bg-zinc-100">
         <Image
           src={imageSrc}
@@ -93,6 +98,6 @@ export function CatalogCard({
           )}
         </div> */}
       </div>
-    </div>
+    </motion.div>
   );
 }

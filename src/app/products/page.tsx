@@ -5,6 +5,7 @@ import { Container } from "@/components/site/Container";
 import Image from "next/image";
 import { useState } from "react";
 
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
 import { AccessoriesSection } from "./_components/AccessoriesSection";
 import { BrandTabs } from "./_components/BrandTabs";
 import { CategoryCard } from "./_components/CategoryCard";
@@ -59,7 +60,7 @@ export default function ProductsPage() {
     <div>
       <section className="relative border-b border-zinc-200 bg-zinc-100/50 pb-12 md:pb-14">
         <Container className="py-8 md:py-10">
-          <div className="max-w-3xl">
+          <Reveal onMount className="max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-red-600">
               Products
             </p>
@@ -81,41 +82,54 @@ export default function ProductsPage() {
                 Not sure which panel? Take the 30-second finder
               </button>
             </div>
-          </div>
+          </Reveal>
         </Container>
         <div className="container-vti pointer-events-auto absolute inset-x-0 bottom-0 translate-y-1/2 px-5">
-          <div className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-2.5 md:gap-3 lg:grid-cols-5">
-            <CategoryCard
-              onClick={() => setActiveCategory("interactive")}
-              label="Interactive Panels"
-              isActive={showInteractive}
-              icon={<IconMonitor />}
-            />
-            <CategoryCard
-              onClick={() => setActiveCategory("led")}
-              label="DVLED Posters & Video Walls"
-              isActive={showLed}
-              icon={<IconLayoutPanelTop />}
-            />
-            <CategoryCard
-              onClick={() => setActiveCategory("signage")}
-              label="Digital Signage"
-              isActive={showSignage}
-              icon={<IconMegaphone />}
-            />
-            <CategoryCard
-              onClick={() => setActiveCategory("accessories")}
-              label="Accessories"
-              isActive={showAccessories}
-              icon={<IconWrench />}
-            />
-            <CategoryCard
-              onClick={() => setActiveCategory("software")}
-              label="Educational & Management Software"
-              isActive={showSoftware}
-              icon={<IconBookOpen />}
-            />
-          </div>
+          <RevealGroup
+            onMount
+            className="mx-auto grid w-full max-w-5xl grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-2.5 md:gap-3 lg:grid-cols-5"
+          >
+            <RevealItem>
+              <CategoryCard
+                onClick={() => setActiveCategory("interactive")}
+                label="Interactive Panels"
+                isActive={showInteractive}
+                icon={<IconMonitor />}
+              />
+            </RevealItem>
+            <RevealItem>
+              <CategoryCard
+                onClick={() => setActiveCategory("led")}
+                label="DVLED Posters & Video Walls"
+                isActive={showLed}
+                icon={<IconLayoutPanelTop />}
+              />
+            </RevealItem>
+            <RevealItem>
+              <CategoryCard
+                onClick={() => setActiveCategory("signage")}
+                label="Digital Signage"
+                isActive={showSignage}
+                icon={<IconMegaphone />}
+              />
+            </RevealItem>
+            <RevealItem>
+              <CategoryCard
+                onClick={() => setActiveCategory("accessories")}
+                label="Accessories"
+                isActive={showAccessories}
+                icon={<IconWrench />}
+              />
+            </RevealItem>
+            <RevealItem>
+              <CategoryCard
+                onClick={() => setActiveCategory("software")}
+                label="Educational & Management Software"
+                isActive={showSoftware}
+                icon={<IconBookOpen />}
+              />
+            </RevealItem>
+          </RevealGroup>
         </div>
       </section>
 
@@ -133,7 +147,7 @@ export default function ProductsPage() {
             id="interactive-panels"
             className={`scroll-mt-24${showInteractive ? " mt-10" : ""}`}
           >
-            <div className="mx-auto max-w-3xl text-center">
+            <Reveal className="mx-auto max-w-3xl text-center">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-red-600">
                 Virtual — house brand
               </p>
@@ -145,22 +159,23 @@ export default function ProductsPage() {
                 with full replacement warranty coverage, OPS-ready, and
                 supported by your assigned Virtual rep — not a stranger.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <RevealGroup className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {interactivePanels.map((p) => (
-                <ProductCard
-                  key={p.name}
-                  name={p.name}
-                  badge={p.badge}
-                  imageSrc={p.imageSrc}
-                  sizes={p.sizes}
-                  desc={p.desc}
-                  highlights={p.highlights}
-                  actions={p.actions}
-                />
+                <RevealItem key={p.name}>
+                  <ProductCard
+                    name={p.name}
+                    badge={p.badge}
+                    imageSrc={p.imageSrc}
+                    sizes={p.sizes}
+                    desc={p.desc}
+                    highlights={p.highlights}
+                    actions={p.actions}
+                  />
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </section>
         ) : null}
 
@@ -168,7 +183,7 @@ export default function ProductsPage() {
 
         {showLed ? (
           <section className="mt-14 sm:mt-16 scroll-mt-24" id="led">
-            <div className="text-center">
+            <Reveal className="text-center">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 Virtual line — exclusive
               </div>
@@ -181,22 +196,23 @@ export default function ProductsPage() {
                 — bright lobbies, gymnasiums, outdoor-adjacent windows, and
                 walls that need to be measured in feet, not inches.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            <RevealGroup className="mt-10 grid gap-4 lg:grid-cols-3">
               {ledLineup.map((p) => (
-                <CatalogCard
-                  key={p.name}
-                  name={p.name}
-                  badge={p.badge}
-                  sizes={p.sizes}
-                  desc={p.desc}
-                  imageSrc={p.imageSrc}
-                  ctaLabel="Download Spec Sheet"
-                  ctaHref="/contact"
-                />
+                <RevealItem key={p.name}>
+                  <CatalogCard
+                    name={p.name}
+                    badge={p.badge}
+                    sizes={p.sizes}
+                    desc={p.desc}
+                    imageSrc={p.imageSrc}
+                    ctaLabel="Download Spec Sheet"
+                    ctaHref="/contact"
+                  />
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
 
             <div className="mt-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-5">
               {/* <div className="flex flex-wrap items-center justify-between gap-4">
@@ -253,7 +269,7 @@ export default function ProductsPage() {
 
         {showInteractiveOneScreen ? (
           <section className="mt-10 scroll-mt-24" id="onescreen">
-            <div className="text-center">
+            <Reveal className="text-center">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-red-600">
                 OneScreen — authorized dealer
               </p>
@@ -266,10 +282,10 @@ export default function ProductsPage() {
                 collaboration panel with the GURU live-help service that comes
                 standard on every OneScreen product.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="mt-8 grid gap-6 lg:grid-cols-2">
-              <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5">
+            <RevealGroup className="mt-8 grid gap-6 lg:grid-cols-2">
+              <RevealItem className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5">
                 <div className="relative aspect-[16/9] w-full bg-zinc-100">
                   <Image
                     src="/products/onescreen-t7-DtnnEsSH.png"
@@ -345,9 +361,9 @@ export default function ProductsPage() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </RevealItem>
 
-              <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5">
+              <RevealItem className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5">
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-white">
                   <div className="absolute left-3 top-3 z-10 inline-flex items-center rounded-full bg-zinc-950 px-2.5 py-1 text-[9px] font-extrabold tracking-[0.22em] text-white">
                     INCLUDED
@@ -399,8 +415,8 @@ export default function ProductsPage() {
                     safety net behind it.
                   </p>
                 </div>
-              </div>
-            </div>
+              </RevealItem>
+            </RevealGroup>
 
             <OneScreenSoftwareSuite />
           </section>
@@ -408,7 +424,7 @@ export default function ProductsPage() {
 
         {showInteractiveInFocus ? (
           <section className="mt-10 scroll-mt-24" id="infocus">
-            <div className="text-center">
+            <Reveal className="text-center">
               <p className="text-[12px] font-semibold uppercase tracking-[0.2em] text-red-600">
                 InFocus — newest partner
               </p>
@@ -423,50 +439,56 @@ export default function ProductsPage() {
                 Same single-source experience: Virtual handles spec, quote,
                 install, and support.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="mt-10 grid gap-4 sm:gap-5 lg:grid-cols-3">
-              <CatalogCard
-                name="InFocus JTouch"
-                badge="Interactive panel"
-                sizes={`65" · 75" · 86"`}
-                desc="Versatile interactive panel with 4K display, intuitive whiteboard software, and quick-access Cast, White Board, File Manager, and Applications."
-                imageSrc="/products/infocus-jtouch-CvBKjMP8.png"
-                ctaLabel="Download Spec Sheet"
-                ctaHref="/pdf/vti-spec-packet.pdf"
-                ctaDownload="vti-spec-packet.pdf"
-              />
+            <RevealGroup className="mt-10 grid gap-4 sm:gap-5 lg:grid-cols-3">
+              <RevealItem>
+                <CatalogCard
+                  name="InFocus JTouch"
+                  badge="Interactive panel"
+                  sizes={`65" · 75" · 86"`}
+                  desc="Versatile interactive panel with 4K display, intuitive whiteboard software, and quick-access Cast, White Board, File Manager, and Applications."
+                  imageSrc="/products/infocus-jtouch-CvBKjMP8.png"
+                  ctaLabel="Download Spec Sheet"
+                  ctaHref="/pdf/vti-spec-packet.pdf"
+                  ctaDownload="vti-spec-packet.pdf"
+                />
+              </RevealItem>
 
-              <CatalogCard
-                name="InFocus JTouch 13 E"
-                badge="Latest release"
-                sizes={`65" · 75" · 86"`}
-                desc="Next-gen JTouch with refreshed Android UI, integrated Google apps, and Play Store access — plus the same Cast, White Board, and File Manager workflow teachers already know."
-                imageSrc="/products/infocus-jtouch-13e-DvR8j-aL.png"
-                ctaLabel="Download Spec Sheet"
-                ctaHref="/pdf/vti-spec-packet.pdf"
-                ctaDownload="vti-spec-packet.pdf"
-              />
+              <RevealItem>
+                <CatalogCard
+                  name="InFocus JTouch 13 E"
+                  badge="Latest release"
+                  sizes={`65" · 75" · 86"`}
+                  desc="Next-gen JTouch with refreshed Android UI, integrated Google apps, and Play Store access — plus the same Cast, White Board, and File Manager workflow teachers already know."
+                  imageSrc="/products/infocus-jtouch-13e-DvR8j-aL.png"
+                  ctaLabel="Download Spec Sheet"
+                  ctaHref="/pdf/vti-spec-packet.pdf"
+                  ctaDownload="vti-spec-packet.pdf"
+                />
+              </RevealItem>
 
-              <CatalogCard
-                name="InFocus JTouch Pro-01"
-                badge="Pro series"
-                sizes={`65" · 75" · 86"`}
-                desc="Pro-series interactive panel built for high-use rooms — 4K UHD, capacitive touch, and a 50,000-hour-plus lifetime rating for daily classroom and conference duty."
-                specCheckItems={[
-                  "4K UHD · 3840 x 2160",
-                  "16:9 aspect ratio",
-                  "Capacitive touch",
-                  "≥ 50,000 hr lifetime",
-                  "400 cd/m² brightness",
-                  "Available in US only",
-                ]}
-                imageSrc="/products/infocus-jtouch-pro-01-CMN2qRY6.png"
-                ctaLabel="Download Spec Sheet"
-                ctaHref="/pdf/vti-spec-packet.pdf"
-                ctaDownload="vti-spec-packet.pdf"
-              />
-            </div>
+              <RevealItem>
+                <CatalogCard
+                  name="InFocus JTouch Pro-01"
+                  badge="Pro series"
+                  sizes={`65" · 75" · 86"`}
+                  desc="Pro-series interactive panel built for high-use rooms — 4K UHD, capacitive touch, and a 50,000-hour-plus lifetime rating for daily classroom and conference duty."
+                  specCheckItems={[
+                    "4K UHD · 3840 x 2160",
+                    "16:9 aspect ratio",
+                    "Capacitive touch",
+                    "≥ 50,000 hr lifetime",
+                    "400 cd/m² brightness",
+                    "Available in US only",
+                  ]}
+                  imageSrc="/products/infocus-jtouch-pro-01-CMN2qRY6.png"
+                  ctaLabel="Download Spec Sheet"
+                  ctaHref="/pdf/vti-spec-packet.pdf"
+                  ctaDownload="vti-spec-packet.pdf"
+                />
+              </RevealItem>
+            </RevealGroup>
 
             <div className="mt-8 text-center text-sm text-zinc-500">
               Not sure which JTouch fits your room?{" "}
@@ -482,7 +504,7 @@ export default function ProductsPage() {
 
         {showSignage ? (
           <section className="mt-14 sm:mt-16 scroll-mt-24" id="signage">
-            <div className="text-center">
+            <Reveal className="text-center">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 VIRTUAL LINE
               </div>
@@ -494,22 +516,23 @@ export default function ProductsPage() {
                 displays. Commercial-grade LCDs built for 24/7 duty cycles and
                 managed from one simple cloud dashboard.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            <RevealGroup className="mt-10 grid gap-4 lg:grid-cols-3">
               {signageLineup.map((p) => (
-                <CatalogCard
-                  key={p.name}
-                  name={p.name}
-                  badge={p.badge}
-                  sizes={p.sizes}
-                  desc={p.desc}
-                  imageSrc={p.imageSrc}
-                  ctaLabel="Download Spec Sheet"
-                  ctaHref="/contact"
-                />
+                <RevealItem key={p.name}>
+                  <CatalogCard
+                    name={p.name}
+                    badge={p.badge}
+                    sizes={p.sizes}
+                    desc={p.desc}
+                    imageSrc={p.imageSrc}
+                    ctaLabel="Download Spec Sheet"
+                    ctaHref="/contact"
+                  />
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
 
             <div className="mt-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-5 text-sm leading-6 text-zinc-600">
               Need help picking between an LED video wall and an LCD signage
@@ -530,7 +553,7 @@ export default function ProductsPage() {
 
         {showSoftware ? (
           <section className="mt-14 sm:mt-16 scroll-mt-24" id="software">
-            <div className="text-center">
+            <Reveal className="text-center">
               <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl text-zinc-950">
                 The software is included. The learning content is, too.
               </h2>
@@ -539,13 +562,13 @@ export default function ProductsPage() {
                 palm-rejection touch tech, and — for K-12 — our Get Curious
                 Together OER content platform.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="mt-10 grid gap-4 md:grid-cols-2">
+            <RevealGroup className="mt-10 grid gap-4 md:grid-cols-2">
               {softwareFeatures.map((f) => (
-                <div
+                <RevealItem
                   key={f.title}
-                  className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm shadow-zinc-950/5 text-zinc-950"
+                  className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm shadow-zinc-950/5 text-zinc-950 transition-shadow hover:shadow-md hover:shadow-zinc-950/10"
                 >
                   <div className="flex items-center gap-3">
                     <div
@@ -559,11 +582,11 @@ export default function ProductsPage() {
                   <p className="mt-2 text-[12px] leading-5 text-zinc-500">
                     {f.desc}
                   </p>
-                </div>
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
 
-            <div className="mt-10 relative overflow-hidden rounded-3xl bg-zinc-950 p-8 text-white sm:p-10">
+            <Reveal className="mt-10 relative overflow-hidden rounded-3xl bg-zinc-950 p-8 text-white sm:p-10">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_25%_0%,rgba(239,68,68,0.18),transparent_55%),radial-gradient(800px_circle_at_80%_90%,rgba(255,255,255,0.08),transparent_55%)]"
@@ -639,19 +662,21 @@ export default function ProductsPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </section>
         ) : null}
 
         {showInteractiveVirtual ? (
           <section className="mt-14 sm:mt-16">
-            <SectionHeading
-              kicker="COMPARE · VIRTUAL LINE"
-              title="Find the right panel for the room."
-              lead="Side-by-side specs across our three core Virtual interactive flat panel families."
-            />
+            <Reveal>
+              <SectionHeading
+                kicker="COMPARE · VIRTUAL LINE"
+                title="Find the right panel for the room."
+                lead="Side-by-side specs across our three core Virtual interactive flat panel families."
+              />
+            </Reveal>
 
-            <div className="mt-8">
+            <Reveal delay={0.1} className="mt-8">
               <DataTable
                 columns={[
                   "Specification",
@@ -661,13 +686,13 @@ export default function ProductsPage() {
                 ]}
                 rows={compareRows.map((r) => [r.label, r.a, r.b, r.c])}
               />
-            </div>
+            </Reveal>
           </section>
         ) : null}
 
         {showInteractiveVirtual ? (
           <section className="mt-14 sm:mt-16">
-            <div className="max-w-3xl">
+            <Reveal className="max-w-3xl">
               <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                 PHYSICAL DIMENSIONS
               </div>
@@ -680,9 +705,9 @@ export default function ProductsPage() {
                 manager actually needs — but nobody publishes clearly. All
                 measurements in inches.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="mt-7">
+            <Reveal delay={0.1} className="mt-7">
               <DataTable
                 columns={[
                   "Panel size",
@@ -699,7 +724,7 @@ export default function ProductsPage() {
                   r.vesa,
                 ])}
               />
-            </div>
+            </Reveal>
 
             <p className="mt-4 max-w-4xl text-[12px] leading-5 text-zinc-500">
               Dimensions shown are approximate and rounded to the nearest 0.1
@@ -714,7 +739,7 @@ export default function ProductsPage() {
         </div>
 
         <section className="mt-10 sm:mt-12">
-          <div className="rounded-3xl border border-zinc-200/90 bg-white p-6 sm:p-8 md:p-10">
+          <Reveal className="rounded-3xl border border-zinc-200/90 bg-white p-6 sm:p-8 md:p-10">
             <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-8">
               <div>
                 <h2 className="text-2xl font-bold leading-tight tracking-tight text-zinc-950 sm:text-3xl">
@@ -781,7 +806,7 @@ export default function ProductsPage() {
                 </div>
               ))}
             </div> */}
-          </div>
+          </Reveal>
         </section>
       </Container>
 

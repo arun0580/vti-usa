@@ -2,6 +2,9 @@
 
 import { ButtonLink } from "@/components/site/Button";
 import { Container } from "@/components/site/Container";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
+import { motion } from "motion/react";
+import { hoverLift, tapPress } from "@/lib/motion";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -239,7 +242,7 @@ export function GalleryClient() {
     <div>
       <div className="border-b border-zinc-200 bg-white">
         <Container className="py-14 sm:py-16">
-          <div className="max-w-3xl">
+          <Reveal onMount className="max-w-3xl">
             <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
               GALLERY
             </div>
@@ -251,28 +254,31 @@ export function GalleryClient() {
               hall, or government office — and share a curated link with your
               client in seconds.
             </p>
-          </div>
+          </Reveal>
         </Container>
       </div>
 
       <Container className="py-8 bg-white">
-        <div className="flex flex-wrap gap-2">
+        <RevealGroup onMount className="flex flex-wrap gap-2">
           {segments.map((seg) => {
             const isActive = seg === activeSegment;
             return (
-              <button
-                key={seg}
-                type="button"
-                onClick={() => updateSegment(seg)}
-                className={[
-                  "inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-semibold transition",
-                  isActive
-                    ? "border-red-600 bg-red-600 text-white"
-                    : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50",
-                ].join(" ")}
-              >
-                {seg}
-              </button>
+              <RevealItem key={seg}>
+                <motion.button
+                  type="button"
+                  onClick={() => updateSegment(seg)}
+                  whileHover={hoverLift}
+                  whileTap={tapPress}
+                  className={[
+                    "inline-flex items-center rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors",
+                    isActive
+                      ? "border-red-600 bg-red-600 text-white"
+                      : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50",
+                  ].join(" ")}
+                >
+                  {seg}
+                </motion.button>
+              </RevealItem>
             );
           })}
 
@@ -287,51 +293,56 @@ export function GalleryClient() {
                 ? "Copy failed"
                 : "Copy link"}
           </button> */}
-        </div>
+        </RevealGroup>
       </Container>
 
       <Container className="pb-14 sm:pb-16">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <RevealGroup
+          key={activeSegment}
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        >
           {visibleInstallations.map((item) => (
-            <article
-              key={item.id}
-              className="group overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5 transition hover:-translate-y-0.5 hover:shadow-md hover:shadow-zinc-950/10"
-            >
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-100">
-                {item.image ? (
-                  <Image
-                    src={item.image.src}
-                    alt={item.image.alt}
-                    fill
-                    className="object-cover transition duration-300 group-hover:scale-[1.02]"
-                    sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 92vw"
-                  />
-                ) : (
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 bg-[radial-gradient(700px_circle_at_20%_10%,rgba(239,68,68,0.20),transparent_55%),radial-gradient(700px_circle_at_80%_90%,rgba(24,24,27,0.18),transparent_55%)]"
-                  />
-                )}
-              </div>
-
-              <div className="flex items-start justify-between gap-3 p-5">
-                <div>
-                  <div className="text-base font-semibold tracking-tight text-zinc-950">
-                    {item.title}
-                  </div>
-                  <div className="mt-1 text-sm text-zinc-600">
-                    {item.location}
-                  </div>
+            <RevealItem key={item.id} as="article">
+              <motion.div
+                whileHover={hoverLift}
+                className="group h-full overflow-hidden rounded-3xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5 transition-shadow hover:shadow-md hover:shadow-zinc-950/10"
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-zinc-100">
+                  {item.image ? (
+                    <Image
+                      src={item.image.src}
+                      alt={item.image.alt}
+                      fill
+                      className="object-cover transition duration-300 group-hover:scale-[1.02]"
+                      sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 92vw"
+                    />
+                  ) : (
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 bg-[radial-gradient(700px_circle_at_20%_10%,rgba(239,68,68,0.20),transparent_55%),radial-gradient(700px_circle_at_80%_90%,rgba(24,24,27,0.18),transparent_55%)]"
+                    />
+                  )}
                 </div>
-                <span className="inline-flex flex-shrink-0 items-center rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-red-600">
-                  {item.segment}
-                </span>
-              </div>
-            </article>
-          ))}
-        </div>
 
-        <section className="mt-14 overflow-hidden rounded-3xl bg-zinc-950 p-8 text-white sm:p-10">
+                <div className="flex items-start justify-between gap-3 p-5">
+                  <div>
+                    <div className="text-base font-semibold tracking-tight text-zinc-950">
+                      {item.title}
+                    </div>
+                    <div className="mt-1 text-sm text-zinc-600">
+                      {item.location}
+                    </div>
+                  </div>
+                  <span className="inline-flex flex-shrink-0 items-center rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold uppercase tracking-wider text-red-600">
+                    {item.segment}
+                  </span>
+                </div>
+              </motion.div>
+            </RevealItem>
+          ))}
+        </RevealGroup>
+
+        <Reveal as="section" className="mt-14 overflow-hidden rounded-3xl bg-zinc-950 p-8 text-white sm:p-10">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <div className="text-3xl font-bold text-white">
@@ -355,7 +366,7 @@ export function GalleryClient() {
               </ButtonLink>
             </div>
           </div>
-        </section>
+        </Reveal>
       </Container>
     </div>
   );

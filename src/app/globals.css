@@ -67,3 +67,22 @@ button {
     animation-play-state: paused;
   }
 }
+
+/*
+ * Reduced-motion safety net.
+ *
+ * Motion's React components already honor `prefers-reduced-motion` via the
+ * `MotionConfig reducedMotion="user"` wrapper in `MotionProvider`. This block
+ * covers any CSS-driven transitions/animations (e.g. Tailwind utilities) so
+ * the entire site reacts uniformly when the user opts out of motion.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
