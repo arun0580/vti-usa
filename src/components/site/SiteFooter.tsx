@@ -65,11 +65,11 @@ export function SiteFooter() {
                     Installation Gallery
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link className="hover:text-zinc-200" href="/resellers">
                     Reseller Portal
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link className="hover:text-zinc-200" href="/contact">
                     Contact
@@ -117,17 +117,14 @@ export function SiteFooter() {
             © {new Date().getFullYear()} Virtual Technologies, Inc. All rights
             reserved.
           </div>
-          <div className="flex items-center gap-6">
+          {/* <div className="flex items-center gap-6">
             <Link className="hover:text-zinc-300" href="/privacy">
               Privacy
             </Link>
             <Link className="hover:text-zinc-300" href="/terms">
               Terms
             </Link>
-            <Link className="hover:text-zinc-300" href="/warranty">
-              Warranty
-            </Link>
-          </div>
+          </div> */}
         </div>
       </Container>
     </footer>
