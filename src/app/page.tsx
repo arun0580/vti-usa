@@ -189,7 +189,7 @@ export default function Home() {
                       alt={opt.alt}
                       fill
                       className={[
-                        "object-cover opacity-90",
+                        "opacity-90",
                         opt.variant === "circle"
                           ? "mask-image-[radial-gradient(circle,black_62%,transparent_64%)]"
                           : "mask-image-[radial-gradient(closest-side,black_72%,transparent_74%)]",
