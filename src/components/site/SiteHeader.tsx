@@ -102,7 +102,7 @@ export function SiteHeader() {
             aria-label="Cart"
             whileHover={hoverLift}
             whileTap={tapPress}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 md:h-10 md:w-10"
+            className="hidden lg:inline-flex h-11 w-11 items-center justify-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 md:h-10 md:w-10"
           >
             <CartIcon className="h-5 w-5" />
           </MotionLink>
