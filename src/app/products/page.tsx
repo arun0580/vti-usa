@@ -33,11 +33,13 @@ import { compareRows, dimensionRows } from "./_data/tables";
 import { ledLineup, signageLineup, softwareFeatures } from "./_data/lineups";
 import {
   ArrowRight,
+  BookOpen,
   GraduationCap,
   Hand,
   Layers,
   Megaphone,
   PenTool,
+  Settings,
   ShieldCheck,
   Users,
   Wifi,
@@ -685,11 +687,7 @@ export default function ProductsPage() {
                         className="rounded-xl border border-zinc-200 bg-white p-3 text-center"
                       >
                         <div className="text-xl font-extrabold text-zinc-950 sm:text-2xl">
-                          <CountUp
-                            to={s.to}
-                            format={s.format}
-                            duration={1.8}
-                          />
+                          <CountUp to={s.to} format={s.format} duration={1.8} />
                         </div>
                         <div className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
                           {s.label}
@@ -760,9 +758,9 @@ export default function ProductsPage() {
                 Vivi is recognized by Tech &amp; Learning Awards of Excellence
                 and the ISTE Best of Show. 90% of Vivi customers say it has
                 helped them achieve their strategic objectives, and 97% say it
-                has driven more positive teacher–student interactions. Pair
-                that with Virtual hardware, install, and your dedicated rep —
-                one source, one accountable team.
+                has driven more positive teacher–student interactions. Pair that
+                with Virtual hardware, install, and your dedicated rep — one
+                source, one accountable team.
               </p>
             </Reveal>
 
@@ -840,7 +838,7 @@ export default function ProductsPage() {
               </p>
             </Reveal>
 
-            <RevealGroup className="mt-10 grid gap-4 md:grid-cols-2">
+            {/* <RevealGroup className="mt-10 grid gap-4 md:grid-cols-2">
               {softwareFeatures.map((f) => (
                 <RevealItem
                   key={f.title}
@@ -860,50 +858,78 @@ export default function ProductsPage() {
                   </p>
                 </RevealItem>
               ))}
-            </RevealGroup>
+            </RevealGroup> */}
+
+            <Reveal className="mt-12">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-red-600">
+                  <BookOpen className="h-5 w-5" />
+                </span>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary">
+                  Educational software
+                </p>
+              </div>
+              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-foreground md:text-3xl text-zinc-950">
+                ZUNI Learning Tree — now Get Curious Together
+              </h3>
+            </Reveal>
 
             <Reveal className="mt-10 relative overflow-hidden rounded-3xl bg-zinc-950 p-8 text-white sm:p-10">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_25%_0%,rgba(239,68,68,0.18),transparent_55%),radial-gradient(800px_circle_at_80%_90%,rgba(255,255,255,0.08),transparent_55%)]"
+                className="pointer-events-none absolute inset-0 bg-charcoal"
               />
 
               <div className="relative grid gap-8 lg:grid-cols-[1fr_420px] lg:items-center">
                 <div>
-                  <div className="inline-flex items-center gap-2 rounded-full bg-red-600/20 px-3 py-1 text-[11px] font-extrabold tracking-[0.22em] text-red-200 ring-1 ring-inset ring-red-500/30">
-                    <span
-                      aria-hidden="true"
-                      className="h-2 w-2 rounded-full bg-red-300"
-                    />
+                  <div className="inline-flex items-center gap-2 rounded-full bg-red-600 px-3 py-1 text-[11px] font-extrabold tracking-[0.22em] text-white ring-1 ring-inset ring-red-500/30">
+                    <BookOpen className="h-4 w-4" />
                     INCLUDED WITH K-12 PANELS
                   </div>
 
                   <div className="mt-4 text-2xl font-semibold">
-                    Get Curious Together
+                    Thousands of curated, vetted, free OER resources — sorted by
+                    grade level.
                   </div>
                   <div className="mt-1 text-sm font-semibold text-white/70">
-                    An OER platform for K-12 · Formerly known as ZUNI Learning
-                    Tree
+                    Open Educational Resources hand-picked for the way teachers
+                    actually use an interactive panel — ready to project,
+                    annotate, and remix in front of the class. Browse by grade
+                    and subject in seconds. Tree
                   </div>
 
-                  <p className="mt-4 max-w-xl text-sm leading-6 text-white/80">
-                    Lesson-ready open educational content built for the way
-                    teachers actually use an interactive panel — interactive,
-                    multi-modal, and ready to project, annotate, and remix in
-                    front of the class.
-                  </p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {[
+                      "Literacy",
+                      "Math",
+                      "Science",
+                      "STEM",
+                      "Be Inspired",
+                      "Coding",
+                      "News for Kids",
+                      "And more",
+                    ].map((s) => (
+                      <span
+                        key={s}
+                        className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs font-semibold text-white/85"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
 
                   <div className="mt-6 rounded-2xl bg-white/5 p-5 ring-1 ring-inset ring-white/10">
-                    <div className="text-[11px] font-extrabold tracking-[0.22em] text-white/70">
+                    <div className="text-[11px] font-extrabold tracking-[0.22em] text-primary">
                       WHAT IS OER?
                     </div>
                     <p className="mt-2 text-sm leading-6 text-white/80">
-                      <span className="font-semibold text-white">OER</span> =
-                      Open Educational Resources. Free, openly licensed teaching
-                      materials — lessons, videos, assessments — that teachers
-                      can legally use, adapt, and share. No per-seat licensing.
-                      No &quot;trial expired&quot; surprises. The content is
-                      yours to keep.
+                      <span className="font-semibold text-white">
+                        OER = Open Educational Resources.
+                      </span>{" "}
+                      Free, openly licensed teaching materials — lessons,
+                      videos, assessments — that teachers can legally use,
+                      adapt, and share. No per-seat licensing. No &quot;trial
+                      expired&quot; surprises. The content is yours to keep.
                     </p>
                   </div>
 
@@ -929,16 +955,111 @@ export default function ProductsPage() {
                 <div className="relative overflow-hidden rounded-2xl bg-white/5 p-4 ring-1 ring-inset ring-white/10">
                   <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl bg-white ring-1 ring-white/10">
                     <Image
-                      src="/products/vt13ir-living-room.jpg"
+                      src="/products/zuni-rolling.jpg"
                       alt="Get Curious Together"
                       fill
-                      className="object-contain"
+                      className="object-cover"
                       sizes="100%"
                     />
                   </div>
                 </div>
               </div>
             </Reveal>
+
+            <Reveal className="mt-14 sm:mt-16">
+              <div className="flex items-center gap-3">
+                <span
+                  aria-hidden
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-50 text-cyan-600 ring-1 ring-inset ring-cyan-100"
+                >
+                  <Settings className="h-5 w-5" />
+                </span>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-cyan-700">
+                  Management software
+                </p>
+              </div>
+              <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
+                Run every screen on campus from one chair.
+              </h3>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-zinc-600">
+                Push content, monitor health, schedule signage, cast wirelessly
+                — across interactive panels, LED walls, and signage displays.
+                Pick the platform that matches the job.
+              </p>
+            </Reveal>
+
+            <RevealGroup className="mt-8 grid gap-5 md:grid-cols-2">
+              {[
+                {
+                  name: "Vivi",
+                  tag: "Campus OS",
+                  desc: "The essential operating system for schools — emergency alerts, instructional sharing, announcements, and digital signage on every display and device, centrally managed.",
+                  bullets: [
+                    "Visual emergency alerts + mandatory acknowledgment",
+                    "Wireless screen sharing & student sharing",
+                    "Live captions in 75 languages",
+                  ],
+                },
+                {
+                  name: "ViPlex",
+                  tag: "LED management",
+                  desc: "Novastar's LED display content publishing and control platform. Push schedules, content, and brightness/color settings to every LED wall and signage screen from one console.",
+                  bullets: [
+                    "Async + sync mode",
+                    "Schedule playlists across many screens",
+                    "Real-time monitoring & alerts",
+                  ],
+                },
+                {
+                  name: "SeeMonster",
+                  tag: "Digital signage",
+                  desc: "Cloud-based digital signage that lets non-technical staff design, schedule, and display videos, images, web pages, and live data on any screen — affordably.",
+                  bullets: [
+                    "Drag-and-drop scheduling",
+                    "Interactive kiosk-ready",
+                    "Playback proof-of-play reporting",
+                  ],
+                },
+                {
+                  name: "EShare",
+                  tag: "Wireless casting",
+                  desc: "The casting engine built into our panels. Mirror or extend from Mac, Windows, iOS, Android, or Chromebook — no dongles, no driver downloads, no per-seat license.",
+                  bullets: [
+                    "Up to 9 simultaneous screens",
+                    "Touch-back from the panel",
+                    "Moderator controls",
+                  ],
+                },
+              ].map((app) => (
+                <RevealItem
+                  key={app.name}
+                  className="group flex flex-col rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm shadow-zinc-950/5 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-200 hover:shadow-md hover:shadow-zinc-950/10"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <h4 className="text-xl font-extrabold tracking-tight text-zinc-950">
+                      {app.name}
+                    </h4>
+                    <span className="inline-flex items-center rounded-full bg-red-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-red-600">
+                      {app.tag}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-zinc-600">
+                    {app.desc}
+                  </p>
+                  <ul className="mt-4 m-0 flex list-none flex-col gap-1.5 p-0">
+                    {app.bullets.map((b) => (
+                      <li key={b}>
+                        <ChecklistLine>{b}</ChecklistLine>
+                      </li>
+                    ))}
+                  </ul>
+                  <div
+                    aria-hidden
+                    className="mt-5 h-px w-10 bg-gradient-to-r from-cyan-500 to-transparent transition-all duration-300 group-hover:w-20"
+                  />
+                </RevealItem>
+              ))}
+            </RevealGroup>
           </section>
         ) : null}
 
