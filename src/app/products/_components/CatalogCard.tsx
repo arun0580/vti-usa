@@ -61,14 +61,13 @@ export function CatalogCard({
         {videoSrc ? (
           <video
             src={videoSrc}
-            poster={imageSrc}
             aria-label={name}
             autoPlay
             loop
             muted
             playsInline
-            preload="metadata"
-            className="absolute inset-0 h-full w-full object-cover"
+            preload="auto"
+            className="absolute inset-0 h-full w-full bg-zinc-950 object-cover"
           />
         ) : (
           <Image
