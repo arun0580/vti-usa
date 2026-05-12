@@ -150,7 +150,7 @@ const FEATURES = [
   { label: "Built-in Android + OPS slot", Icon: IconCpu },
   { label: "Wireless screen casting", Icon: IconWifi },
   { label: "Front-firing speakers", Icon: IconVolume2 },
-  { label: "5-year standard warranty", Icon: IconShieldCheck },
+  { label: "Manufacturer's warranty", Icon: IconShieldCheck },
 ] as const;
 
 export function FeaturedVt13Band() {

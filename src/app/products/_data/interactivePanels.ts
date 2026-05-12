@@ -54,7 +54,7 @@ export const interactivePanels = [
   {
     name: `105" Collaboration Display`,
     badge: "Ultra‑Wide",
-    imageSrc: "/products/vt105-product-ChBIxkmv.png",
+    imageSrc: "/products/display-105.png",
     sizes: `105" · 21:9`,
     desc: "Designed for boardrooms and lecture halls — wide enough for a true side-by-side workspace.",
     highlights: [

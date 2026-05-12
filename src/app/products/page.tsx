@@ -31,7 +31,14 @@ import { SoftwareFeatureIcon } from "./_components/SoftwareFeatureIcon";
 import { interactivePanels } from "./_data/interactivePanels";
 import { compareRows, dimensionRows } from "./_data/tables";
 import { ledLineup, signageLineup, softwareFeatures } from "./_data/lineups";
-import { ArrowRight, GraduationCap } from "lucide-react";
+import {
+  ArrowRight,
+  GraduationCap,
+  Hand,
+  PenTool,
+  Wifi,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 
 export default function ProductsPage() {
@@ -55,6 +62,33 @@ export default function ProductsPage() {
     showInteractive && interactiveBrand === "onescreen";
   const showInteractiveInFocus =
     showInteractive && interactiveBrand === "infocus";
+
+  const capabilities = [
+    {
+      icon: Hand,
+      kicker: "01",
+      title: "Palm-to-screen touch",
+      desc: "Wipe with your palm to erase. Write with a finger. Switch to a pen for precision — no mode switching.",
+    },
+    {
+      icon: PenTool,
+      kicker: "02",
+      title: "Built-in whiteboard",
+      desc: "Infinite canvas, multi-page, save-and-share. Works with any input device — no install.",
+    },
+    {
+      icon: Wifi,
+      kicker: "03",
+      title: "Wireless casting",
+      desc: "Cast from Mac, Windows, iOS, Android, or Chromebook — no dongles or driver downloads.",
+    },
+    {
+      icon: Users,
+      kicker: "04",
+      title: "Multi-touch collaboration",
+      desc: "Up to 40 simultaneous touch points (model dependent). A whole class at the board at once.",
+    },
+  ];
 
   return (
     <div>
@@ -184,6 +218,46 @@ export default function ProductsPage() {
               ))}
             </RevealGroup>
           </section>
+        ) : null}
+
+        {showInteractiveVirtual ? (
+          <div className="relative my-10 rounded-2xl border border-rose-100/80 p-6 sm:p-8">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary">
+              Standard on every Virtual panel
+            </p>
+            <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950 md:text-[26px]">
+              Four things you'll{" "}
+              <span className="text-primary">feel the second</span> you walk up
+              to it.
+            </h3>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              {capabilities.map(({ icon: Icon, kicker, title, desc }) => (
+                <article
+                  key={title}
+                  className="flex flex-col rounded-xl border border-rose-100/70 bg-white/70 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
+                >
+                  <div className="flex items-start justify-between">
+                    <div
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-rose-100/90 bg-rose-50 text-red-600"
+                      aria-hidden
+                    >
+                      <Icon className="h-5 w-5" strokeWidth={2} />
+                    </div>
+                    <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">
+                      {kicker}
+                    </span>
+                  </div>
+
+                  <h4 className="mt-4 text-base font-bold leading-snug tracking-tight text-zinc-900">
+                    {title}
+                  </h4>
+                  <p className="mt-2 text-sm font-normal leading-relaxed text-zinc-600">
+                    {desc}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </div>
         ) : null}
 
         {showInteractiveVirtual ? <FeaturedVt13Band /> : null}
@@ -742,10 +816,10 @@ export default function ProductsPage() {
         ) : null}
 
         <div className="mt-14 sm:mt-16">
-          <ValuePropsAndTrustedBand showValueProps />
+          <ValuePropsAndTrustedBand showValueProps={false} />
         </div>
 
-        <section className="mt-10 sm:mt-12">
+        {/* <section className="mt-10 sm:mt-12">
           <Reveal className="rounded-3xl border border-zinc-200/90 bg-white p-6 sm:p-8 md:p-10">
             <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-8">
               <div>
@@ -782,7 +856,7 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            {/* <div className="mt-8 grid gap-4 border-t border-zinc-200 pt-8 sm:mt-9 sm:grid-cols-3 sm:gap-6 sm:pt-9">
+            <div className="mt-8 grid gap-4 border-t border-zinc-200 pt-8 sm:mt-9 sm:grid-cols-3 sm:gap-6 sm:pt-9">
               {(
                 [
                   "Plain-English spec sheets",
@@ -812,9 +886,9 @@ export default function ProductsPage() {
                   </span>
                 </div>
               ))}
-            </div> */}
+            </div>
           </Reveal>
-        </section>
+        </section> */}
       </Container>
 
       <PanelFinderModal
