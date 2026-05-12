@@ -146,7 +146,7 @@ function StarGlyph({ className }: { className?: string }) {
 
 const FEATURES = [
   { label: "4K UHD anti-glare", Icon: IconMaximize },
-  { label: "20-point IR multi-touch", Icon: IconLayers },
+  { label: "40-point IR multi-touch", Icon: IconLayers },
   { label: "Built-in Android + OPS slot", Icon: IconCpu },
   { label: "Wireless screen casting", Icon: IconWifi },
   { label: "Front-firing speakers", Icon: IconVolume2 },
