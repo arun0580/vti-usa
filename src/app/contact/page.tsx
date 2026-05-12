@@ -43,7 +43,7 @@ export default function ContactPage() {
         </Container>
       </section>
 
-      <section className="bg-zinc-50">
+      <section className="bg-zinc-50 pt-10 sm:pt-16">
         <Container className="py-6 sm:py-0 sm:pb-10">
           <RevealGroup className="grid gap-4 sm:grid-cols-3">
             {[
@@ -101,10 +101,10 @@ export default function ContactPage() {
                 ),
               },
             ].map((card) => (
-              <RevealItem key={card.k}>
+              <RevealItem key={card.k} className="h-full">
                 <a
                   href={card.href}
-                  className="group block rounded-3xl border border-zinc-200 bg-white p-6 transition-colors hover:bg-zinc-50"
+                  className="group flex h-full flex-col rounded-3xl border border-zinc-200 bg-white p-6 transition-colors hover:bg-zinc-50"
                 >
                   <div className="flex items-start gap-3">
                     <div className="mt-0.5 rounded-2xl bg-red-500/10 p-2">

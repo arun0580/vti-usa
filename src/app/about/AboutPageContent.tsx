@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import { hoverLift, tapPress } from "@/lib/motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { PartnerApplicationForm } from "./PartnerApplicationForm";
 
 type TabId = "story" | "team" | "values" | "join";
 
@@ -108,18 +109,11 @@ const teamMembers: {
   imageAlt: string;
 }[] = [
   {
-    name: "Kevin Talentino",
-    role: "CEO & Owner",
+    name: "Kevin & Toni Talentino",
+    role: "CEO & CFO · Owners",
     location: "Woodstock, GA",
-    imageSrc: "/about/kevin-talentino-real-BeHsZ5xT.png",
-    imageAlt: "Kevin Talentino, CEO & Owner",
-  },
-  {
-    name: "Toni Talentino",
-    role: "CFO & Owner",
-    location: "Woodstock, GA",
-    imageSrc: "/about/toni-talentino-wVckSdoa.png",
-    imageAlt: "Toni Talentino, CFO & Owner",
+    imageSrc: "/about/Kevin-Toni-Headshot.jpg",
+    imageAlt: "Kevin and Toni Talentino, CEO & CFO, Owners",
   },
   {
     name: "Tyler King",
@@ -432,7 +426,9 @@ export function AboutPageContent() {
                           : "group relative flex w-full min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-zinc-200 bg-white px-3 py-3 text-[13px] font-bold text-zinc-950 shadow-sm transition-colors hover:border-red-300 hover:shadow-md sm:min-w-[180px] sm:flex-1 sm:gap-2.5 sm:px-5 sm:py-3.5 sm:text-base"
                       }
                     >
-                      <span className={isActive ? "text-white" : "text-red-600"}>
+                      <span
+                        className={isActive ? "text-white" : "text-red-600"}
+                      >
                         {t.icon}
                       </span>
                       <span>{t.label}</span>
@@ -453,7 +449,10 @@ export function AboutPageContent() {
           hidden={active !== "story"}
         >
           {active === "story" && (
-            <div key="story" className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
+            <div
+              key="story"
+              className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12"
+            >
               <Reveal onMount>
                 <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                   OUR STORY
@@ -466,23 +465,25 @@ export function AboutPageContent() {
                   <p>
                     We entered the industry at the very beginning. Among
                     manufacturers in China, we are known simply as the company
-                    that sells. We were the first to bring Promethean interactive
-                    whiteboards to North America—back when classrooms still relied
-                    on chalk, overhead projectors, and whiteboards. There is not a
-                    major whiteboard we have not sold or handled.
+                    that sells. We were the first to bring Promethean
+                    interactive whiteboards to North America—back when
+                    classrooms still relied on chalk, overhead projectors, and
+                    whiteboards. There is not a major whiteboard we have not
+                    sold or handled.
                   </p>
                   <p>
                     Over the decades, we have built several AV technology
-                    companies, designed short cuts to help speed the installation
-                    process and helped bring the technology that defined modern
-                    collaboration into classrooms and boardrooms around the world.
+                    companies, designed short cuts to help speed the
+                    installation process and helped bring the technology that
+                    defined modern collaboration into classrooms and boardrooms
+                    around the world.
                   </p>
                   <p>
                     In 2013, we founded Virtual Technologies, Inc. Drawing on
                     decades of experience, we built a company focused on
-                    delivering best-in-class interactive displays, LED walls, and
-                    digital signage—designed for the people who use them every
-                    day.
+                    delivering best-in-class interactive displays, LED walls,
+                    and digital signage—designed for the people who use them
+                    every day.
                   </p>
                   <p>
                     Today, VTI displays have been installed in K–12 districts,
@@ -492,7 +493,11 @@ export function AboutPageContent() {
                   </p>
                 </div>
               </Reveal>
-              <Reveal onMount delay={0.15} className="mx-auto w-full max-w-md lg:mx-0">
+              <Reveal
+                onMount
+                delay={0.15}
+                className="mx-auto w-full max-w-md lg:mx-0"
+              >
                 <figure>
                   <div className="overflow-hidden rounded-2xl shadow-lg shadow-zinc-950/10 ring-1 ring-zinc-200/80">
                     <Image
@@ -506,7 +511,9 @@ export function AboutPageContent() {
                     />
                   </div>
                   <figcaption className="mt-4 text-center">
-                    <div className="text-lg font-bold text-zinc-950">Bandit</div>
+                    <div className="text-lg font-bold text-zinc-950">
+                      Bandit
+                    </div>
                     <div className="text-sm font-semibold text-red-600">
                       VTI Mascot
                     </div>
@@ -536,9 +543,9 @@ export function AboutPageContent() {
                   Family-owned. Veteran-owned. Woman-owned.
                 </h2>
                 <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-600">
-                  In business since 2013 with over 100 years of combined industry
-                  experience — meet the people behind every VTI quote, install, and
-                  support call.
+                  In business since 2013 with over 100 years of combined
+                  industry experience — meet the people behind every VTI quote,
+                  install, and support call.
                 </p>
               </Reveal>
 
@@ -638,7 +645,10 @@ export function AboutPageContent() {
           hidden={active !== "join"}
         >
           {active === "join" && (
-            <div key="join" className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start lg:gap-12">
+            <div
+              key="join"
+              className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start lg:gap-12"
+            >
               <Reveal onMount>
                 <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
                   BECOME A PARTNER
@@ -686,153 +696,7 @@ export function AboutPageContent() {
                 delay={0.15}
                 className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
               >
-              <form
-                className="grid gap-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Full name" required>
-                    <input
-                      required
-                      name="fullName"
-                      className={inputClass}
-                      autoComplete="name"
-                    />
-                  </Field>
-                  <Field label="Company / organization" required>
-                    <input
-                      required
-                      name="company"
-                      className={inputClass}
-                      autoComplete="organization"
-                    />
-                  </Field>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Work email" required>
-                    <input
-                      required
-                      type="email"
-                      name="email"
-                      className={inputClass}
-                      autoComplete="email"
-                    />
-                  </Field>
-                  <Field label="Phone" required>
-                    <input
-                      required
-                      type="tel"
-                      name="phone"
-                      className={inputClass}
-                      autoComplete="tel"
-                    />
-                  </Field>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="City" required>
-                    <input required name="city" className={inputClass} />
-                  </Field>
-                  <Field label="State">
-                    <input
-                      required
-                      name="state"
-                      className={inputClass}
-                      placeholder="e.g. GA"
-                    />
-                  </Field>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Website">
-                    <input
-                      name="website"
-                      className={inputClass}
-                      autoComplete="url"
-                    />
-                  </Field>
-                  <Field label="Business type" required>
-                    <select
-                      required
-                      name="businessType"
-                      className={inputClass}
-                      defaultValue=""
-                    >
-                      <option value="" disabled>
-                        Select one
-                      </option>
-                      <option>AV Integrator</option>
-                      <option>Reseller</option>
-                      <option>IT / Technology Partner</option>
-                      <option>Other</option>
-                    </select>
-                  </Field>
-                </div>
-
-                <Field label="Markets you serve" required>
-                  <input
-                    required
-                    name="markets"
-                    className={inputClass}
-                    placeholder="e.g. K-12, higher ed, corporate, government, houses of worship"
-                  />
-                </Field>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <Field label="Years in business" required>
-                    <select
-                      required
-                      name="yearsInBusiness"
-                      className={inputClass}
-                      defaultValue=""
-                    >
-                      <option value="" disabled>
-                        Select one
-                      </option>
-                      <option>0–1</option>
-                      <option>2–5</option>
-                      <option>6–10</option>
-                      <option>11–20</option>
-                      <option>20+</option>
-                    </select>
-                  </Field>
-                  <Field label="Interactive display experience">
-                    <select
-                      name="experience"
-                      className={inputClass}
-                      defaultValue=""
-                    >
-                      <option value="">Select one</option>
-                      <option>None yet</option>
-                      <option>Some</option>
-                      <option>Experienced</option>
-                      <option>Expert</option>
-                    </select>
-                  </Field>
-                </div>
-
-                <Field label="Anything else we should know?">
-                  <textarea
-                    name="notes"
-                    className={cn(inputClass, "min-h-[120px] resize-y py-2")}
-                    placeholder="Customer base, current vendors, certifications, upcoming projects…"
-                  />
-                </Field>
-
-                <div className="pt-2">
-                  <motion.button
-                    type="submit"
-                    whileHover={hoverLift}
-                    whileTap={tapPress}
-                    className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
-                  >
-                    Submit application <span aria-hidden="true">→</span>
-                  </motion.button>
-                </div>
-              </form>
+                <PartnerApplicationForm />
               </Reveal>
             </div>
           )}
@@ -893,39 +757,5 @@ export function AboutPageContent() {
         </Container>
       </section>
     </div>
-  );
-}
-
-const inputClass =
-  "mt-2 w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 shadow-sm outline-none placeholder:text-zinc-400 focus:border-red-400 focus:ring-2 focus:ring-red-500/15";
-
-function cn(...parts: Array<string | false | null | undefined>) {
-  return parts.filter(Boolean).join(" ");
-}
-
-function Field({
-  label,
-  required,
-  hint,
-  children,
-}: {
-  label: string;
-  required?: boolean;
-  hint?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="block text-sm">
-      <span className="flex items-baseline gap-2 text-[11px] font-semibold tracking-[0.08em] text-zinc-700">
-        <span>
-          {label}
-          {required ? <span className="text-red-600"> *</span> : null}
-        </span>
-        {hint ? (
-          <span className="font-medium text-zinc-400">{hint}</span>
-        ) : null}
-      </span>
-      {children}
-    </label>
   );
 }

@@ -11,13 +11,14 @@ import {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/**
- * Backwards-compatible contact endpoint. The canonical entrypoint is
- * `/api/send-email`; this route accepts the original "flat" contact
- * payload shape, normalises it, and dispatches through the same service.
- *
- * Prefer `/api/send-email` for new forms.
- */
+const SUCCESS_MESSAGES: Record<string, string> = {
+  contact: "Thanks — we’ll be in touch.",
+  reseller_signup:
+    "Thanks — your application has been received. Our partner team will reach out shortly.",
+  partner_application:
+    "Thanks — your application has been received. We will review it and get back to you shortly.",
+};
+
 export async function POST(req: Request) {
   const ip = getClientIp(req);
   const rate = checkRateLimit(`send-email:${ip}`);
@@ -34,9 +35,9 @@ export async function POST(req: Request) {
     );
   }
 
-  let raw: unknown;
+  let body: unknown;
   try {
-    raw = await req.json();
+    body = await req.json();
   } catch {
     return NextResponse.json(
       { ok: false, error: "Invalid JSON body." },
@@ -44,16 +45,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const flat = (raw && typeof raw === "object" ? raw : {}) as Record<
-    string,
-    unknown
-  >;
-  const payload = {
-    formType: "contact" as const,
-    data: flat,
-  };
-
-  const validated = validateFormPayload(payload);
+  const validated = validateFormPayload(body);
   if (!validated.ok) {
     return NextResponse.json(
       { ok: false, error: validated.error, field: validated.field },
@@ -78,6 +70,16 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     ok: true,
-    message: "Thanks — we’ll be in touch.",
+    id: result.id,
+    message:
+      SUCCESS_MESSAGES[validated.formType] ??
+      "Thanks — your message is on its way.",
   });
+}
+
+export function GET() {
+  return NextResponse.json(
+    { ok: false, error: "Method Not Allowed" },
+    { status: 405, headers: { Allow: "POST" } },
+  );
 }

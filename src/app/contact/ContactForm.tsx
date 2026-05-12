@@ -2,32 +2,28 @@
 
 import * as React from "react";
 import { Button } from "@/components/site/Button";
+import { submitForm } from "@/lib/email/client-submit";
+import type { ContactFormData } from "@/lib/email/validators";
 
-type ContactPayload = {
-  fullName: string;
-  organization: string;
-  email: string;
-  phone?: string;
-  persona: string;
-  message?: string;
-};
+type Status =
+  | { type: "idle" }
+  | { type: "success"; message: string }
+  | { type: "error"; message: string };
 
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [status, setStatus] = React.useState<
-    | { type: "idle" }
-    | { type: "success"; message: string }
-    | { type: "error"; message: string }
-  >({ type: "idle" });
+  const [status, setStatus] = React.useState<Status>({ type: "idle" });
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (isSubmitting) return;
     setStatus({ type: "idle" });
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const honeypot = String(formData.get("company_website") ?? "");
 
-    const payload: ContactPayload = {
+    const payload: ContactFormData = {
       fullName: String(formData.get("fullName") ?? "").trim(),
       organization: String(formData.get("organization") ?? "").trim(),
       email: String(formData.get("email") ?? "").trim(),
@@ -37,40 +33,14 @@ export function ContactForm() {
     };
 
     setIsSubmitting(true);
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const json = (await res.json().catch(() => null)) as
-        | { ok: true; message?: string }
-        | { ok: false; error?: string }
-        | null;
+    const result = await submitForm("contact", payload, { honeypot });
+    setIsSubmitting(false);
 
-      if (!res.ok) {
-        throw new Error(
-          json && "error" in json && json.error
-            ? json.error
-            : "Could not send message. Please try again.",
-        );
-      }
-
-      setStatus({
-        type: "success",
-        message: (json && "message" in json && json.message) || "Sent!",
-      });
+    if (result.ok) {
+      setStatus({ type: "success", message: result.message });
       form.reset();
-    } catch (err) {
-      setStatus({
-        type: "error",
-        message:
-          err instanceof Error
-            ? err.message
-            : "Could not send message. Please try again.",
-      });
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      setStatus({ type: "error", message: result.error });
     }
   }
 
@@ -78,6 +48,7 @@ export function ContactForm() {
     <form
       onSubmit={onSubmit}
       className="grid gap-4 rounded-3xl border border-zinc-200 bg-white p-6 sm:grid-cols-2 text-zinc-950"
+      noValidate
     >
       <label className="grid gap-2 text-sm">
         <span className="font-medium">
@@ -162,6 +133,19 @@ export function ContactForm() {
         />
       </label>
 
+      {/* Honeypot — keep empty. Visible only to bots. */}
+      <div aria-hidden className="hidden">
+        <label>
+          Company website
+          <input
+            type="text"
+            name="company_website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </label>
+      </div>
+
       {status.type !== "idle" ? (
         <div
           className={[
@@ -182,7 +166,8 @@ export function ContactForm() {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="!bg-red-600 hover:!bg-red-700 disabled:opacity-60 !text-white"
+          aria-busy={isSubmitting}
+          className="!bg-red-600 hover:!bg-red-700 disabled:opacity-60 !text-white cursor-pointer"
         >
           {isSubmitting ? "Sending…" : "Send Request"}
           <span aria-hidden="true" className="ml-1">

@@ -7,6 +7,8 @@ import { cn } from "@/lib/cn";
 import { Container } from "@/components/site/Container";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
 import { hoverLift, tapPress } from "@/lib/motion";
+import { submitForm } from "@/lib/email/client-submit";
+import type { ResellerSignupFormData } from "@/lib/email/validators";
 
 const benefits = [
   "Pricing sheets & current price lists",
@@ -418,14 +420,20 @@ function SignUpForm({
   onSuccess: () => void;
   onReset: () => void;
 }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
   if (sent) {
     return (
       <div className="space-y-4 text-center">
         <p className="text-lg font-semibold text-zinc-950">
-          Application received (demo).
+          Application received.
         </p>
         <p className="text-sm text-zinc-600">
-          A live flow would email our partner team. You can also reach us via{" "}
+          {successMessage ??
+            "Our partner team will be in touch shortly to set up your portal access."}{" "}
+          You can also reach us via{" "}
           <Link href="/contact" className="font-medium text-red-600">
             contact
           </Link>
@@ -433,23 +441,53 @@ function SignUpForm({
         </p>
         <button
           type="button"
-          onClick={onReset}
+          onClick={() => {
+            setSuccessMessage(null);
+            onReset();
+          }}
           className="text-sm font-semibold text-red-600 hover:text-red-700"
         >
-          Back to form
+          Submit another
         </button>
       </div>
     );
   }
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (isSubmitting) return;
+    setErrorMessage(null);
+
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const honeypot = String(fd.get("company_website") ?? "");
+
+    const payload: ResellerSignupFormData = {
+      fullName: String(fd.get("fullName") ?? "").trim(),
+      company: String(fd.get("company") ?? "").trim(),
+      email: String(fd.get("email") ?? "").trim(),
+      phone: String(fd.get("phone") ?? "").trim(),
+      city: String(fd.get("city") ?? "").trim(),
+      state: String(fd.get("state") ?? "").trim(),
+      businessType: String(fd.get("businessType") ?? "").trim(),
+      about: String(fd.get("about") ?? "").trim() || undefined,
+    };
+
+    setIsSubmitting(true);
+    const result = await submitForm("reseller_signup", payload, { honeypot });
+    setIsSubmitting(false);
+
+    if (result.ok) {
+      form.reset();
+      setSuccessMessage(result.message);
+      onSuccess();
+    } else {
+      setErrorMessage(result.error);
+    }
+  }
+
   return (
-    <form
-      className="space-y-5"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSuccess();
-      }}
-    >
+    <form className="space-y-5" onSubmit={handleSubmit} noValidate>
       <div className="flex gap-3 rounded-xl bg-zinc-100 p-4 text-sm leading-relaxed text-zinc-600">
         <IconInfo className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
         <p>
@@ -584,15 +622,40 @@ function SignUpForm({
         />
       </div>
 
+      {/* Honeypot — keep empty. Visible only to bots. */}
+      <div aria-hidden className="hidden">
+        <label>
+          Company website
+          <input
+            type="text"
+            name="company_website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </label>
+      </div>
+
+      {errorMessage ? (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-900"
+        >
+          {errorMessage}
+        </div>
+      ) : null}
+
       <div className="space-y-3">
         <motion.button
           type="submit"
-          whileHover={hoverLift}
-          whileTap={tapPress}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50"
+          disabled={isSubmitting}
+          aria-busy={isSubmitting}
+          whileHover={isSubmitting ? undefined : hoverLift}
+          whileTap={isSubmitting ? undefined : tapPress}
+          className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Submit application
-          <IconUserPlus className="h-4 w-4" />
+          {isSubmitting ? "Submitting…" : "Submit application"}
+          {isSubmitting ? null : <IconUserPlus className="h-4 w-4" />}
         </motion.button>
         <p className="text-xs leading-relaxed text-zinc-500">
           A member of our partner team will reach out to you, usually within
