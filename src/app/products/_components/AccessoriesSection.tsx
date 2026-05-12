@@ -115,8 +115,7 @@ export function AccessoriesSection() {
               Need a full kit?
             </div>
             <p className="mt-1 text-sm leading-6 text-zinc-600">
-              Tell us the room — we&apos;ll spec the panel, OPS, mount, camera,
-              and cabling as one bundle.
+              Tell us the room — we&apos;ll spec the panel, OPS, mount, and camera.
             </p>
           </div>
           <ButtonLink href="/contact" className="!text-primary">

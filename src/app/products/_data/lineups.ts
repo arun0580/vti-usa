@@ -74,11 +74,11 @@ export const accessoriesLineup = [
     desc: "Height-adjustable mobile carts, fixed-wall mounts, and tilt mounts rated for every panel size we sell.",
     icon: "hand" as const,
   },
-  {
-    name: "Cables & Connectivity",
-    desc: "HDMI 2.1, USB-C, Cat6, and active optical runs for in-wall installations. Lengths cut to spec.",
-    icon: "cable" as const,
-  },
+  // {
+  //   name: "Cables & Connectivity",
+  //   desc: "HDMI 2.1, USB-C, Cat6, and active optical runs for in-wall installations. Lengths cut to spec.",
+  //   icon: "cable" as const,
+  // },
 ] as const;
 
 export const softwareFeatures = [
