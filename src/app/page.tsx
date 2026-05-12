@@ -221,7 +221,7 @@ export default function Home() {
                   },
                   {
                     k: "Service",
-                    v: "Manufacturer's warranty and rapid replacement.",
+                    v: "Manufacturer's standard warranty.",
                     href: "/pdf/Warranty-Statement-Virtual-Panels.pdf",
                   },
                   {

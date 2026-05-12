@@ -97,7 +97,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
-          <MotionLink
+          {/* <MotionLink
             href="/cart"
             aria-label="Cart"
             whileHover={hoverLift}
@@ -105,7 +105,7 @@ export function SiteHeader() {
             className="hidden lg:inline-flex h-11 w-11 items-center justify-center rounded-full text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-950 md:h-10 md:w-10"
           >
             <CartIcon className="h-5 w-5" />
-          </MotionLink>
+          </MotionLink> */}
 
           <MotionLink
             href="/contact"
