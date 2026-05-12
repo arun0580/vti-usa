@@ -144,13 +144,23 @@ function StarGlyph({ className }: { className?: string }) {
   );
 }
 
-const FEATURES = [
+type Feature = {
+  label: string;
+  Icon: () => React.JSX.Element;
+  href?: string;
+};
+
+const FEATURES: readonly Feature[] = [
   { label: "4K UHD anti-glare", Icon: IconMaximize },
   { label: "40-point IR multi-touch", Icon: IconLayers },
   { label: "Built-in Android + OPS slot", Icon: IconCpu },
   { label: "Wireless screen casting", Icon: IconWifi },
   { label: "Front-firing speakers", Icon: IconVolume2 },
-  { label: "Manufacturer's warranty", Icon: IconShieldCheck },
+  {
+    label: "Manufacturer's warranty",
+    Icon: IconShieldCheck,
+    href: "/pdf/Warranty-Statement-Virtual-Panels.pdf",
+  },
 ] as const;
 
 export function FeaturedVt13Band() {
@@ -178,19 +188,41 @@ export function FeaturedVt13Band() {
             </p>
 
             <div className="mt-6 grid gap-2.5 sm:mt-8 sm:gap-3 sm:grid-cols-2">
-              {FEATURES.map(({ label, Icon }) => (
-                <div
-                  key={label}
-                  className="flex items-center gap-3 rounded-lg bg-[#1e1e1e] px-3 py-2.5"
-                >
-                  <span className={iconWrap}>
-                    <Icon />
-                  </span>
-                  <span className="text-sm font-medium text-white/90">
-                    {label}
-                  </span>
-                </div>
-              ))}
+              {FEATURES.map(({ label, Icon, href }) => {
+                const content = (
+                  <>
+                    <span className={iconWrap}>
+                      <Icon />
+                    </span>
+                    <span className="text-sm font-medium text-white/90">
+                      {label}
+                    </span>
+                  </>
+                );
+
+                if (href) {
+                  return (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded-lg bg-[#1e1e1e] px-3 py-2.5 transition hover:bg-[#262626] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60"
+                    >
+                      {content}
+                    </a>
+                  );
+                }
+
+                return (
+                  <div
+                    key={label}
+                    className="flex items-center gap-3 rounded-lg bg-[#1e1e1e] px-3 py-2.5"
+                  >
+                    {content}
+                  </div>
+                );
+              })}
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">

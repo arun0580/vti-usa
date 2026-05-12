@@ -30,9 +30,9 @@ export const compareRows = [
   { label: "OPS PC slot", a: "Yes", b: "Yes", c: "Yes" },
   {
     label: "Warranty",
-    a: "Full replacement",
-    b: "Full replacement",
-    c: "Full replacement",
+    a: "VTI interactive displays come with comprehensive warranty coverage and optional extended plans for added peace of mind. View complete terms and coverage in our downloadable warranty document.",
+    b: "VTI interactive displays come with comprehensive warranty coverage and optional extended plans for added peace of mind. View complete terms and coverage in our downloadable warranty document.",
+    c: "VTI interactive displays come with comprehensive warranty coverage and optional extended plans for added peace of mind. View complete terms and coverage in our downloadable warranty document.",
   },
 ] as const;
 
