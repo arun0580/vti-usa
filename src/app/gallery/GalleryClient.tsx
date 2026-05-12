@@ -104,7 +104,7 @@ const installations: Installation[] = [
     id: "conway-symphony-orchestra",
     segment: "Higher Ed",
     title: "Conway Symphony Orchestra",
-    location: "Conway, AR",
+    location: "UCA - LED Poster, Conway, AR",
     image: {
       src: "/gallery/conway-symphony.jpg",
       alt: "Conway Symphony Orchestra",
