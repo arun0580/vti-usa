@@ -16,14 +16,14 @@ export const ledLineup: readonly LedLineupItem[] = [
     sizes: `75" portrait · P1.8 / P2.5`,
     desc: "Standalone, freestanding direct-view LED display. Built-in player, hot-swappable. Manufacturer's warranty on parts, spare parts included, extended warranty available.",
     imageSrc: "/products/led-poster-portrait.png",
+    videoSrc: "/products/led-video-poster.mp4",
   },
   {
     name: "Virtual LED Video Wall",
     badge: "Modular",
     sizes: "Modular cabinets · Any size",
     desc: "Seamless direct-view LED cabinets for galleries, lobbies, atriums, gyms, and event spaces. Build it to fit the wall — not the other way around.",
-    imageSrc: "/products/led-cabinet-integration-Db-ZWsBf.jpg",
-    videoSrc: "/products/led-video-wall.mp4",
+    imageSrc: "/products/led-video-wall.png",
   },
   {
     name: "All-in-One LED Video Wall",
