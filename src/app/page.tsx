@@ -205,29 +205,32 @@ export default function Home() {
 
           <div className="mt-12 border-t border-white/10 pt-8">
             <RevealGroup className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5 lg:gap-0">
-              {[
-                {
-                  k: "Selection",
-                  v: "A full lineup tailored to every room and budget.",
-                },
-                { k: "Specification", v: "Honest, detailed specs — no fluff." },
-                {
-                  k: "Support",
-                  v: "Direct access to engineers and account leads.",
-                },
-                {
-                  k: "Service",
-                  v: "Manufacturer's warranty and rapid replacement.",
-                },
-                {
-                  k: "Satisfaction",
-                  v: "Backed by educators and resellers nationwide.",
-                },
-              ].map((item) => (
-                <RevealItem
-                  key={item.k}
-                  className="lg:border-l lg:border-white/10 lg:px-8 first:lg:border-l-0 first:lg:pl-0 last:lg:pr-0"
-                >
+              {(
+                [
+                  {
+                    k: "Selection",
+                    v: "A full lineup tailored to every room and budget.",
+                  },
+                  {
+                    k: "Specification",
+                    v: "Honest, detailed specs — no fluff.",
+                  },
+                  {
+                    k: "Support",
+                    v: "Direct access to engineers and account leads.",
+                  },
+                  {
+                    k: "Service",
+                    v: "Manufacturer's warranty and rapid replacement.",
+                    href: "/pdf/Warranty-Statement-Virtual-Panels.pdf",
+                  },
+                  {
+                    k: "Satisfaction",
+                    v: "Backed by educators and resellers nationwide.",
+                  },
+                ] satisfies { k: string; v: string; href?: string }[]
+              ).map((item) => {
+                const body = (
                   <div className="space-y-2">
                     <div className="text-3xl font-extrabold leading-none text-red-500">
                       S
@@ -239,8 +242,28 @@ export default function Home() {
                       {item.v}
                     </div>
                   </div>
-                </RevealItem>
-              ))}
+                );
+
+                return (
+                  <RevealItem
+                    key={item.k}
+                    className="lg:border-l lg:border-white/10 lg:px-8 first:lg:border-l-0 first:lg:pl-0 last:lg:pr-0"
+                  >
+                    {item.href ? (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group block rounded-md transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60"
+                      >
+                        {body}
+                      </a>
+                    ) : (
+                      body
+                    )}
+                  </RevealItem>
+                );
+              })}
             </RevealGroup>
           </div>
         </Container>
