@@ -217,7 +217,7 @@ export default function Home() {
                 },
                 {
                   k: "Service",
-                  v: "5-year standard warranty and rapid replacement.",
+                  v: "Manufacturer's warranty and rapid replacement.",
                 },
                 {
                   k: "Satisfaction",
@@ -292,8 +292,8 @@ export default function Home() {
                   icon: <Truck className="h-5 w-5" />,
                 },
                 {
-                  title: "Full replacement warranty",
-                  desc: "Full replacement warranty coverage included on every interactive flat panel — no upsell required.",
+                  title: "Manufacturer's warranty",
+                  desc: "Manufacturer's warranty coverage included on every interactive flat panel — no upsell required.",
                   icon: <ShieldCheck className="h-5 w-5" />,
                 },
               ].map((card) => (
