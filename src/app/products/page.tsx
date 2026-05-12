@@ -5,7 +5,7 @@ import { Container } from "@/components/site/Container";
 import Image from "next/image";
 import { useState } from "react";
 
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
+import { CountUp, Reveal, RevealGroup, RevealItem } from "@/components/motion";
 import { AccessoriesSection } from "./_components/AccessoriesSection";
 import { BrandTabs } from "./_components/BrandTabs";
 import { CategoryCard } from "./_components/CategoryCard";
@@ -35,9 +35,12 @@ import {
   ArrowRight,
   GraduationCap,
   Hand,
+  Layers,
+  Megaphone,
   PenTool,
-  Wifi,
+  ShieldCheck,
   Users,
+  Wifi,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -46,7 +49,7 @@ export default function ProductsPage() {
     "interactive" | "led" | "signage" | "accessories" | "software"
   >("interactive");
   const [interactiveBrand, setInteractiveBrand] = useState<
-    "virtual" | "onescreen" | "infocus"
+    "virtual" | "onescreen" | "infocus" | "vivi"
   >("virtual");
   const [panelFinderOpen, setPanelFinderOpen] = useState(false);
 
@@ -62,6 +65,7 @@ export default function ProductsPage() {
     showInteractive && interactiveBrand === "onescreen";
   const showInteractiveInFocus =
     showInteractive && interactiveBrand === "infocus";
+  const showInteractiveVivi = showInteractive && interactiveBrand === "vivi";
 
   const capabilities = [
     {
@@ -176,7 +180,7 @@ export default function ProductsPage() {
 
       <Container className="pt-10 pb-14 sm:pb-20 lg:pt-24">
         {showInteractive ? (
-          <div className="mx-auto w-full max-w-md">
+          <div className="mx-auto w-full max-w-xl">
             <BrandTabs
               active={interactiveBrand}
               onChange={setInteractiveBrand}
@@ -573,6 +577,197 @@ export default function ProductsPage() {
 
             <div className="mt-8 text-center text-sm text-zinc-500">
               Not sure which JTouch fits your room?{" "}
+              <a
+                href="/contact"
+                className="font-bold text-red-600 transition hover:text-red-700"
+              >
+                Talk to your Virtual rep →
+              </a>
+            </div>
+          </section>
+        ) : null}
+
+        {showInteractiveVivi ? (
+          <section className="mt-10 scroll-mt-24" id="vivi">
+            <Reveal className="mx-auto max-w-3xl text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-red-600">
+                Vivi — newest partnership
+              </p>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
+                A Virtual line of interactive panels, powered by Vivi.
+              </h2>
+              <p className="mx-auto mt-3 max-w-3xl text-sm leading-6 text-zinc-600">
+                Vivi is partnering with Virtual Technology Innovations to launch
+                its own line of interactive flat panels with Vivi&apos;s
+                award-winning campus operating system built in — simplifying
+                crisis response, campus communications, and classroom
+                instruction across every display in your school.
+              </p>
+            </Reveal>
+
+            <Reveal className="mt-10 overflow-hidden rounded-3xl border border-zinc-200 bg-zinc-50/60 p-6 sm:p-10">
+              <div className="grid items-center gap-8 md:grid-cols-[1.4fr_1fr]">
+                <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5">
+                  <div className="relative aspect-[16/10] w-full bg-zinc-100">
+                    <Image
+                      src="/products/vivi-evacuate.png"
+                      alt="Vivi emergency evacuation alert displayed on a classroom interactive panel and laptop"
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 640px, 92vw"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col items-center text-center">
+                  <div className="relative h-48 w-48 sm:h-56 sm:w-56">
+                    <Image
+                      src="/products/vivi-koala.png"
+                      alt="Vivi koala mascot plush wearing a white varsity jacket — a customer giveaway"
+                      fill
+                      className="object-contain"
+                      sizes="224px"
+                    />
+                  </div>
+                  <p className="mt-4 max-w-[18rem] text-sm font-semibold text-zinc-950">
+                    Meet the Vivi koala.
+                  </p>
+                  <p className="mt-1 max-w-[20rem] text-xs text-zinc-600">
+                    A favorite customer giveaway from our partners at Vivi — ask
+                    your Virtual rep about getting one with your rollout.
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal className="mt-10 overflow-hidden rounded-3xl border border-zinc-200 bg-white p-6 sm:p-10">
+              <div className="grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-center">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-red-600">
+                    The essential operating system for schools
+                  </p>
+                  <h3 className="mt-3 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
+                    One platform for crisis response, campus communications, and
+                    instruction.
+                  </h3>
+                  <p className="mt-4 text-base leading-7 text-zinc-600">
+                    Purpose-built for the way schools actually work — and only
+                    schools. Vivi unifies every display and device a school
+                    already owns, replacing four legacy tools with one campus
+                    operating system.
+                  </p>
+
+                  <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                    {[
+                      {
+                        to: 2400,
+                        label: "Schools",
+                        format: (v: number) =>
+                          `${Math.round(v).toLocaleString()}+`,
+                      },
+                      {
+                        to: 160,
+                        label: "Classrooms",
+                        format: (v: number) => `${Math.round(v)}K+`,
+                      },
+                      {
+                        to: 825,
+                        label: "Teachers & students",
+                        format: (v: number) => `${Math.round(v)}K+`,
+                      },
+                      {
+                        to: 75,
+                        label: "Live-caption languages",
+                        format: (v: number) => `${Math.round(v)}`,
+                      },
+                    ].map((s) => (
+                      <div
+                        key={s.label}
+                        className="rounded-xl border border-zinc-200 bg-white p-3 text-center"
+                      >
+                        <div className="text-xl font-extrabold text-zinc-950 sm:text-2xl">
+                          <CountUp
+                            to={s.to}
+                            format={s.format}
+                            duration={1.8}
+                          />
+                        </div>
+                        <div className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
+                          {s.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <ButtonLink
+                    href="/contact"
+                    size="sm"
+                    className="mt-7 !bg-red-600 !text-white hover:!bg-red-700"
+                  >
+                    Talk to your Virtual rep about Vivi
+                  </ButtonLink>
+                </div>
+
+                <RevealGroup className="grid gap-4 sm:grid-cols-2">
+                  {[
+                    {
+                      icon: ShieldCheck,
+                      title: "Emergency Alerts",
+                      desc: "Visual alerts on every display plus mandatory acknowledgment on every staff device — an auditable record for Alyssa's Law and every compliance review.",
+                    },
+                    {
+                      icon: GraduationCap,
+                      title: "Instructional Impact",
+                      desc: "Wireless sharing, student sharing, real-time polling, virtual whiteboard, and Stream to Students — reaching every device, not just the screen on the wall.",
+                    },
+                    {
+                      icon: Megaphone,
+                      title: "Digital Signage & Announcements",
+                      desc: "School calendars, event promotion, student work, safety messaging, and visitor wayfinding on every screen already up in your school.",
+                    },
+                    {
+                      icon: Layers,
+                      title: "Tool Consolidation",
+                      desc: "One platform replaces digital signage, emergency alerts, wireless screen sharing, and legacy PA systems. Every display doing four times the work.",
+                    },
+                  ].map(({ icon: Icon, title, desc }) => (
+                    <RevealItem
+                      key={title}
+                      className="flex flex-col gap-2 rounded-2xl border border-zinc-200 bg-white p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
+                    >
+                      <div
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-rose-100/90 bg-rose-50 text-red-600"
+                        aria-hidden
+                      >
+                        <Icon className="h-5 w-5" strokeWidth={2} />
+                      </div>
+                      <h4 className="mt-1 text-sm font-bold text-zinc-950">
+                        {title}
+                      </h4>
+                      <p className="text-xs leading-relaxed text-zinc-600">
+                        {desc}
+                      </p>
+                    </RevealItem>
+                  ))}
+                </RevealGroup>
+              </div>
+            </Reveal>
+
+            <Reveal className="mt-10 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-red-600">
+                Why this matters
+              </p>
+              <p className="mt-3 text-base leading-7 text-zinc-700 sm:text-lg">
+                Vivi is recognized by Tech &amp; Learning Awards of Excellence
+                and the ISTE Best of Show. 90% of Vivi customers say it has
+                helped them achieve their strategic objectives, and 97% say it
+                has driven more positive teacher–student interactions. Pair
+                that with Virtual hardware, install, and your dedicated rep —
+                one source, one accountable team.
+              </p>
+            </Reveal>
+
+            <div className="mt-8 text-center text-sm text-zinc-500">
+              Ready to bring Vivi to your campus?{" "}
               <a
                 href="/contact"
                 className="font-bold text-red-600 transition hover:text-red-700"
