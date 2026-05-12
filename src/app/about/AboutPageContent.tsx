@@ -194,7 +194,7 @@ const valueCards: { title: string; desc: string; icon: ValueIconId }[] = [
   {
     icon: "award",
     title: "Quality without compromise",
-    desc: "Hardened glass, anti-glare coatings, components rated for 100,000 hours, and full replacement warranty coverage.",
+    desc: "Hardened glass, anti-glare coatings, components rated for 100,000 hours, and manufacturer's warranty coverage.",
   },
   {
     icon: "lightbulb",
