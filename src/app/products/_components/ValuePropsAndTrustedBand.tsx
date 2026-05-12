@@ -80,7 +80,7 @@ export function ValuePropsAndTrustedBand({ showValueProps }: BandProps) {
               Trusted by
             </p>
             <h2 className="mt-2 text-xl font-bold leading-tight tracking-tight text-zinc-900 sm:text-2xl">
-              Schools, gyms, churches, and businesses across the US.
+              Schools, gyms, churches, and businesses across the U.S.
             </h2>
           </div>
 
