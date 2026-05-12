@@ -1,6 +1,15 @@
 "use client";
 
-export const ledLineup = [
+type LedLineupItem = {
+  name: string;
+  badge: string;
+  sizes: string;
+  desc: string;
+  imageSrc: string;
+  videoSrc?: string;
+};
+
+export const ledLineup: readonly LedLineupItem[] = [
   {
     name: "Virtual DvLED Poster",
     badge: "Bestseller",
@@ -14,6 +23,7 @@ export const ledLineup = [
     sizes: "Modular cabinets · Any size",
     desc: "Seamless direct-view LED cabinets for galleries, lobbies, atriums, gyms, and event spaces. Build it to fit the wall — not the other way around.",
     imageSrc: "/products/led-cabinet-integration-Db-ZWsBf.jpg",
+    videoSrc: "/products/led-video-wall.mp4",
   },
   {
     name: "All-in-One LED Video Wall",
@@ -22,7 +32,7 @@ export const ledLineup = [
     desc: "Pre-configured all-in-one LED video wall — ships ready to mount, with stand, wall-mount, and ceiling-mount options. Front-service access for easy maintenance.",
     imageSrc: "/products/led-video-wall-aio.png",
   },
-] as const;
+];
 
 export const signageLineup = [
   {

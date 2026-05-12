@@ -25,6 +25,7 @@ export function CatalogCard({
   sizes,
   desc,
   imageSrc,
+  videoSrc,
   ctaLabel,
   ctaHref,
   ctaDownload,
@@ -35,6 +36,8 @@ export function CatalogCard({
   sizes: string;
   desc: string;
   imageSrc: string;
+  /** When set, renders a muted, looping autoplay video instead of the image. `imageSrc` is used as the poster frame. */
+  videoSrc?: string;
   ctaLabel: string;
   ctaHref: string;
   /** When set, renders a native file download (e.g. `vti-spec-packet.pdf`). */
@@ -54,14 +57,28 @@ export function CatalogCard({
       whileHover={hoverLift}
       className="overflow-hidden rounded-2xl border border-zinc-200/90 bg-white shadow-sm shadow-zinc-950/5 transition-shadow hover:shadow-md hover:shadow-zinc-950/10"
     >
-      <div className="relative aspect-[16/9] w-full bg-zinc-100">
-        <Image
-          src={imageSrc}
-          alt={name}
-          fill
-          className="object-cover"
-          sizes="(min-width: 1024px) 420px, 92vw"
-        />
+      <div className="relative aspect-[16/9] w-full overflow-hidden bg-zinc-100">
+        {videoSrc ? (
+          <video
+            src={videoSrc}
+            poster={imageSrc}
+            aria-label={name}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        ) : (
+          <Image
+            src={imageSrc}
+            alt={name}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 420px, 92vw"
+          />
+        )}
       </div>
 
       <div className="p-6">

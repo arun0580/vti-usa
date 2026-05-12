@@ -271,7 +271,7 @@ export default function ProductsPage() {
         {showLed ? (
           <section className="mt-14 sm:mt-16 scroll-mt-24" id="led">
             <Reveal className="text-center">
-              <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
+              <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600 uppercase">
                 Virtual line — exclusive
               </div>
               <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl text-zinc-950">
@@ -294,6 +294,7 @@ export default function ProductsPage() {
                     sizes={p.sizes}
                     desc={p.desc}
                     imageSrc={p.imageSrc}
+                    videoSrc={p.videoSrc}
                     ctaLabel="Download Spec Sheet"
                     ctaHref="/contact"
                   />
