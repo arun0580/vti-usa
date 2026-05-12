@@ -30,21 +30,21 @@ export const signageLineup = [
     badge: "Hospitality",
     sizes: `43" · 55" · 65" · portrait or landscape`,
     desc: "Bright commercial-grade LCDs for QSR menu walls, cafés, and cafeterias. 24/7-rated panels with simple cloud playlist management.",
-    imageSrc: "/products/led-cabinet-integration-Db-ZWsBf.jpg",
+    imageSrc: "/products/signage-grocery.png",
   },
   {
     name: "Wayfinding & Lobby Signage",
     badge: "Public spaces",
     sizes: `32" – 86" · touch optional`,
     desc: "Digital directories, room-booking displays, and lobby welcome screens for offices, schools, hospitals, and government buildings.",
-    imageSrc: "/products/vt13ir-living-room.jpg",
+    imageSrc: "/products/signage-map.png",
   },
   {
     name: "High-Bright Window Displays",
     badge: "Storefront",
     sizes: `43" · 55" · 75" · 2,500+ nits`,
     desc: "Sun-readable LCDs designed for storefronts and atriums. Visible through glass even in direct sunlight.",
-    imageSrc: "/products/vt-pro-boardroom.jpg",
+    imageSrc: "/products/signage-mall.png",
   },
 ] as const;
 
