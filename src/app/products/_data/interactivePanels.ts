@@ -15,7 +15,7 @@ export const interactivePanels = [
       "Screen share + extend",
       "Annotate & multitask",
     ],
-    actions: [{ label: "Download Spec Sheet", href: "#" }],
+    actions: [{ label: "Download Spec Sheet", href: "/pdf/Virtual_VT13.pdf" }],
   },
   // {
   //   name: "VT16-IR Series",
@@ -65,7 +65,7 @@ export const interactivePanels = [
       "Screen share + extend",
       "Annotate & multitask",
     ],
-    actions: [{ label: "Download Spec Sheet", href: "/contact" }],
+    actions: [{ label: "Download Spec Sheet", href: "/pdf/Virtual-105inch-PCAP-panel.pdf" }],
   },
   {
     name: `Virtual Scooter 32"`,
