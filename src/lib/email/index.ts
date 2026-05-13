@@ -2,6 +2,7 @@ export {
   getResendClient,
   getFromAddress,
   getNotificationRecipient,
+  parseRecipients,
 } from "./client";
 
 export {
