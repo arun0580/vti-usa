@@ -115,10 +115,14 @@ export function AccessoriesSection() {
               Need a full kit?
             </div>
             <p className="mt-1 text-sm leading-6 text-zinc-600">
-              Tell us the room — we&apos;ll spec the panel, OPS, mount, and camera.
+              Tell us the room — we&apos;ll spec the panel, OPS, mount, and
+              camera.
             </p>
           </div>
-          <ButtonLink href="/contact" className="!text-primary">
+          <ButtonLink
+            href="/contact"
+            className="!bg-red-600 !text-white hover:!bg-red-700 !focus-visible:outline-none !focus-visible:ring-2 !focus-visible:ring-red-500/40"
+          >
             Request a kit quote
             <span aria-hidden="true" className="ml-1">
               →

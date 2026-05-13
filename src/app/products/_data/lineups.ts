@@ -69,11 +69,11 @@ export const accessoriesLineup = [
     desc: "4K USB cameras, auto-framing camera bars, and ceiling array mics for hybrid classrooms and meeting rooms.",
     icon: "video" as const,
   },
-  {
-    name: "Audio & Microphones",
-    desc: "Wireless lavalier kits, ceiling speaker arrays, and beamforming mics tuned for room-scale capture.",
-    icon: "volume" as const,
-  },
+  // {
+  //   name: "Audio & Microphones",
+  //   desc: "Wireless lavalier kits, ceiling speaker arrays, and beamforming mics tuned for room-scale capture.",
+  //   icon: "volume" as const,
+  // },
   {
     name: "Keyboards & Input",
     desc: "Wireless keyboard/trackpad combos and presenter remotes designed for OPS PCs and wall-mounted panels.",
