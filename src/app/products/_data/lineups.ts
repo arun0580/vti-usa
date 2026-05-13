@@ -76,7 +76,7 @@ export const accessoriesLineup = [
   // },
   {
     name: "Keyboards & Input",
-    desc: "Wireless keyboard/trackpad combos and presenter remotes designed for OPS PCs and wall-mounted panels.",
+    desc: "Wireless keyboard/trackpad combos designed for OPS PCs and wall-mounted panels.",
     icon: "keyboard" as const,
   },
   {
