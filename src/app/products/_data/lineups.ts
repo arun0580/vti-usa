@@ -66,7 +66,7 @@ export const accessoriesLineup = [
   },
   {
     name: "Cameras & Conferencing",
-    desc: "4K USB cameras, auto-framing camera bars, and ceiling array mics for hybrid classrooms and meeting rooms.",
+    desc: "4K USB cameras, auto-framing camera bars, for hybrid classrooms and meeting rooms.",
     icon: "video" as const,
   },
   // {
