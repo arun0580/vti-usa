@@ -597,7 +597,7 @@ export default function ProductsPage() {
                 Vivi — newest partnership
               </p>
               <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
-                A Virtual line of interactive panels, powered by Vivi.
+              A Vivi line of Interactive panels, powered by Virtual
               </h2>
               <p className="mx-auto mt-3 max-w-3xl text-sm leading-6 text-zinc-600">
                 Vivi is partnering with Virtual Technology Innovations to launch
