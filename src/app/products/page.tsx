@@ -222,48 +222,48 @@ export default function ProductsPage() {
                   />
                 </RevealItem>
               ))}
+
+              <RevealItem className="md:col-span-2 lg:col-span-2">
+                <div className="relative flex h-full flex-col rounded-2xl border border-rose-100/80 p-6 sm:p-8">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary">
+                    Standard on every Virtual panel
+                  </p>
+                  <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950 md:text-[26px]">
+                    Four things you&apos;ll{" "}
+                    <span className="text-primary">feel the second</span> you
+                    walk up to it.
+                  </h3>
+                  <div className="mt-6 grid flex-1 gap-4 sm:grid-cols-2">
+                    {capabilities.map(({ icon: Icon, kicker, title, desc }) => (
+                      <article
+                        key={title}
+                        className="flex flex-col rounded-xl border border-rose-100/70 bg-white/70 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div
+                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-rose-100/90 bg-rose-50 text-red-600"
+                            aria-hidden
+                          >
+                            <Icon className="h-5 w-5" strokeWidth={2} />
+                          </div>
+                          <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">
+                            {kicker}
+                          </span>
+                        </div>
+
+                        <h4 className="mt-4 text-base font-bold leading-snug tracking-tight text-zinc-900">
+                          {title}
+                        </h4>
+                        <p className="mt-2 text-sm font-normal leading-relaxed text-zinc-600">
+                          {desc}
+                        </p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              </RevealItem>
             </RevealGroup>
           </section>
-        ) : null}
-
-        {showInteractiveVirtual ? (
-          <div className="relative my-10 rounded-2xl border border-rose-100/80 p-6 sm:p-8">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary">
-              Standard on every Virtual panel
-            </p>
-            <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-zinc-950 md:text-[26px]">
-              Four things you'll{" "}
-              <span className="text-primary">feel the second</span> you walk up
-              to it.
-            </h3>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              {capabilities.map(({ icon: Icon, kicker, title, desc }) => (
-                <article
-                  key={title}
-                  className="flex flex-col rounded-xl border border-rose-100/70 bg-white/70 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
-                >
-                  <div className="flex items-start justify-between">
-                    <div
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-rose-100/90 bg-rose-50 text-red-600"
-                      aria-hidden
-                    >
-                      <Icon className="h-5 w-5" strokeWidth={2} />
-                    </div>
-                    <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">
-                      {kicker}
-                    </span>
-                  </div>
-
-                  <h4 className="mt-4 text-base font-bold leading-snug tracking-tight text-zinc-900">
-                    {title}
-                  </h4>
-                  <p className="mt-2 text-sm font-normal leading-relaxed text-zinc-600">
-                    {desc}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
         ) : null}
 
         {showInteractiveVirtual ? <FeaturedVt13Band /> : null}
@@ -1082,7 +1082,11 @@ export default function ProductsPage() {
                   "VT Pro",
                   `105" Ultra-Wide`,
                 ]}
-                rows={compareRows.map((r) => [r.label, r.a, r.b, r.c])}
+                rows={compareRows.map((r) =>
+                  r.label === "Warranty"
+                    ? [r.label, { value: r.a, colSpan: 3 }]
+                    : [r.label, r.a, r.b, r.c],
+                )}
               />
             </Reveal>
           </section>

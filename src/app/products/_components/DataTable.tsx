@@ -1,11 +1,13 @@
 'use client';
 
+export type DataTableCell = string | { value: string; colSpan: number };
+
 export function DataTable({
   columns,
   rows,
 }: {
   columns: readonly string[];
-  rows: readonly (readonly string[])[];
+  rows: readonly (readonly DataTableCell[])[];
 }) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-zinc-200 bg-white">
@@ -22,17 +24,22 @@ export function DataTable({
         <tbody>
           {rows.map((r, idx) => (
             <tr
-              key={`${r[0]}-${idx}`}
+              key={`${typeof r[0] === 'string' ? r[0] : r[0].value}-${idx}`}
               className="border-t border-zinc-200"
             >
-              {r.map((cell, cIdx) => (
-                <td
-                  key={`${cell}-${cIdx}`}
-                  className={`px-5 py-3 ${cIdx === 0 ? 'font-semibold text-zinc-900' : 'text-zinc-600'}`}
-                >
-                  {cell}
-                </td>
-              ))}
+              {r.map((cell, cIdx) => {
+                const value = typeof cell === 'string' ? cell : cell.value;
+                const colSpan = typeof cell === 'string' ? undefined : cell.colSpan;
+                return (
+                  <td
+                    key={`${value}-${cIdx}`}
+                    colSpan={colSpan}
+                    className={`px-5 py-3 ${cIdx === 0 ? 'font-semibold text-zinc-900' : 'text-zinc-600'}`}
+                  >
+                    {value}
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
