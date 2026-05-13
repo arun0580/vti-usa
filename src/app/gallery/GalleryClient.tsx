@@ -299,6 +299,7 @@ export function GalleryClient() {
       <Container className="pb-14 sm:pb-16">
         <RevealGroup
           key={activeSegment}
+          onMount
           className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
           {visibleInstallations.map((item) => (
