@@ -1,43 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
-
-const STORAGE_KEY = "vti-announcement-webinar-may-2026-dismissed";
-const DISMISS_EVENT = "vti-announcement-dismissed";
-
-function subscribe(onStoreChange: () => void) {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
-  const onStorage = (e: StorageEvent) => {
-    if (e.key === STORAGE_KEY || e.key === null) {
-      onStoreChange();
-    }
-  };
-  const onCustom = () => onStoreChange();
-  window.addEventListener("storage", onStorage);
-  window.addEventListener(DISMISS_EVENT, onCustom);
-  return () => {
-    window.removeEventListener("storage", onStorage);
-    window.removeEventListener(DISMISS_EVENT, onCustom);
-  };
-}
-
-function getSnapshot() {
-  if (typeof window === "undefined") {
-    return false;
-  }
-  try {
-    return localStorage.getItem(STORAGE_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
-function getServerSnapshot() {
-  return false;
-}
+import { useState } from "react";
 
 function CalendarIcon() {
   return (
@@ -57,20 +21,10 @@ function CalendarIcon() {
 }
 
 export function AnnouncementBanner() {
-  const dismissed = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot,
-  );
-
-  const close = () => {
-    try {
-      localStorage.setItem(STORAGE_KEY, "1");
-    } catch {
-      /* ignore */
-    }
-    window.dispatchEvent(new Event(DISMISS_EVENT));
-  };
+  // Dismissal is intentionally in-memory only: a refresh, a new tab, or a
+  // later visit will bring the banner back. This protects users who close it
+  // by accident — they only need to reload to see it again.
+  const [dismissed, setDismissed] = useState(false);
 
   if (dismissed) {
     return null;
@@ -106,7 +60,7 @@ export function AnnouncementBanner() {
       </div>
       <button
         type="button"
-        onClick={close}
+        onClick={() => setDismissed(true)}
         className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-md text-white transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
         aria-label="Dismiss announcement"
       >
