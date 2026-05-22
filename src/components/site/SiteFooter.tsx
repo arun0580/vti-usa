@@ -65,11 +65,11 @@ export function SiteFooter() {
                     Installation Gallery
                   </Link>
                 </li>
-                {/* <li>
+                <li>
                   <Link className="hover:text-zinc-200" href="/resellers">
                     Reseller Portal
                   </Link>
-                </li> */}
+                </li>
                 <li>
                   <Link className="hover:text-zinc-200" href="/contact">
                     Contact

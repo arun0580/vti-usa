@@ -390,7 +390,7 @@ function SignInForm({
         type="submit"
         whileHover={hoverLift}
         whileTap={tapPress}
-        className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50"
+        className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 cursor-pointer"
       >
         Sign in to portal
         <svg
@@ -652,7 +652,7 @@ function SignUpForm({
           aria-busy={isSubmitting}
           whileHover={isSubmitting ? undefined : hoverLift}
           whileTap={isSubmitting ? undefined : tapPress}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
         >
           {isSubmitting ? "Submitting…" : "Submit application"}
           {isSubmitting ? null : <IconUserPlus className="h-4 w-4" />}
