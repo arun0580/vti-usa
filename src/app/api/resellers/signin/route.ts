@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import {
+  RESELLER_TOKEN_COOKIE,
   proxyToApi,
-  setServerResellerToken,
+  tokenCookieOptions,
 } from "@/lib/reseller-auth/server";
 
 export const runtime = "nodejs";
@@ -32,13 +33,19 @@ export async function POST(request: Request) {
   }
 
   const token = data.data?.token as string | undefined;
-  if (token) {
-    await setServerResellerToken(token);
-  }
-
-  return NextResponse.json({
+  const response = NextResponse.json({
     success: true,
     message: data.message,
     data: { reseller: data.data.reseller },
   });
+
+  if (token) {
+    response.cookies.set(
+      RESELLER_TOKEN_COOKIE,
+      token,
+      tokenCookieOptions(60 * 60 * 24 * 7, request),
+    );
+  }
+
+  return response;
 }

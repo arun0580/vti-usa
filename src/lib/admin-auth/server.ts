@@ -1,20 +1,14 @@
 import { cookies } from "next/headers";
+import { baseAuthCookieOptions } from "@/lib/auth/cookie-options";
 import { getApiBase, proxyToApi } from "@/lib/reseller-auth/server";
 
 export const ADMIN_TOKEN_COOKIE = "admin_token";
 
-export function adminTokenCookieOptions(maxAgeSeconds = 60 * 60 * 8) {
-  const secure =
-    process.env.COOKIE_SECURE === "true" ||
-    (process.env.COOKIE_SECURE !== "false" &&
-      process.env.NODE_ENV === "production");
-  return {
-    httpOnly: true,
-    secure,
-    sameSite: "lax" as const,
-    path: "/",
-    maxAge: maxAgeSeconds,
-  };
+export function adminTokenCookieOptions(
+  maxAgeSeconds = 60 * 60 * 8,
+  request?: Request,
+) {
+  return baseAuthCookieOptions(maxAgeSeconds, request);
 }
 
 export async function getServerAdminToken(): Promise<string | undefined> {
@@ -29,7 +23,7 @@ export async function setServerAdminToken(token: string): Promise<void> {
 
 export async function clearServerAdminToken(): Promise<void> {
   const store = await cookies();
-  store.delete(ADMIN_TOKEN_COOKIE);
+  store.delete({ name: ADMIN_TOKEN_COOKIE, path: "/" });
 }
 
 export async function proxyToAdminApi(

@@ -1,14 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Container } from "@/components/site/Container";
-import { adminSignin } from "@/lib/admin-auth/api";
+import { adminSignin, adminSignout } from "@/lib/admin-auth/api";
 
 export function AdminLoginClient() {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("error") === "session") {
+      setError(
+        "Your session could not be verified. Sign in again. If this keeps happening, check RESELLER_API_URL on the web server.",
+      );
+      void adminSignout();
+    }
+  }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -28,8 +37,8 @@ export function AdminLoginClient() {
       return;
     }
 
-    router.push("/admin/resellers");
-    router.refresh();
+    // Full page load so the new httpOnly cookie is sent on the next request
+    window.location.assign("/admin/resellers");
   }
 
   return (

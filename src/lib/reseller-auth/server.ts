@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { baseAuthCookieOptions } from "@/lib/auth/cookie-options";
 
 export const RESELLER_TOKEN_COOKIE = "reseller_token";
 
@@ -11,14 +12,11 @@ export function getApiBase(): string {
 }
 
 /** Cookie options — httpOnly keeps JWT out of JavaScript (XSS-safe) */
-export function tokenCookieOptions(maxAgeSeconds = 60 * 60 * 24 * 7) {
-  return {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax" as const,
-    path: "/",
-    maxAge: maxAgeSeconds,
-  };
+export function tokenCookieOptions(
+  maxAgeSeconds = 60 * 60 * 24 * 7,
+  request?: Request,
+) {
+  return baseAuthCookieOptions(maxAgeSeconds, request);
 }
 
 export async function getServerResellerToken(): Promise<string | undefined> {

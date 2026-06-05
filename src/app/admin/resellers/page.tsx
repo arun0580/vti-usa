@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import {
-  getServerAdminToken,
-  proxyToAdminApi,
-} from "@/lib/admin-auth/server";
-import type { AdminProfile } from "@/lib/admin-auth/types";
+import { getServerAdminToken, proxyToAdminApi } from "@/lib/admin-auth/server";
+import { loadAdminProfile } from "@/lib/admin-auth/session";
 import type { ResellerProfile } from "@/lib/reseller-auth/types";
 import { AdminResellersClient } from "./AdminResellersClient";
 
@@ -14,14 +11,6 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = "force-dynamic";
-
-async function loadAdminProfile(token: string): Promise<AdminProfile | null> {
-  const res = await proxyToAdminApi("/api/admin/me", undefined, token);
-  if (!res.ok) return null;
-  const body = await res.json().catch(() => null);
-  if (!body?.success) return null;
-  return body.data.admin as AdminProfile;
-}
 
 async function loadPendingResellers(token: string): Promise<ResellerProfile[]> {
   const res = await proxyToAdminApi(
@@ -43,7 +32,7 @@ export default async function AdminResellersPage() {
 
   const admin = await loadAdminProfile(token);
   if (!admin) {
-    redirect("/admin/login");
+    redirect("/admin/login?error=session");
   }
 
   const initialResellers = await loadPendingResellers(token);

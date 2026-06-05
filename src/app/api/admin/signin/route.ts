@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     response.cookies.set(
       ADMIN_TOKEN_COOKIE,
       token,
-      adminTokenCookieOptions(),
+      adminTokenCookieOptions(60 * 60 * 8, request),
     );
   }
 
