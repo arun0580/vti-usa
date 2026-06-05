@@ -57,10 +57,10 @@ Resellers are created via `/resellers` sign-up (not seeded).
 
 ### Admin portal
 
-| URL                 | Description                          |
-| ------------------- | ------------------------------------ |
-| `/admin/login`      | Admin sign in                        |
-| `/admin/resellers`  | Approve or reject reseller signups   |
+| URL                | Description                        |
+| ------------------ | ---------------------------------- |
+| `/admin/login`     | Admin sign in                      |
+| `/admin/resellers` | Approve or reject reseller signups |
 
 All accounts live in the PostgreSQL `users` table with `role` (`admin` | `reseller`). Seed a default admin:
 
@@ -69,10 +69,10 @@ cd vti-usa-api
 npm run db:seed
 ```
 
-| Field    | Value (seed)           |
-| -------- | ---------------------- |
-| Email    | `admin@vtiusa.com`     |
-| Password | `ChangeMeAdmin123!`    |
+| Field    | Value (seed)        |
+| -------- | ------------------- |
+| Email    | `admin@vtiusa.com`  |
+| Password | `ChangeMeAdmin123!` |
 
 Set `ADMIN_JWT_SECRET` in `vti-usa-api/.env` (32+ characters). Restart the API after env changes.
 
@@ -94,8 +94,8 @@ Get `RESEND_API_KEY` at https://resend.com/api-keys. For local testing, `onboard
 | `/resellers`              | Sign in / Sign up tabs                           |
 | `/resellers/verify-email` | Email verification landing page                  |
 | `/resellers/dashboard`    | Protected dashboard (redirects if not signed in) |
-| `/admin/login`            | Admin sign in                                  |
-| `/admin/resellers`        | Reseller approval queue                        |
+| `/admin/login`            | Admin sign in                                    |
+| `/admin/resellers`        | Reseller approval queue                          |
 
 ## Frontend files
 

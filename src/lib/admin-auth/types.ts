@@ -24,7 +24,7 @@ export type ApiErrorResponse = {
 
 export type AdminSigninResult =
   | { ok: true; admin: AdminProfile }
-  | { ok: false; error: string };
+  | { ok: false; error: string; code?: string };
 
 export type ResellerListResult =
   | { ok: true; resellers: ResellerProfile[] }
