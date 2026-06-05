@@ -1,5 +1,14 @@
 export type ResellerStatus = "pending" | "active" | "inactive";
 
+export const RESELLER_BUSINESS_TYPE_LABELS: Record<string, string> = {
+  av_integrator: "AV integrator",
+  it_reseller: "IT reseller",
+  education_technology: "Education technology",
+  government_contractor: "Government contractor",
+  distributor: "Distributor",
+  other: "Other",
+};
+
 export interface ResellerProfile {
   id: string;
   firstName: string;
@@ -7,6 +16,10 @@ export interface ResellerProfile {
   companyName: string;
   email: string;
   phone: string;
+  city?: string | null;
+  state?: string | null;
+  businessType?: string | null;
+  about?: string | null;
   emailVerified: boolean;
   status: ResellerStatus;
   createdAt: string;
@@ -14,11 +27,14 @@ export interface ResellerProfile {
 }
 
 export interface ResellerSignupPayload {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   companyName: string;
   email: string;
   phone: string;
+  city: string;
+  state: string;
+  businessType: string;
+  about: string;
   password: string;
   confirmPassword: string;
 }

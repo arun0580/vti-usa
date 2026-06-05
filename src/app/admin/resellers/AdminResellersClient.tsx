@@ -11,7 +11,10 @@ import {
   rejectReseller,
 } from "@/lib/admin-auth/api";
 import type { AdminProfile } from "@/lib/admin-auth/types";
-import type { ResellerProfile } from "@/lib/reseller-auth/types";
+import {
+  RESELLER_BUSINESS_TYPE_LABELS,
+  type ResellerProfile,
+} from "@/lib/reseller-auth/types";
 
 type Filter = "pending" | "active" | "inactive" | "all";
 
@@ -204,6 +207,19 @@ export function AdminResellersClient({
                     <p className="mt-1 text-sm text-zinc-600">
                       {r.firstName} {r.lastName} · {r.email} · {r.phone}
                     </p>
+                    {r.city || r.state ? (
+                      <p className="mt-1 text-sm text-zinc-600">
+                        {[r.city, r.state].filter(Boolean).join(", ")}
+                        {r.businessType
+                          ? ` · ${RESELLER_BUSINESS_TYPE_LABELS[r.businessType] ?? r.businessType}`
+                          : null}
+                      </p>
+                    ) : null}
+                    {r.about ? (
+                      <p className="mt-2 line-clamp-2 text-sm text-zinc-500">
+                        {r.about}
+                      </p>
+                    ) : null}
                     <p className="mt-1 text-xs text-zinc-500">
                       Applied {formatDate(r.createdAt)}
                     </p>
@@ -213,12 +229,7 @@ export function AdminResellersClient({
                     <div className="flex shrink-0 gap-2">
                       <button
                         type="button"
-                        disabled={actionId === r.id || !r.emailVerified}
-                        title={
-                          !r.emailVerified
-                            ? "Reseller must verify email first"
-                            : undefined
-                        }
+                        disabled={actionId === r.id}
                         onClick={() => handleApprove(r.id)}
                         className="inline-flex h-10 items-center justify-center rounded-lg bg-red-600 px-4 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                       >

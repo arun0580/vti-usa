@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import {
-  proxyToApi,
-} from "@/lib/reseller-auth/server";
+import { proxyToApi } from "@/lib/reseller-auth/server";
 import {
   buildVerificationUrl,
   sendResellerVerificationEmail,

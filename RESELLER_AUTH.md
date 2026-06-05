@@ -62,7 +62,7 @@ Resellers are created via `/resellers` sign-up (not seeded).
 | `/admin/login`      | Admin sign in                        |
 | `/admin/resellers`  | Approve or reject reseller signups   |
 
-Admin accounts live in the PostgreSQL `admins` table. Seed a default admin:
+All accounts live in the PostgreSQL `users` table with `role` (`admin` | `reseller`). Seed a default admin:
 
 ```bash
 cd vti-usa-api

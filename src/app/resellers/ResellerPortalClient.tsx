@@ -97,6 +97,23 @@ const inputClass =
 const fieldClass =
   "h-12 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
+const textareaClass =
+  "w-full rounded-lg border border-zinc-200 bg-white px-3 py-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
+
+const BUSINESS_TYPE_OPTIONS = [
+  { value: "", label: "Select one" },
+  { value: "av_integrator", label: "AV integrator" },
+  { value: "it_reseller", label: "IT reseller" },
+  { value: "education_technology", label: "Education technology" },
+  { value: "government_contractor", label: "Government contractor" },
+  { value: "distributor", label: "Distributor" },
+  { value: "other", label: "Other" },
+] as const;
+
+function firstNameFromFullName(fullName: string): string {
+  return fullName.trim().split(/\s+/)[0] ?? "";
+}
+
 const fieldErrorClass =
   "border-red-300 focus:border-red-500 focus:ring-red-500/30";
 
@@ -177,8 +194,9 @@ export function ResellerPortalClient() {
               </>
             ) : (
               <>
-                Register with your business details to access the reseller
-                portal. You can sign in immediately after creating your account.
+                Tell us about your business and create your portal password. A
+                VTI team member will review your application after you verify
+                your email.
               </>
             )}
           </p>
@@ -339,11 +357,8 @@ function SignInForm() {
     if (result.code === "EMAIL_NOT_VERIFIED") {
       setUnverifiedEmail(payload.email);
     }
-    if (result.code === "ACCOUNT_PENDING") {
-      setFormError(
-        result.error ||
-          "Your account is awaiting admin approval. You will be able to sign in once approved.",
-      );
+    if (result.code === "ACCOUNT_PENDING" || result.code === "PORTAL_NOT_READY") {
+      setFormError(result.error);
       return;
     }
     if (result.fields) setFieldErrors(result.fields);
@@ -479,11 +494,14 @@ function SignUpForm() {
     const form = e.currentTarget;
     const fd = new FormData(form);
     const payload: ResellerSignupPayload = {
-      firstName: String(fd.get("firstName") ?? "").trim(),
-      lastName: String(fd.get("lastName") ?? "").trim(),
+      fullName: String(fd.get("fullName") ?? "").trim(),
       companyName: String(fd.get("companyName") ?? "").trim(),
       email: String(fd.get("email") ?? "").trim(),
       phone: String(fd.get("phone") ?? "").trim(),
+      city: String(fd.get("city") ?? "").trim(),
+      state: String(fd.get("state") ?? "").trim(),
+      businessType: String(fd.get("businessType") ?? "").trim(),
+      about: String(fd.get("about") ?? "").trim(),
       password: String(fd.get("password") ?? ""),
       confirmPassword: String(fd.get("confirmPassword") ?? ""),
     };
@@ -500,14 +518,14 @@ function SignUpForm() {
 
     if (result.ok) {
       setPendingEmail(result.email);
-      setPendingFirstName(payload.firstName);
+      setPendingFirstName(firstNameFromFullName(payload.fullName));
       form.reset();
       return;
     }
 
     if (result.code === "EMAIL_EXISTS_UNVERIFIED") {
       setPendingEmail(payload.email);
-      setPendingFirstName(payload.firstName);
+      setPendingFirstName(firstNameFromFullName(payload.fullName));
     }
     if (result.fields) setFieldErrors(result.fields);
     setFormError(result.error);
@@ -546,60 +564,41 @@ function SignUpForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="su-first" className={labelClass}>
-            First name {requiredMark}
+          <label htmlFor="su-fullname" className={labelClass}>
+            Full name {requiredMark}
           </label>
           <input
-            id="su-first"
-            name="firstName"
+            id="su-fullname"
+            name="fullName"
             type="text"
-            autoComplete="given-name"
-            aria-invalid={Boolean(fieldErrors.firstName)}
+            autoComplete="name"
+            aria-invalid={Boolean(fieldErrors.fullName)}
             className={cn(
               "mt-1.5",
               fieldClass,
-              fieldErrors.firstName && fieldErrorClass,
+              fieldErrors.fullName && fieldErrorClass,
             )}
           />
-          <FieldError message={fieldErrors.firstName} />
+          <FieldError message={fieldErrors.fullName} />
         </div>
         <div>
-          <label htmlFor="su-last" className={labelClass}>
-            Last name {requiredMark}
+          <label htmlFor="su-company" className={labelClass}>
+            Company / organization {requiredMark}
           </label>
           <input
-            id="su-last"
-            name="lastName"
+            id="su-company"
+            name="companyName"
             type="text"
-            autoComplete="family-name"
-            aria-invalid={Boolean(fieldErrors.lastName)}
+            autoComplete="organization"
+            aria-invalid={Boolean(fieldErrors.companyName)}
             className={cn(
               "mt-1.5",
               fieldClass,
-              fieldErrors.lastName && fieldErrorClass,
+              fieldErrors.companyName && fieldErrorClass,
             )}
           />
-          <FieldError message={fieldErrors.lastName} />
+          <FieldError message={fieldErrors.companyName} />
         </div>
-      </div>
-
-      <div>
-        <label htmlFor="su-company" className={labelClass}>
-          Company name {requiredMark}
-        </label>
-        <input
-          id="su-company"
-          name="companyName"
-          type="text"
-          autoComplete="organization"
-          aria-invalid={Boolean(fieldErrors.companyName)}
-          className={cn(
-            "mt-1.5",
-            fieldClass,
-            fieldErrors.companyName && fieldErrorClass,
-          )}
-        />
-        <FieldError message={fieldErrors.companyName} />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -624,14 +623,13 @@ function SignUpForm() {
         </div>
         <div>
           <label htmlFor="su-phone" className={labelClass}>
-            Phone number {requiredMark}
+            Phone {requiredMark}
           </label>
           <input
             id="su-phone"
             name="phone"
             type="tel"
             autoComplete="tel"
-            placeholder="+1-555-123-4567"
             aria-invalid={Boolean(fieldErrors.phone)}
             className={cn(
               "mt-1.5",
@@ -683,6 +681,89 @@ function SignUpForm() {
           />
           <FieldError message={fieldErrors.confirmPassword} />
         </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label htmlFor="su-city" className={labelClass}>
+            City {requiredMark}
+          </label>
+          <input
+            id="su-city"
+            name="city"
+            type="text"
+            autoComplete="address-level2"
+            aria-invalid={Boolean(fieldErrors.city)}
+            className={cn(
+              "mt-1.5",
+              fieldClass,
+              fieldErrors.city && fieldErrorClass,
+            )}
+          />
+          <FieldError message={fieldErrors.city} />
+        </div>
+        <div>
+          <label htmlFor="su-state" className={labelClass}>
+            State {requiredMark}
+          </label>
+          <input
+            id="su-state"
+            name="state"
+            type="text"
+            autoComplete="address-level1"
+            placeholder="e.g. GA"
+            aria-invalid={Boolean(fieldErrors.state)}
+            className={cn(
+              "mt-1.5",
+              fieldClass,
+              fieldErrors.state && fieldErrorClass,
+            )}
+          />
+          <FieldError message={fieldErrors.state} />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="su-business-type" className={labelClass}>
+          Business type / experience {requiredMark}
+        </label>
+        <select
+          id="su-business-type"
+          name="businessType"
+          defaultValue=""
+          aria-invalid={Boolean(fieldErrors.businessType)}
+          className={cn(
+            "mt-1.5",
+            fieldClass,
+            fieldErrors.businessType && fieldErrorClass,
+          )}
+        >
+          {BUSINESS_TYPE_OPTIONS.map((opt) => (
+            <option key={opt.value || "empty"} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <FieldError message={fieldErrors.businessType} />
+      </div>
+
+      <div>
+        <label htmlFor="su-about" className={labelClass}>
+          Tell us about yourself {requiredMark}
+        </label>
+        <textarea
+          id="su-about"
+          name="about"
+          rows={4}
+          placeholder="A bit about your business, the markets you serve, and why you're interested in partnering with VTI."
+          aria-invalid={Boolean(fieldErrors.about)}
+          className={cn(
+            "mt-1.5",
+            textareaClass,
+            fieldErrors.about && fieldErrorClass,
+          )}
+        />
+        <FieldError message={fieldErrors.about} />
       </div>
 
       <motion.button

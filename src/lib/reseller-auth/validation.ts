@@ -1,6 +1,9 @@
 import type { ResellerSignupPayload, ResellerSigninPayload } from "./types";
+import { RESELLER_BUSINESS_TYPE_LABELS } from "./types";
 
 export type FieldErrors = Record<string, string>;
+
+const BUSINESS_TYPES = Object.keys(RESELLER_BUSINESS_TYPE_LABELS);
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -20,16 +23,22 @@ export function validateSignup(
 ): FieldErrors | null {
   const errors: FieldErrors = {};
 
-  if (!payload.firstName.trim()) errors.firstName = "First name is required";
-  if (!payload.lastName.trim()) errors.lastName = "Last name is required";
+  if (!payload.fullName.trim()) errors.fullName = "Full name is required";
   if (!payload.companyName.trim())
-    errors.companyName = "Company name is required";
-  if (!payload.email.trim()) errors.email = "Email is required";
+    errors.companyName = "Company / organization is required";
+  if (!payload.email.trim()) errors.email = "Work email is required";
   else if (!isValidEmail(payload.email.trim()))
     errors.email = "Enter a valid email address";
-  if (!payload.phone.trim()) errors.phone = "Phone number is required";
+  if (!payload.phone.trim()) errors.phone = "Phone is required";
   else if (!/^[\d\s()+\-.]{7,30}$/.test(payload.phone.trim()))
     errors.phone = "Enter a valid phone number";
+  if (!payload.city.trim()) errors.city = "City is required";
+  if (!payload.state.trim()) errors.state = "State is required";
+  if (!payload.businessType || !BUSINESS_TYPES.includes(payload.businessType))
+    errors.businessType = "Select a business type";
+  if (!payload.about.trim()) errors.about = "Tell us about your business";
+  else if (payload.about.trim().length < 20)
+    errors.about = "Please share a bit more detail (at least 20 characters)";
 
   const pwError = passwordStrength(payload.password);
   if (pwError) errors.password = pwError;
