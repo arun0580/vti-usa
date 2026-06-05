@@ -4,9 +4,13 @@ import { getApiBase, proxyToApi } from "@/lib/reseller-auth/server";
 export const ADMIN_TOKEN_COOKIE = "admin_token";
 
 export function adminTokenCookieOptions(maxAgeSeconds = 60 * 60 * 8) {
+  const secure =
+    process.env.COOKIE_SECURE === "true" ||
+    (process.env.COOKIE_SECURE !== "false" &&
+      process.env.NODE_ENV === "production");
   return {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure,
     sameSite: "lax" as const,
     path: "/",
     maxAge: maxAgeSeconds,
