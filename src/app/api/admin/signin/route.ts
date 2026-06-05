@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import {
   getApiBase,
@@ -50,20 +51,30 @@ export async function POST(request: Request) {
     );
   }
 
-  const token = data.data?.token as string | undefined;
+  const token = (data.data?.token ?? data.token) as string | undefined;
+  if (!token) {
+    console.error("[admin signin] API response missing token:", data);
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Sign-in succeeded but no session token was returned by the API.",
+        code: "NO_TOKEN",
+      },
+      { status: 500 },
+    );
+  }
+
+  const cookieOpts = adminTokenCookieOptions(60 * 60 * 8, request);
   const response = NextResponse.json({
     success: true,
     message: data.message,
-    data: { admin: data.data.admin },
+    data: { admin: data.data?.admin ?? data.admin },
   });
 
-  if (token) {
-    response.cookies.set(
-      ADMIN_TOKEN_COOKIE,
-      token,
-      adminTokenCookieOptions(60 * 60 * 8, request),
-    );
-  }
+  response.cookies.set(ADMIN_TOKEN_COOKIE, token, cookieOpts);
+
+  const store = await cookies();
+  store.set(ADMIN_TOKEN_COOKIE, token, cookieOpts);
 
   return response;
 }

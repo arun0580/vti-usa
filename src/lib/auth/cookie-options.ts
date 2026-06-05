@@ -1,4 +1,9 @@
-/** Whether auth cookies should use the Secure flag */
+/**
+ * Whether auth cookies should use the Secure flag.
+ * Defaults to false so cookies are not silently dropped when nginx omits
+ * X-Forwarded-Proto or the app is served over plain HTTP.
+ * Set COOKIE_SECURE=true in production HTTPS once proxy headers are confirmed.
+ */
 export function resolveCookieSecure(request?: Request): boolean {
   if (process.env.COOKIE_SECURE === "true") return true;
   if (process.env.COOKIE_SECURE === "false") return false;
@@ -15,9 +20,8 @@ export function resolveCookieSecure(request?: Request): boolean {
     }
   }
 
-  return process.env.NODE_ENV === "production";
+  return false;
 }
-
 export function baseAuthCookieOptions(
   maxAgeSeconds: number,
   request?: Request,
