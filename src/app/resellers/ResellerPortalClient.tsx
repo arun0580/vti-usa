@@ -1,14 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { cn } from "@/lib/cn";
 import { Container } from "@/components/site/Container";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
 import { hoverLift, tapPress } from "@/lib/motion";
-import { submitForm } from "@/lib/email/client-submit";
-import type { ResellerSignupFormData } from "@/lib/email/validators";
+import {
+  resellerResendVerification,
+  resellerSignin,
+  resellerSignup,
+} from "@/lib/reseller-auth/api";
+import {
+  validateSignin,
+  validateSignup,
+  type FieldErrors,
+} from "@/lib/reseller-auth/validation";
+import type {
+  ResellerSigninPayload,
+  ResellerSignupPayload,
+} from "@/lib/reseller-auth/types";
 
 const benefits = [
   "Pricing sheets & current price lists",
@@ -79,50 +91,54 @@ function IconCheck({ className }: { className?: string }) {
   );
 }
 
-function IconInfo({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      className={className}
-      aria-hidden
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4M12 8h.01" />
-    </svg>
-  );
-}
-
 const inputClass =
   "h-12 w-full rounded-lg border border-zinc-200 bg-white pl-11 pr-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
 const fieldClass =
   "h-12 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
-const textareaClass =
-  "min-h-[140px] w-full rounded-lg border border-zinc-200 bg-white px-3 py-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
+const fieldErrorClass =
+  "border-red-300 focus:border-red-500 focus:ring-red-500/30";
 
-const selectClass =
-  "h-12 w-full appearance-none rounded-lg border border-zinc-200 bg-white bg-[length:1.25rem] bg-[right_0.75rem_center] bg-no-repeat pr-10 text-sm text-zinc-950 shadow-sm focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20 " +
-  "[background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")]";
+const labelClass = "text-sm font-medium text-zinc-950";
+const requiredMark = <span className="text-red-600">*</span>;
 
-const businessTypeOptions = [
-  { value: "", label: "Select one" },
-  { value: "av-integrator", label: "AV integrator" },
-  { value: "it-var", label: "IT reseller / VAR" },
-  { value: "edtech", label: "Education technology provider" },
-  { value: "gov", label: "Government contractor" },
-  { value: "other", label: "Other" },
-] as const;
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return (
+    <p className="mt-1.5 text-xs font-medium text-red-600" role="alert">
+      {message}
+    </p>
+  );
+}
+
+function FormAlert({
+  message,
+  variant = "error",
+}: {
+  message: string;
+  variant?: "error" | "success";
+}) {
+  return (
+    <div
+      role="alert"
+      aria-live="assertive"
+      className={cn(
+        "rounded-lg border px-4 py-3 text-sm font-medium",
+        variant === "error"
+          ? "border-red-200 bg-red-50 text-red-900"
+          : "border-emerald-200 bg-emerald-50 text-emerald-900",
+      )}
+    >
+      {message}
+    </div>
+  );
+}
 
 type Mode = "signin" | "signup";
 
 export function ResellerPortalClient() {
   const [mode, setMode] = useState<Mode>("signin");
-  const [signedIn, setSignedIn] = useState(false);
-  const [signupSent, setSignupSent] = useState(false);
 
   return (
     <div className="bg-white">
@@ -150,7 +166,7 @@ export function ResellerPortalClient() {
             {mode === "signin" ? (
               <>Already a VTI reseller?</>
             ) : (
-              <>Interested in becoming a reseller?</>
+              <>Create your reseller account</>
             )}
           </h1>
           <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600">
@@ -161,9 +177,8 @@ export function ResellerPortalClient() {
               </>
             ) : (
               <>
-                Tell us about your business and we'll set up portal access for
-                your team. Most applications get a response within one business
-                day.
+                Register with your business details to access the reseller
+                portal. You can sign in immediately after creating your account.
               </>
             )}
           </p>
@@ -179,10 +194,7 @@ export function ResellerPortalClient() {
               id="tab-signin"
               aria-selected={mode === "signin"}
               aria-controls="tabpanel-auth"
-              onClick={() => {
-                setMode("signin");
-                setSignupSent(false);
-              }}
+              onClick={() => setMode("signin")}
               whileTap={tapPress}
               className={cn(
                 "inline-flex flex-1 items-center justify-center gap-2 rounded-xl border px-5 py-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 cursor-pointer",
@@ -200,10 +212,7 @@ export function ResellerPortalClient() {
               id="tab-signup"
               aria-selected={mode === "signup"}
               aria-controls="tabpanel-auth"
-              onClick={() => {
-                setMode("signup");
-                setSignedIn(false);
-              }}
+              onClick={() => setMode("signup")}
               whileTap={tapPress}
               className={cn(
                 "inline-flex flex-1 items-center justify-center gap-2 rounded-xl border px-5 py-3.5 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 cursor-pointer",
@@ -240,77 +249,120 @@ export function ResellerPortalClient() {
           aria-labelledby={mode === "signin" ? "tab-signin" : "tab-signup"}
           className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8"
         >
-          {mode === "signin" ? (
-            <SignInForm
-              onSuccess={() => setSignedIn(true)}
-              signedIn={signedIn}
-              onReset={() => setSignedIn(false)}
-            />
-          ) : (
-            <SignUpForm
-              onSuccess={() => setSignupSent(true)}
-              sent={signupSent}
-              onReset={() => setSignupSent(false)}
-            />
-          )}
+          {mode === "signin" ? <SignInForm /> : <SignUpForm />}
         </Reveal>
       </div>
     </div>
   );
 }
 
-function SignInForm({
-  signedIn,
-  onSuccess,
-  onReset,
+function ResendVerificationButton({
+  email,
+  firstName,
 }: {
-  signedIn: boolean;
-  onSuccess: () => void;
-  onReset: () => void;
+  email: string;
+  firstName?: string;
 }) {
-  if (signedIn) {
-    return (
-      <div className="space-y-4 text-center">
-        <p className="text-lg font-semibold text-zinc-950">
-          You&apos;re signed in (demo).
-        </p>
-        <p className="text-sm text-zinc-600">
-          A live portal would show pricing, assets, and your rep tools here.
-        </p>
-        <button
-          type="button"
-          onClick={onReset}
-          className="text-sm font-semibold text-red-600 hover:text-red-700"
-        >
-          Sign out
-        </button>
-      </div>
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  async function handleResend() {
+    if (loading || !email) return;
+    setLoading(true);
+    setMsg(null);
+    const result = await resellerResendVerification(email, firstName);
+    setLoading(false);
+    setMsg(
+      result.ok
+        ? "Verification email sent. Check your inbox."
+        : result.error,
     );
   }
 
   return (
-    <form
-      className="space-y-5"
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSuccess();
-      }}
-    >
-      <div className="flex gap-3 rounded-xl bg-zinc-100 p-4 text-sm text-zinc-600">
-        <IconInfo className="mt-0.5 h-5 w-5 shrink-0 text-zinc-500" />
-        <p>
-          <span className="font-medium text-zinc-800">Demo mode:</span> any
-          email and password will sign you in. Real authentication is coming
-          soon.
-        </p>
-      </div>
+    <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+      <p className="font-medium">Email not verified yet</p>
+      <p className="mt-1 text-amber-900/90">
+        Open the link we sent to <span className="font-semibold">{email}</span>{" "}
+        or request a new one.
+      </p>
+      <button
+        type="button"
+        onClick={handleResend}
+        disabled={loading}
+        className="mt-3 text-sm font-semibold text-red-600 hover:text-red-700 disabled:opacity-60 cursor-pointer"
+      >
+        {loading ? "Sending…" : "Resend verification email"}
+      </button>
+      {msg ? <p className="mt-2 text-xs font-medium">{msg}</p> : null}
+    </div>
+  );
+}
+
+function SignInForm() {
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (isSubmitting) return;
+    setFormError(null);
+    setFieldErrors({});
+    setUnverifiedEmail(null);
+
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const payload: ResellerSigninPayload = {
+      email: String(fd.get("email") ?? "").trim(),
+      password: String(fd.get("password") ?? ""),
+    };
+
+    const clientErrors = validateSignin(payload);
+    if (clientErrors) {
+      setFieldErrors(clientErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+    const result = await resellerSignin(payload);
+    setIsSubmitting(false);
+
+    if (result.ok) {
+      router.push("/resellers/dashboard");
+      router.refresh();
+      return;
+    }
+
+    if (result.code === "EMAIL_NOT_VERIFIED") {
+      setUnverifiedEmail(payload.email);
+    }
+    if (result.code === "ACCOUNT_PENDING") {
+      setFormError(
+        result.error ||
+          "Your account is awaiting admin approval. You will be able to sign in once approved.",
+      );
+      return;
+    }
+    if (result.fields) setFieldErrors(result.fields);
+    setFormError(result.error);
+  }
+
+  return (
+    <form className="space-y-5" onSubmit={handleSubmit} noValidate>
+      {unverifiedEmail ? (
+        <ResendVerificationButton email={unverifiedEmail} />
+      ) : null}
+      {formError ? <FormAlert message={formError} /> : null}
 
       <div>
         <label
           htmlFor="portal-email"
           className="text-sm font-medium text-zinc-950"
         >
-          Work email <span className="text-red-600">*</span>
+          Work email {requiredMark}
         </label>
         <div className="relative mt-1.5">
           <span
@@ -333,22 +385,21 @@ function SignInForm({
             name="email"
             type="email"
             autoComplete="email"
-            required
             placeholder="you@yourcompany.com"
-            className={inputClass}
+            aria-invalid={Boolean(fieldErrors.email)}
+            className={cn(inputClass, fieldErrors.email && fieldErrorClass)}
           />
         </div>
+        <FieldError message={fieldErrors.email} />
       </div>
 
       <div>
-        <div className="flex items-baseline justify-between gap-2">
-          <label
-            htmlFor="portal-password"
-            className="text-sm font-medium text-zinc-950"
-          >
-            Password <span className="text-red-600">*</span>
-          </label>
-        </div>
+        <label
+          htmlFor="portal-password"
+          className="text-sm font-medium text-zinc-950"
+        >
+          Password {requiredMark}
+        </label>
         <div className="relative mt-1.5">
           <span
             className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400"
@@ -370,12 +421,12 @@ function SignInForm({
             name="password"
             type="password"
             autoComplete="current-password"
-            required
-            minLength={1}
             placeholder="••••••••"
-            className={inputClass}
+            aria-invalid={Boolean(fieldErrors.password)}
+            className={cn(inputClass, fieldErrors.password && fieldErrorClass)}
           />
         </div>
+        <FieldError message={fieldErrors.password} />
         <div className="mt-2 text-right">
           <a
             href="mailto:info@vtiusa.com?subject=Reseller%20portal%20password%20help"
@@ -388,144 +439,167 @@ function SignInForm({
 
       <motion.button
         type="submit"
-        whileHover={hoverLift}
-        whileTap={tapPress}
-        className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 cursor-pointer"
+        disabled={isSubmitting}
+        aria-busy={isSubmitting}
+        whileHover={isSubmitting ? undefined : hoverLift}
+        whileTap={isSubmitting ? undefined : tapPress}
+        className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
       >
-        Sign in to portal
-        <svg
-          className="h-4 w-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          aria-hidden
-        >
-          <path d="M5 12h14M13 5l7 7-7 7" />
-        </svg>
+        {isSubmitting ? "Signing in…" : "Sign in to portal"}
+        {isSubmitting ? null : (
+          <svg
+            className="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            aria-hidden
+          >
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        )}
       </motion.button>
     </form>
   );
 }
 
-const labelClass = "text-sm font-medium text-zinc-950";
-const requiredMark = <span className="text-red-600">*</span>;
-
-function SignUpForm({
-  sent,
-  onSuccess,
-  onReset,
-}: {
-  sent: boolean;
-  onSuccess: () => void;
-  onReset: () => void;
-}) {
+function SignUpForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null);
+  const [pendingFirstName, setPendingFirstName] = useState<string>("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  if (sent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (isSubmitting) return;
+    setFormError(null);
+    setFieldErrors({});
+
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const payload: ResellerSignupPayload = {
+      firstName: String(fd.get("firstName") ?? "").trim(),
+      lastName: String(fd.get("lastName") ?? "").trim(),
+      companyName: String(fd.get("companyName") ?? "").trim(),
+      email: String(fd.get("email") ?? "").trim(),
+      phone: String(fd.get("phone") ?? "").trim(),
+      password: String(fd.get("password") ?? ""),
+      confirmPassword: String(fd.get("confirmPassword") ?? ""),
+    };
+
+    const clientErrors = validateSignup(payload);
+    if (clientErrors) {
+      setFieldErrors(clientErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+    const result = await resellerSignup(payload);
+    setIsSubmitting(false);
+
+    if (result.ok) {
+      setPendingEmail(result.email);
+      setPendingFirstName(payload.firstName);
+      form.reset();
+      return;
+    }
+
+    if (result.code === "EMAIL_EXISTS_UNVERIFIED") {
+      setPendingEmail(payload.email);
+      setPendingFirstName(payload.firstName);
+    }
+    if (result.fields) setFieldErrors(result.fields);
+    setFormError(result.error);
+  }
+
+  if (pendingEmail) {
     return (
-      <div className="space-y-4 text-center">
-        <p className="text-lg font-semibold text-zinc-950">
-          Application received.
-        </p>
+      <div className="space-y-5 text-center">
+        <FormAlert
+          message="Account created. Verify your email, then wait for admin approval before signing in."
+          variant="success"
+        />
         <p className="text-sm text-zinc-600">
-          {successMessage ??
-            "Our partner team will be in touch shortly to set up your portal access."}{" "}
-          You can also reach us via{" "}
-          <Link href="/contact" className="font-medium text-red-600">
-            contact
-          </Link>
-          .
+          We sent a verification link to{" "}
+          <span className="font-semibold text-zinc-900">{pendingEmail}</span>.
+          The link expires in 24 hours.
         </p>
+        <ResendVerificationButton
+          email={pendingEmail}
+          firstName={pendingFirstName}
+        />
         <button
           type="button"
-          onClick={() => {
-            setSuccessMessage(null);
-            onReset();
-          }}
-          className="text-sm font-semibold text-red-600 hover:text-red-700"
+          onClick={() => setPendingEmail(null)}
+          className="text-sm font-semibold text-red-600 hover:text-red-700 cursor-pointer"
         >
-          Submit another
+          Back to sign up
         </button>
       </div>
     );
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (isSubmitting) return;
-    setErrorMessage(null);
-
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-    const honeypot = String(fd.get("company_website") ?? "");
-
-    const payload: ResellerSignupFormData = {
-      fullName: String(fd.get("fullName") ?? "").trim(),
-      company: String(fd.get("company") ?? "").trim(),
-      email: String(fd.get("email") ?? "").trim(),
-      phone: String(fd.get("phone") ?? "").trim(),
-      city: String(fd.get("city") ?? "").trim(),
-      state: String(fd.get("state") ?? "").trim(),
-      businessType: String(fd.get("businessType") ?? "").trim(),
-      about: String(fd.get("about") ?? "").trim() || undefined,
-    };
-
-    setIsSubmitting(true);
-    const result = await submitForm("reseller_signup", payload, { honeypot });
-    setIsSubmitting(false);
-
-    if (result.ok) {
-      form.reset();
-      setSuccessMessage(result.message);
-      onSuccess();
-    } else {
-      setErrorMessage(result.error);
-    }
-  }
-
   return (
     <form className="space-y-5" onSubmit={handleSubmit} noValidate>
-      <div className="flex gap-3 rounded-xl bg-zinc-100 p-4 text-sm leading-relaxed text-zinc-600">
-        <IconInfo className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
-        <p>
-          Tell us about your business below. A VTI team member will reach out to
-          confirm your application — typically within{" "}
-          <span className="font-semibold text-zinc-800">24–48 hours</span>. No
-          password needed yet; we&apos;ll set up your portal access once
-          you&apos;re approved.
-        </p>
-      </div>
+      {formError ? <FormAlert message={formError} /> : null}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="su-fullname" className={labelClass}>
-            Full name {requiredMark}
+          <label htmlFor="su-first" className={labelClass}>
+            First name {requiredMark}
           </label>
           <input
-            id="su-fullname"
-            name="fullName"
+            id="su-first"
+            name="firstName"
             type="text"
-            required
-            autoComplete="name"
-            className={cn("mt-1.5", fieldClass)}
+            autoComplete="given-name"
+            aria-invalid={Boolean(fieldErrors.firstName)}
+            className={cn(
+              "mt-1.5",
+              fieldClass,
+              fieldErrors.firstName && fieldErrorClass,
+            )}
           />
+          <FieldError message={fieldErrors.firstName} />
         </div>
         <div>
-          <label htmlFor="su-company" className={labelClass}>
-            Company / organization {requiredMark}
+          <label htmlFor="su-last" className={labelClass}>
+            Last name {requiredMark}
           </label>
           <input
-            id="su-company"
-            name="company"
+            id="su-last"
+            name="lastName"
             type="text"
-            required
-            autoComplete="organization"
-            className={cn("mt-1.5", fieldClass)}
+            autoComplete="family-name"
+            aria-invalid={Boolean(fieldErrors.lastName)}
+            className={cn(
+              "mt-1.5",
+              fieldClass,
+              fieldErrors.lastName && fieldErrorClass,
+            )}
           />
+          <FieldError message={fieldErrors.lastName} />
         </div>
+      </div>
+
+      <div>
+        <label htmlFor="su-company" className={labelClass}>
+          Company name {requiredMark}
+        </label>
+        <input
+          id="su-company"
+          name="companyName"
+          type="text"
+          autoComplete="organization"
+          aria-invalid={Boolean(fieldErrors.companyName)}
+          className={cn(
+            "mt-1.5",
+            fieldClass,
+            fieldErrors.companyName && fieldErrorClass,
+          )}
+        />
+        <FieldError message={fieldErrors.companyName} />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -537,131 +611,91 @@ function SignUpForm({
             id="su-email"
             name="email"
             type="email"
-            required
             autoComplete="email"
             placeholder="you@yourcompany.com"
-            className={cn("mt-1.5", fieldClass)}
+            aria-invalid={Boolean(fieldErrors.email)}
+            className={cn(
+              "mt-1.5",
+              fieldClass,
+              fieldErrors.email && fieldErrorClass,
+            )}
           />
+          <FieldError message={fieldErrors.email} />
         </div>
         <div>
           <label htmlFor="su-phone" className={labelClass}>
-            Phone {requiredMark}
+            Phone number {requiredMark}
           </label>
           <input
             id="su-phone"
             name="phone"
             type="tel"
-            required
             autoComplete="tel"
-            className={cn("mt-1.5", fieldClass)}
+            placeholder="+1-555-123-4567"
+            aria-invalid={Boolean(fieldErrors.phone)}
+            className={cn(
+              "mt-1.5",
+              fieldClass,
+              fieldErrors.phone && fieldErrorClass,
+            )}
           />
+          <FieldError message={fieldErrors.phone} />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="su-city" className={labelClass}>
-            City {requiredMark}
+          <label htmlFor="su-password" className={labelClass}>
+            Password {requiredMark}
           </label>
           <input
-            id="su-city"
-            name="city"
-            type="text"
-            required
-            autoComplete="address-level2"
-            className={cn("mt-1.5", fieldClass)}
+            id="su-password"
+            name="password"
+            type="password"
+            autoComplete="new-password"
+            aria-invalid={Boolean(fieldErrors.password)}
+            className={cn(
+              "mt-1.5",
+              fieldClass,
+              fieldErrors.password && fieldErrorClass,
+            )}
           />
+          <FieldError message={fieldErrors.password} />
+          <p className="mt-1 text-xs text-zinc-500">
+            At least 8 characters with upper, lower, and a number.
+          </p>
         </div>
         <div>
-          <label htmlFor="su-state" className={labelClass}>
-            State {requiredMark}
+          <label htmlFor="su-confirm" className={labelClass}>
+            Confirm password {requiredMark}
           </label>
           <input
-            id="su-state"
-            name="state"
-            type="text"
-            required
-            autoComplete="address-level1"
-            placeholder="e.g. GA"
-            className={cn("mt-1.5", fieldClass)}
+            id="su-confirm"
+            name="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            aria-invalid={Boolean(fieldErrors.confirmPassword)}
+            className={cn(
+              "mt-1.5",
+              fieldClass,
+              fieldErrors.confirmPassword && fieldErrorClass,
+            )}
           />
+          <FieldError message={fieldErrors.confirmPassword} />
         </div>
       </div>
 
-      <div>
-        <label htmlFor="su-business" className={labelClass}>
-          Business type / experience {requiredMark}
-        </label>
-        <div className="relative mt-1.5">
-          <select
-            id="su-business"
-            name="businessType"
-            required
-            defaultValue=""
-            className={selectClass}
-          >
-            {businessTypeOptions.map((opt) => (
-              <option key={opt.value || "placeholder"} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="su-message" className={labelClass}>
-          Tell us about yourself
-        </label>
-        <textarea
-          id="su-message"
-          name="about"
-          rows={5}
-          placeholder="A bit about your business, the markets you serve, and why you're interested in partnering with VTI."
-          className={cn("mt-1.5", textareaClass)}
-        />
-      </div>
-
-      {/* Honeypot — keep empty. Visible only to bots. */}
-      <div aria-hidden className="hidden">
-        <label>
-          Company website
-          <input
-            type="text"
-            name="company_website"
-            tabIndex={-1}
-            autoComplete="off"
-          />
-        </label>
-      </div>
-
-      {errorMessage ? (
-        <div
-          role="alert"
-          aria-live="assertive"
-          className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-900"
-        >
-          {errorMessage}
-        </div>
-      ) : null}
-
-      <div className="space-y-3">
-        <motion.button
-          type="submit"
-          disabled={isSubmitting}
-          aria-busy={isSubmitting}
-          whileHover={isSubmitting ? undefined : hoverLift}
-          whileTap={isSubmitting ? undefined : tapPress}
-          className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
-        >
-          {isSubmitting ? "Submitting…" : "Submit application"}
-          {isSubmitting ? null : <IconUserPlus className="h-4 w-4" />}
-        </motion.button>
-        <p className="text-xs leading-relaxed text-zinc-500">
-          A member of our partner team will reach out to you, usually within
-          24–48 hours, to confirm your application and set up portal access.
-        </p>
-      </div>
+      <motion.button
+        type="submit"
+        disabled={isSubmitting}
+        aria-busy={isSubmitting}
+        whileHover={isSubmitting ? undefined : hoverLift}
+        whileTap={isSubmitting ? undefined : tapPress}
+        className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
+      >
+        {isSubmitting ? "Creating account…" : "Create account"}
+        {isSubmitting ? null : <IconUserPlus className="h-4 w-4" />}
+      </motion.button>
     </form>
   );
 }

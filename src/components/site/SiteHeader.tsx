@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Container } from "@/components/site/Container";
 import { Logo } from "@/components/site/Logo";
+import { ResellerSignOutLink } from "@/components/site/ResellerSignOutLink";
 import { hoverLift, tapPress } from "@/lib/motion";
 
 const nav = [
@@ -14,6 +15,7 @@ const nav = [
   { href: "/gallery", label: "Gallery" },
   { href: "/events", label: "Events" },
   { href: "/about", label: "About" },
+  { href: "/resellers", label: "Resellers" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -97,6 +99,17 @@ export function SiteHeader() {
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
+          {pathname?.startsWith("/resellers/dashboard") ? (
+            <>
+              <Link
+                href="/resellers/dashboard"
+                className="hidden text-sm font-medium text-red-600 sm:inline"
+              >
+                Portal
+              </Link>
+              <ResellerSignOutLink />
+            </>
+          ) : null}
           {/* <MotionLink
             href="/cart"
             aria-label="Cart"

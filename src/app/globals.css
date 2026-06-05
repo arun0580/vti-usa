@@ -2,22 +2,25 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #ffffff;
+  --foreground: #18181b;
   --primary: #d62d2a;
+  /* Muted surfaces (reseller dashboard alternating sections) */
+  --secondary: #f4f4f5;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
   --font-sans: var(--font-urbanist);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #ededed;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #18181b;
   }
 }
 
@@ -25,6 +28,18 @@ body {
   background: #ffffff;
   color: var(--foreground);
   font-family: "Urbanist", ui-sans-serif, system-ui, sans-serif;
+}
+
+input,
+textarea,
+select {
+  color: var(--foreground);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #18181b;
 }
 
 .container-vti {
@@ -113,6 +128,15 @@ button {
   .group:hover .products-ticker-run {
     animation-play-state: paused;
   }
+}
+
+/* Reseller dashboard section backgrounds */
+.dashboard-section-muted {
+  background-color: var(--secondary);
+}
+
+.dashboard-section-white {
+  background-color: #ffffff;
 }
 
 /*

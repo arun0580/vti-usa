@@ -1,0 +1,9 @@
+{
+  "firstName": "Jane",
+  "lastName": "Doe",
+  "companyName": "Acme AV",
+  "email": "jane3.test@example.com",
+  "phone": "+15551234",
+  "password": "SecurePass1",
+  "confirmPassword": "SecurePass1"
+}
