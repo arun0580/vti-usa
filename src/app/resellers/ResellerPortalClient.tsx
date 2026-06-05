@@ -183,7 +183,7 @@ export function ResellerPortalClient() {
             {mode === "signin" ? (
               <>Already a VTI reseller?</>
             ) : (
-              <>Create your reseller account</>
+              <>Interested in becoming a reseller?</>
             )}
           </h1>
           <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600">
@@ -194,9 +194,7 @@ export function ResellerPortalClient() {
               </>
             ) : (
               <>
-                Tell us about your business and create your portal password. A
-                VTI team member will review your application after you verify
-                your email.
+                Tell us about your business and we'll set up portal access for your team. Most applications get a response within one business day.
               </>
             )}
           </p>
