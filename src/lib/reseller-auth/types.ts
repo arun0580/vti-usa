@@ -2,11 +2,16 @@ export type ResellerStatus = "pending" | "active" | "inactive";
 
 export const RESELLER_BUSINESS_TYPE_LABELS: Record<string, string> = {
   av_integrator: "AV integrator",
-  it_reseller: "IT reseller",
-  education_technology: "Education technology",
-  government_contractor: "Government contractor",
-  distributor: "Distributor",
+  it_reseller_var: "IT reseller / VAR",
+  education_focused_reseller: "Education-focused reseller",
+  government_gsa_partner: "Government / GSA partner",
+  signage_digital_media: "Signage / digital media",
   other: "Other",
+  // legacy values (older signups)
+  it_reseller: "IT reseller / VAR",
+  education_technology: "Education-focused reseller",
+  government_contractor: "Government / GSA partner",
+  distributor: "Signage / digital media",
 };
 
 export interface ResellerProfile {

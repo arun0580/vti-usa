@@ -103,10 +103,10 @@ const textareaClass =
 const BUSINESS_TYPE_OPTIONS = [
   { value: "", label: "Select one" },
   { value: "av_integrator", label: "AV integrator" },
-  { value: "it_reseller", label: "IT reseller" },
-  { value: "education_technology", label: "Education technology" },
-  { value: "government_contractor", label: "Government contractor" },
-  { value: "distributor", label: "Distributor" },
+  { value: "it_reseller_var", label: "IT reseller / VAR" },
+  { value: "education_focused_reseller", label: "Education-focused reseller" },
+  { value: "government_gsa_partner", label: "Government / GSA partner" },
+  { value: "signage_digital_media", label: "Signage / digital media" },
   { value: "other", label: "Other" },
 ] as const;
 
