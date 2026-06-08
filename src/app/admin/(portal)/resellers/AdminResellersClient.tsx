@@ -69,6 +69,62 @@ function matchesNameSearch(r: ResellerProfile, query: string): boolean {
 const fieldClass =
   "h-10 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
+const actionBtnBase =
+  "inline-flex h-8 shrink-0 items-center justify-center rounded-md px-3 text-xs font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer";
+
+function ResellerRowActions({
+  reseller,
+  busy,
+  onApprove,
+  onReject,
+  onDelete,
+}: {
+  reseller: ResellerProfile;
+  busy: boolean;
+  onApprove: (id: string) => void;
+  onReject: (id: string) => void;
+  onDelete: (id: string, companyName: string) => void;
+}) {
+  return (
+    <div className="flex flex-nowrap items-center justify-end gap-2">
+      {reseller.status === "pending" ? (
+        <>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() => onApprove(reseller.id)}
+            className={cn(actionBtnBase, "bg-red-600 text-white hover:bg-red-700")}
+          >
+            {busy ? "…" : "Approve"}
+          </button>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={() => onReject(reseller.id)}
+            className={cn(
+              actionBtnBase,
+              "border border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50",
+            )}
+          >
+            Reject
+          </button>
+        </>
+      ) : null}
+      <button
+        type="button"
+        disabled={busy}
+        onClick={() => onDelete(reseller.id, reseller.companyName)}
+        className={cn(
+          actionBtnBase,
+          "border border-zinc-300 bg-white text-red-600 hover:bg-red-50",
+        )}
+      >
+        {busy ? "…" : "Delete"}
+      </button>
+    </div>
+  );
+}
+
 export function AdminResellersClient({
   initialResellers,
 }: {
@@ -225,39 +281,16 @@ export function AdminResellersClient({
       {
         id: "actions",
         header: "Actions",
-        headerClassName: "text-right",
-        cellClassName: "text-right",
+        headerClassName: "min-w-[220px] text-right",
+        cellClassName: "min-w-[220px] text-right align-middle",
         cell: (r) => (
-          <div className="inline-flex flex-wrap justify-end gap-2">
-            {r.status === "pending" ? (
-              <>
-                <button
-                  type="button"
-                  disabled={actionId === r.id}
-                  onClick={() => handleApprove(r.id)}
-                  className="inline-flex h-9 items-center justify-center rounded-lg bg-red-600 px-3 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
-                >
-                  {actionId === r.id ? "…" : "Approve"}
-                </button>
-                <button
-                  type="button"
-                  disabled={actionId === r.id}
-                  onClick={() => handleReject(r.id)}
-                  className="inline-flex h-9 items-center justify-center rounded-lg border border-zinc-300 bg-white px-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-100 disabled:opacity-50 cursor-pointer"
-                >
-                  Reject
-                </button>
-              </>
-            ) : null}
-            <button
-              type="button"
-              disabled={actionId === r.id}
-              onClick={() => handleDelete(r.id, r.companyName)}
-              className="inline-flex h-9 items-center justify-center rounded-lg border border-red-200 bg-red-50 px-3 text-sm font-semibold text-red-700 hover:bg-red-100 disabled:opacity-50 cursor-pointer"
-            >
-              {actionId === r.id ? "…" : "Delete"}
-            </button>
-          </div>
+          <ResellerRowActions
+            reseller={r}
+            busy={actionId === r.id}
+            onApprove={handleApprove}
+            onReject={handleReject}
+            onDelete={handleDelete}
+          />
         ),
       },
     ];
