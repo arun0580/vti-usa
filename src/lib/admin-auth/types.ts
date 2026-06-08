@@ -46,3 +46,7 @@ export type ResellerListResult =
 export type ResellerActionResult =
   | { ok: true; reseller: ResellerProfile; message: string }
   | { ok: false; error: string };
+
+export type ResellerDeleteResult =
+  | { ok: true; id: string; message: string }
+  | { ok: false; error: string };

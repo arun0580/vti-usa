@@ -8,6 +8,7 @@ import {
 } from "@/components/admin/AdminDataTable";
 import {
   approveReseller,
+  deleteReseller,
   fetchAdminResellers,
   rejectReseller,
 } from "@/lib/admin-auth/api";
@@ -41,14 +42,6 @@ function statusBadge(status: ResellerProfile["status"]) {
       {status}
     </span>
   );
-}
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
 }
 
 function formatLocation(r: ResellerProfile): string {
@@ -141,6 +134,25 @@ export function AdminResellersClient({
     await reload(filter);
   }
 
+  async function handleDelete(id: string, companyName: string) {
+    if (
+      !window.confirm(
+        `Delete ${companyName}? This Permanently Removes The Reseller Account And Cannot Be Undone.`,
+      )
+    ) {
+      return;
+    }
+    setActionId(id);
+    setError(null);
+    const result = await deleteReseller(id);
+    setActionId(null);
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+    setResellers((list) => list.filter((r) => r.id !== id));
+  }
+
   const columns = useMemo((): AdminDataTableColumn<ResellerProfile>[] => {
     return [
       {
@@ -211,52 +223,42 @@ export function AdminResellersClient({
         cell: (r) => statusBadge(r.status),
       },
       {
-        id: "verified",
-        header: "Verified",
-        sortable: true,
-        sortValue: (r) => r.emailVerified,
-        cell: (r) =>
-          r.emailVerified ? (
-            <span className="text-emerald-700">Yes</span>
-          ) : (
-            <span className="font-medium text-amber-700">No</span>
-          ),
-      },
-      {
-        id: "applied",
-        header: "Applied",
-        sortable: true,
-        sortValue: (r) => new Date(r.createdAt),
-        cell: (r) => formatDate(r.createdAt),
-      },
-      {
         id: "actions",
         header: "Actions",
         headerClassName: "text-right",
         cellClassName: "text-right",
-        cell: (r) =>
-          r.status === "pending" ? (
-            <div className="inline-flex gap-2">
-              <button
-                type="button"
-                disabled={actionId === r.id}
-                onClick={() => handleApprove(r.id)}
-                className="inline-flex h-9 items-center justify-center rounded-lg bg-red-600 px-3 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
-              >
-                {actionId === r.id ? "…" : "Approve"}
-              </button>
-              <button
-                type="button"
-                disabled={actionId === r.id}
-                onClick={() => handleReject(r.id)}
-                className="inline-flex h-9 items-center justify-center rounded-lg border border-zinc-300 bg-white px-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-100 disabled:opacity-50 cursor-pointer"
-              >
-                Reject
-              </button>
-            </div>
-          ) : (
-            <span className="text-zinc-400">—</span>
-          ),
+        cell: (r) => (
+          <div className="inline-flex flex-wrap justify-end gap-2">
+            {r.status === "pending" ? (
+              <>
+                <button
+                  type="button"
+                  disabled={actionId === r.id}
+                  onClick={() => handleApprove(r.id)}
+                  className="inline-flex h-9 items-center justify-center rounded-lg bg-red-600 px-3 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+                >
+                  {actionId === r.id ? "…" : "Approve"}
+                </button>
+                <button
+                  type="button"
+                  disabled={actionId === r.id}
+                  onClick={() => handleReject(r.id)}
+                  className="inline-flex h-9 items-center justify-center rounded-lg border border-zinc-300 bg-white px-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-100 disabled:opacity-50 cursor-pointer"
+                >
+                  Reject
+                </button>
+              </>
+            ) : null}
+            <button
+              type="button"
+              disabled={actionId === r.id}
+              onClick={() => handleDelete(r.id, r.companyName)}
+              className="inline-flex h-9 items-center justify-center rounded-lg border border-red-200 bg-red-50 px-3 text-sm font-semibold text-red-700 hover:bg-red-100 disabled:opacity-50 cursor-pointer"
+            >
+              {actionId === r.id ? "…" : "Delete"}
+            </button>
+          </div>
+        ),
       },
     ];
   }, [actionId]);
@@ -321,7 +323,7 @@ export function AdminResellersClient({
         columns={columns}
         getRowId={(r) => r.id}
         loading={loading}
-        defaultSort={{ columnId: "applied", direction: "desc" }}
+        defaultSort={{ columnId: "company", direction: "asc" }}
         emptyMessage={
           searchQuery.trim()
             ? "No Resellers Match Your Search."

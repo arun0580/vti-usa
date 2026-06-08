@@ -4,6 +4,7 @@ import type {
   ApiErrorResponse,
   ApiSuccess,
   ResellerActionResult,
+  ResellerDeleteResult,
   ResellerListResult,
   UpdateAdminProfilePayload,
   UpdateAdminProfileResult,
@@ -105,6 +106,27 @@ export async function rejectReseller(id: string): Promise<ResellerActionResult> 
     ok: true,
     reseller: body.data.reseller,
     message: body.message ?? "Reseller rejected",
+  };
+}
+
+export async function deleteReseller(id: string): Promise<ResellerDeleteResult> {
+  const res = await fetch(`/api/admin/resellers/${id}/delete`, {
+    method: "POST",
+    credentials: "include",
+  });
+  const body = await parseJson<
+    ApiSuccess<{ id: string }> | ApiErrorResponse
+  >(res);
+  if (!body || !body.success) {
+    return {
+      ok: false,
+      error: body?.error ?? "Delete failed.",
+    };
+  }
+  return {
+    ok: true,
+    id: body.data.id,
+    message: body.message ?? "Reseller Deleted.",
   };
 }
 
