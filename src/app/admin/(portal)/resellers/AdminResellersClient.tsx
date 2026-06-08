@@ -119,7 +119,7 @@ function ResellerRowActions({
           "border border-zinc-300 bg-white text-red-600 hover:bg-red-50",
         )}
       >
-        {busy ? "…" : "Delete"}
+        {busy ? "…" : "Remove"}
       </button>
     </div>
   );
@@ -193,7 +193,7 @@ export function AdminResellersClient({
   async function handleDelete(id: string, companyName: string) {
     if (
       !window.confirm(
-        `Delete ${companyName}? This Permanently Removes The Reseller Account And Cannot Be Undone.`,
+        `Remove ${companyName}? This Permanently Removes The Reseller Account And Cannot Be Undone.`,
       )
     ) {
       return;
