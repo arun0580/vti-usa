@@ -101,12 +101,12 @@ const textareaClass =
   "w-full rounded-lg border border-zinc-200 bg-white px-3 py-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
 const BUSINESS_TYPE_OPTIONS = [
-  { value: "", label: "Select one" },
-  { value: "av_integrator", label: "AV integrator" },
-  { value: "it_reseller_var", label: "IT reseller / VAR" },
-  { value: "education_focused_reseller", label: "Education-focused reseller" },
-  { value: "government_gsa_partner", label: "Government / GSA partner" },
-  { value: "signage_digital_media", label: "Signage / digital media" },
+  { value: "", label: "Select One" },
+  { value: "av_integrator", label: "AV Integrator" },
+  { value: "it_reseller_var", label: "IT Reseller / VAR" },
+  { value: "education_focused_reseller", label: "Education-Focused Reseller" },
+  { value: "government_gsa_partner", label: "Government / GSA Partner" },
+  { value: "signage_digital_media", label: "Signage / Digital Media" },
   { value: "other", label: "Other" },
 ] as const;
 
@@ -177,7 +177,7 @@ export function ResellerPortalClient() {
       <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-10 xl:gap-16 py-10 sm:py-16">
         <Reveal>
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-600">
-            Reseller portal access
+            Reseller Portal Access
           </p>
           <h1 className="mt-3 text-2xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
             {mode === "signin" ? (
@@ -290,27 +290,24 @@ function ResendVerificationButton({
     setLoading(false);
     setMsg(
       result.ok
-        ? "Verification email sent. Check your inbox."
+        ? "Verification Email Sent. Check Your Inbox."
         : result.error,
     );
   }
 
   return (
-    <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
-      <p className="font-medium">Email not verified yet</p>
-      <p className="mt-1 text-amber-900/90">
-        Open the link we sent to <span className="font-semibold">{email}</span>{" "}
-        or request a new one.
-      </p>
+    <div className="text-sm">
       <button
         type="button"
         onClick={handleResend}
         disabled={loading}
-        className="mt-3 text-sm font-semibold text-red-600 hover:text-red-700 disabled:opacity-60 cursor-pointer"
+        className="text-sm font-semibold text-red-600 hover:text-red-700 disabled:opacity-60 cursor-pointer"
       >
-        {loading ? "Sending…" : "Resend verification email"}
+        {loading ? "Sending…" : "Resend Verification Email"}
       </button>
-      {msg ? <p className="mt-2 text-xs font-medium">{msg}</p> : null}
+      {msg ? (
+        <p className="mt-2 text-xs font-medium text-zinc-600">{msg}</p>
+      ) : null}
     </div>
   );
 }
@@ -352,8 +349,12 @@ function SignInForm() {
       return;
     }
 
-    if (result.code === "EMAIL_NOT_VERIFIED") {
+    if (
+      result.code === "EMAIL_NOT_VERIFIED" ||
+      result.error.toLowerCase().includes("verify your email")
+    ) {
       setUnverifiedEmail(payload.email);
+      return;
     }
     if (result.code === "ACCOUNT_PENDING" || result.code === "PORTAL_NOT_READY") {
       setFormError(result.error);
@@ -366,16 +367,30 @@ function SignInForm() {
   return (
     <form className="space-y-5" onSubmit={handleSubmit} noValidate>
       {unverifiedEmail ? (
-        <ResendVerificationButton email={unverifiedEmail} />
+        <div
+          role="alert"
+          className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950"
+        >
+          <p>
+            Please Verify Your Email Before Signing In. Check Your Inbox For The
+            Verification Link Sent To{" "}
+            <span className="font-semibold">{unverifiedEmail}</span>.
+          </p>
+          <div className="mt-3">
+            <ResendVerificationButton email={unverifiedEmail} />
+          </div>
+        </div>
       ) : null}
-      {formError ? <FormAlert message={formError} /> : null}
+      {formError && !unverifiedEmail ? (
+        <FormAlert message={formError} />
+      ) : null}
 
       <div>
         <label
           htmlFor="portal-email"
           className="text-sm font-medium text-zinc-950"
         >
-          Work email {requiredMark}
+          Work Email {requiredMark}
         </label>
         <div className="relative mt-1.5">
           <span
@@ -445,7 +460,7 @@ function SignInForm() {
             href="mailto:info@vtiusa.com?subject=Reseller%20portal%20password%20help"
             className="text-sm font-medium text-red-600 hover:text-red-700"
           >
-            Forgot password?
+            Forgot Password?
           </a>
         </div>
       </div>
@@ -458,7 +473,7 @@ function SignInForm() {
         whileTap={isSubmitting ? undefined : tapPress}
         className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
       >
-        {isSubmitting ? "Signing in…" : "Sign in to portal"}
+        {isSubmitting ? "Signing In…" : "Sign In to Portal"}
         {isSubmitting ? null : (
           <svg
             className="h-4 w-4"
@@ -533,25 +548,18 @@ function SignUpForm() {
     return (
       <div className="space-y-5 text-center">
         <FormAlert
-          message="Account created. Verify your email, then wait for admin approval before signing in."
+          message="Account Created. Verify Your Email, Then Wait For Admin Approval Before Signing In."
           variant="success"
         />
         <p className="text-sm text-zinc-600">
-          We sent a verification link to{" "}
+          We Sent A Verification Link To{" "}
           <span className="font-semibold text-zinc-900">{pendingEmail}</span>.
-          The link expires in 24 hours.
+          The Link Expires In 24 Hours.
         </p>
         <ResendVerificationButton
           email={pendingEmail}
           firstName={pendingFirstName}
         />
-        <button
-          type="button"
-          onClick={() => setPendingEmail(null)}
-          className="text-sm font-semibold text-red-600 hover:text-red-700 cursor-pointer"
-        >
-          Back to sign up
-        </button>
       </div>
     );
   }
@@ -563,7 +571,7 @@ function SignUpForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="su-fullname" className={labelClass}>
-            Full name {requiredMark}
+            Full Name {requiredMark}
           </label>
           <input
             id="su-fullname"
@@ -581,7 +589,7 @@ function SignUpForm() {
         </div>
         <div>
           <label htmlFor="su-company" className={labelClass}>
-            Company / organization {requiredMark}
+            Company / Organization {requiredMark}
           </label>
           <input
             id="su-company"
@@ -602,7 +610,7 @@ function SignUpForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="su-email" className={labelClass}>
-            Work email {requiredMark}
+            Work Email {requiredMark}
           </label>
           <input
             id="su-email"
@@ -658,12 +666,12 @@ function SignUpForm() {
           />
           <FieldError message={fieldErrors.password} />
           <p className="mt-1 text-xs text-zinc-500">
-            At least 8 characters with upper, lower, and a number.
+            At Least 8 Characters With Upper, Lower, And A Number.
           </p>
         </div>
         <div>
           <label htmlFor="su-confirm" className={labelClass}>
-            Confirm password {requiredMark}
+            Confirm Password {requiredMark}
           </label>
           <input
             id="su-confirm"
@@ -723,7 +731,7 @@ function SignUpForm() {
 
       <div>
         <label htmlFor="su-business-type" className={labelClass}>
-          Business type / experience {requiredMark}
+          Business Type / Experience {requiredMark}
         </label>
         <select
           id="su-business-type"
@@ -747,7 +755,7 @@ function SignUpForm() {
 
       <div>
         <label htmlFor="su-about" className={labelClass}>
-          Tell us about yourself {requiredMark}
+          Tell Us About Yourself {requiredMark}
         </label>
         <textarea
           id="su-about"
@@ -772,8 +780,8 @@ function SignUpForm() {
         whileTap={isSubmitting ? undefined : tapPress}
         className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
       >
-        {isSubmitting ? "Creating account…" : "Create account"}
         {isSubmitting ? null : <IconUserPlus className="h-4 w-4" />}
+        {isSubmitting ? "Creating Account…" : "Create Account"}
       </motion.button>
     </form>
   );

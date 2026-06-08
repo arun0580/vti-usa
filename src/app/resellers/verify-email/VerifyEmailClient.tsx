@@ -14,8 +14,8 @@ export function VerifyEmailClient({ token }: { token: string }) {
   const [status, setStatus] = useState<Status>(token ? "verifying" : "error");
   const [message, setMessage] = useState(
     token
-      ? "Verifying your email…"
-      : "Missing verification link. Open the link from your email or request a new one from the sign-in page.",
+      ? "Verifying Your Email…"
+      : "Missing Verification Link. Open The Link From Your Email Or Request A New One From The Sign-In Page.",
   );
 
   useEffect(() => {
@@ -31,11 +31,11 @@ export function VerifyEmailClient({ token }: { token: string }) {
         setStatus("success");
         if (result.pendingApproval) {
           setMessage(
-            "Your email is verified. Your account is awaiting admin approval — you can sign in once approved.",
+            "Your Email Is Verified. Your Account Is Awaiting Admin Approval — You Can Sign In Once Approved.",
           );
           return;
         }
-        setMessage("Your email is verified. Redirecting to your dashboard…");
+        setMessage("Your Email Is Verified. Redirecting To Your Dashboard…");
         router.push("/resellers/dashboard");
         router.refresh();
         return;
@@ -54,7 +54,7 @@ export function VerifyEmailClient({ token }: { token: string }) {
   return (
     <Reveal onMount className="mx-auto max-w-lg text-center">
       <h1 className="text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
-        Email verification
+        Email Verification
       </h1>
       <p
         className={`mt-4 text-base leading-relaxed ${
@@ -72,7 +72,7 @@ export function VerifyEmailClient({ token }: { token: string }) {
             href="/resellers"
             className="text-sm font-semibold text-red-600 hover:text-red-700"
           >
-            Back to reseller portal
+            Back To Reseller Portal
           </Link>
         </div>
       ) : null}
@@ -87,7 +87,7 @@ export function VerifyEmailClient({ token }: { token: string }) {
             href="/resellers"
             className="inline-flex h-11 items-center justify-center rounded-lg bg-red-600 px-6 text-sm font-semibold text-white hover:bg-red-700"
           >
-            Back to reseller portal
+            Back To Reseller Portal
           </Link>
         </motion.div>
       ) : null}

@@ -5,6 +5,8 @@ import type {
   ApiSuccess,
   ResellerActionResult,
   ResellerListResult,
+  UpdateAdminProfilePayload,
+  UpdateAdminProfileResult,
 } from "./types";
 import type { ResellerProfile } from "@/lib/reseller-auth/types";
 
@@ -103,5 +105,32 @@ export async function rejectReseller(id: string): Promise<ResellerActionResult> 
     ok: true,
     reseller: body.data.reseller,
     message: body.message ?? "Reseller rejected",
+  };
+}
+
+export async function updateAdminProfile(
+  payload: UpdateAdminProfilePayload,
+): Promise<UpdateAdminProfileResult> {
+  const res = await fetch("/api/admin/profile", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(payload),
+  });
+  const body = await parseJson<
+    ApiSuccess<{ admin: AdminProfile }> | ApiErrorResponse
+  >(res);
+  if (!body || !body.success) {
+    return {
+      ok: false,
+      error: body?.error ?? "Unable To Update Profile.",
+      code: body?.code,
+      fields: body?.fields,
+    };
+  }
+  return {
+    ok: true,
+    admin: body.data.admin,
+    message: body.message ?? "Profile Updated Successfully.",
   };
 }

@@ -20,7 +20,20 @@ export type ApiErrorResponse = {
   success: false;
   error: string;
   code?: string;
+  fields?: Record<string, string>;
 };
+
+export type UpdateAdminProfilePayload = {
+  firstName: string;
+  lastName: string;
+  currentPassword?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+};
+
+export type UpdateAdminProfileResult =
+  | { ok: true; admin: AdminProfile; message: string }
+  | { ok: false; error: string; code?: string; fields?: Record<string, string> };
 
 export type AdminSigninResult =
   | { ok: true; admin: AdminProfile }

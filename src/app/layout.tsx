@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Urbanist } from "next/font/google";
 import "./globals.css";
-import { AnnouncementBanner } from "@/components/site/AnnouncementBanner";
-import { SiteFooter } from "@/components/site/SiteFooter";
-import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteChrome } from "@/components/site/SiteChrome";
 import { MotionProvider } from "@/components/motion";
 
 const urbanist = Urbanist({
@@ -37,10 +35,9 @@ export default function RootLayout({
     >
       <body className="min-h-full w-full min-w-0 flex flex-col overflow-x-hidden bg-white text-zinc-950">
         <MotionProvider>
-          <AnnouncementBanner />
-          <SiteHeader />
-          <main className="min-w-0 flex-1">{children}</main>
-          <SiteFooter />
+          <SiteChrome>
+            <main className="min-w-0 flex-1">{children}</main>
+          </SiteChrome>
         </MotionProvider>
       </body>
     </html>

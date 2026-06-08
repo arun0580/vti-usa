@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container } from "@/components/site/Container";
+import { Logo } from "@/components/site/Logo";
 import { adminSignin, adminSignout } from "@/lib/admin-auth/api";
 
 export function AdminLoginClient() {
@@ -13,7 +14,7 @@ export function AdminLoginClient() {
   useEffect(() => {
     if (searchParams.get("error") === "session") {
       setError(
-        "Your session could not be verified. Sign in again. If this keeps happening, check RESELLER_API_URL on the web server.",
+        "Your Session Could Not Be Verified. Sign In Again. If This Keeps Happening, Check RESELLER_API_URL On The Web Server.",
       );
       void adminSignout();
     }
@@ -42,13 +43,20 @@ export function AdminLoginClient() {
   }
 
   return (
-    <div className="min-h-[70vh] bg-zinc-50 py-16">
-      <Container className="mx-auto max-w-md">
+    <div className="min-h-screen bg-zinc-50">
+      <header className="border-b border-zinc-200 bg-white px-4 py-4 sm:px-6">
+        <Logo
+          href="/admin/login"
+          imageClassName="rounded-md object-contain h-9 w-auto"
+        />
+      </header>
+      <div className="py-16">
+        <Container className="mx-auto max-w-md">
         <h1 className="text-2xl font-bold tracking-tight text-zinc-950">
-          Admin sign in
+          Admin Sign In
         </h1>
         <p className="mt-2 text-sm text-zinc-600">
-          Approve reseller applications before they can access the portal.
+          Approve Reseller Applications Before They Can Access The Portal.
         </p>
 
         <form
@@ -97,10 +105,11 @@ export function AdminLoginClient() {
             disabled={isSubmitting}
             className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-red-600 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60 cursor-pointer"
           >
-            {isSubmitting ? "Signing in…" : "Sign in"}
+            {isSubmitting ? "Signing In…" : "Sign In"}
           </button>
         </form>
-      </Container>
+        </Container>
+      </div>
     </div>
   );
 }
