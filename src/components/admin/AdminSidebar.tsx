@@ -48,8 +48,8 @@ export function AdminSidebar({
       )}
     >
       <div className="px-4 py-5">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-red-600">
-          VTI Admin
+        <p className="text-base font-bold tracking-[0.08em] text-primary normal-case">
+          VTI Admin Panel
         </p>
       </div>
       <nav className="flex-1 px-3 pb-6" aria-label="Admin navigation">
@@ -63,10 +63,10 @@ export function AdminSidebar({
                   href={item.href}
                   onClick={onNavigate}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors",
+                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors !text-zinc-950",
                     isActive
-                      ? "bg-red-50 text-red-600"
-                      : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-950",
+                      ? "bg-zinc-100"
+                      : "hover:bg-zinc-50",
                   )}
                 >
                   <Icon className="h-5 w-5 shrink-0" />
