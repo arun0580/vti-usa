@@ -1,35 +1,33 @@
 import "server-only";
 
-import { sendEmail } from "@/lib/email/service";
-import { escapeHtml } from "@/lib/email/templates";
+import { buildEmailLogoUrl, sendEmail } from "@/lib/email/service";
+import { renderTransactionalEmailHtml } from "@/lib/email/templates";
 
 export type VerificationEmailInput = {
   to: string;
   firstName: string;
   verifyUrl: string;
+  baseUrl?: string;
 };
 
 function buildVerificationHtml(input: VerificationEmailInput): string {
-  const name = escapeHtml(input.firstName);
-  const url = escapeHtml(input.verifyUrl);
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<body style="font-family: system-ui, sans-serif; line-height: 1.5; color: #18181b;">
-  <p>Hi ${name},</p>
-  <p>Thanks For Registering For The VTI Reseller Portal. Please Confirm Your Email Address To Activate Your Account:</p>
-  <p style="margin: 24px 0;">
-    <a href="${url}" style="display: inline-block; background: #dc2626; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
-      Verify Email Address
-    </a>
-  </p>
-  <p style="font-size: 14px; color: #52525b;">Or Copy This Link Into Your Browser:<br />
-    <a href="${url}">${url}</a>
-  </p>
-  <p style="font-size: 14px; color: #71717a;">This Link Expires In 24 Hours. If You Did Not Create An Account, You Can Ignore This Email.</p>
-  <p style="font-size: 14px; color: #71717a;">— VTI USA Partner Team</p>
-</body>
-</html>`.trim();
+  return renderTransactionalEmailHtml(
+    {
+      subject: "Verify your VTI reseller account",
+      preheader: "Confirm your email to activate your reseller portal account.",
+      heading: "Verify your email",
+      paragraphs: [
+        `Hi ${input.firstName},`,
+        "Thanks for registering for the VTI reseller portal. Please confirm your email address to activate your account.",
+      ],
+      cta: { label: "Verify email address", url: input.verifyUrl },
+      linkFallback: { url: input.verifyUrl },
+      footnotes: [
+        "This link expires in 24 hours. If you did not create an account, you can ignore this email.",
+      ],
+    },
+    { logoUrl: buildEmailLogoUrl(input.baseUrl) },
+  );
 }
 
 /** Send reseller email verification via Resend */
@@ -39,15 +37,15 @@ export async function sendResellerVerificationEmail(
   const text = [
     `Hi ${input.firstName},`,
     "",
-    "Verify Your VTI Reseller Portal Account:",
+    "Verify your VTI reseller portal account:",
     input.verifyUrl,
     "",
-    "This Link Expires In 24 Hours.",
+    "This link expires in 24 hours.",
   ].join("\n");
 
   const result = await sendEmail({
     to: input.to,
-    subject: "Verify Your VTI Reseller Account",
+    subject: "Verify your VTI reseller account",
     html: buildVerificationHtml(input),
     text,
   });

@@ -46,6 +46,7 @@ export async function POST(request: Request) {
       to: reseller.email,
       firstName: reseller.firstName,
       verifyUrl,
+      baseUrl,
     });
 
     if (!emailResult.ok) {

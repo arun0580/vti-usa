@@ -47,6 +47,7 @@ export async function POST(
       to: reseller.email,
       firstName: reseller.firstName || "there",
       signInUrl,
+      baseUrl,
     });
 
     if (!emailResult.ok) {

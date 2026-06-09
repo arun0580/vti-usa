@@ -48,6 +48,7 @@ export async function POST(request: Request) {
       to: email,
       firstName,
       verifyUrl,
+      baseUrl,
     });
 
     if (!emailResult.ok) {

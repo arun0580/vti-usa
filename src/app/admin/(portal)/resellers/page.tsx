@@ -4,7 +4,7 @@ import type { ResellerProfile } from "@/lib/reseller-auth/types";
 import { AdminResellersClient } from "./AdminResellersClient";
 
 export const metadata: Metadata = {
-  title: "Manage Resellers",
+  title: "Manage resellers",
   robots: { index: false, follow: false },
 };
 

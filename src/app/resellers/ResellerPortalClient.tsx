@@ -101,7 +101,7 @@ const textareaClass =
   "w-full rounded-lg border border-zinc-200 bg-white px-3 py-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
 const BUSINESS_TYPE_OPTIONS = [
-  { value: "", label: "Select One" },
+  { value: "", label: "Select one" },
   { value: "av_integrator", label: "AV Integrator" },
   { value: "it_reseller_var", label: "IT Reseller / VAR" },
   { value: "education_focused_reseller", label: "Education-Focused Reseller" },
@@ -220,7 +220,7 @@ export function ResellerPortalClient() {
               )}
             >
               <IconLogIn className="h-5 w-5 shrink-0" />
-              Sign In
+              Sign in
             </motion.button>
             <motion.button
               type="button"
@@ -238,7 +238,7 @@ export function ResellerPortalClient() {
               )}
             >
               <IconUserPlus className="h-5 w-5 shrink-0" />
-              Sign Up
+              Sign up
             </motion.button>
           </div>
 
@@ -290,7 +290,7 @@ function ResendVerificationButton({
     setLoading(false);
     setMsg(
       result.ok
-        ? "Verification Email Sent. Check Your Inbox."
+        ? "Verification email sent. Check your inbox."
         : result.error,
     );
   }
@@ -372,8 +372,8 @@ function SignInForm() {
           className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950"
         >
           <p>
-            Please Verify Your Email Before Signing In. Check Your Inbox For The
-            Verification Link Sent To{" "}
+            Please verify your email before signing in. Check your inbox for the
+            verification link sent to{" "}
             <span className="font-semibold">{unverifiedEmail}</span>.
           </p>
           <div className="mt-3">
@@ -390,7 +390,7 @@ function SignInForm() {
           htmlFor="portal-email"
           className="text-sm font-medium text-zinc-950"
         >
-          Work Email {requiredMark}
+          Work email {requiredMark}
         </label>
         <div className="relative mt-1.5">
           <span
@@ -460,7 +460,7 @@ function SignInForm() {
             href="mailto:info@vtiusa.com?subject=Reseller%20portal%20password%20help"
             className="text-sm font-medium text-red-600 hover:text-red-700"
           >
-            Forgot Password?
+            Forgot password?
           </a>
         </div>
       </div>
@@ -473,7 +473,7 @@ function SignInForm() {
         whileTap={isSubmitting ? undefined : tapPress}
         className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
       >
-        {isSubmitting ? "Signing In…" : "Sign In to Portal"}
+        {isSubmitting ? "Signing in…" : "Sign in to portal"}
         {isSubmitting ? null : (
           <svg
             className="h-4 w-4"
@@ -547,14 +547,22 @@ function SignUpForm() {
   if (pendingEmail) {
     return (
       <div className="space-y-5 text-center">
-        <FormAlert
-          message="Account Created. Verify Your Email, Then Wait For Admin Approval Before Signing In."
-          variant="success"
-        />
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="rounded-lg border border-emerald-200 bg-emerald-50 px-5 py-6 text-center text-sm text-emerald-900"
+        >
+          <p className="text-lg font-bold text-emerald-600">
+            Account Created Successfully!
+          </p>
+          <p className="mt-3 font-medium whitespace-nowrap">
+            Please verify your email address and wait for administrator approval before signing in.
+          </p>
+        </div>
         <p className="text-sm text-zinc-600">
-          We Sent A Verification Link To{" "}
+          A verification email has been sent to{" "}
           <span className="font-semibold text-zinc-900">{pendingEmail}</span>.
-          The Link Expires In 24 Hours.
+          The verification link will expire in 24 hours.
         </p>
         <ResendVerificationButton
           email={pendingEmail}
@@ -571,7 +579,7 @@ function SignUpForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="su-fullname" className={labelClass}>
-            Full Name {requiredMark}
+            Full name {requiredMark}
           </label>
           <input
             id="su-fullname"
@@ -589,7 +597,7 @@ function SignUpForm() {
         </div>
         <div>
           <label htmlFor="su-company" className={labelClass}>
-            Company / Organization {requiredMark}
+            Company / organization {requiredMark}
           </label>
           <input
             id="su-company"
@@ -610,7 +618,7 @@ function SignUpForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label htmlFor="su-email" className={labelClass}>
-            Work Email {requiredMark}
+            Work email {requiredMark}
           </label>
           <input
             id="su-email"
@@ -666,12 +674,12 @@ function SignUpForm() {
           />
           <FieldError message={fieldErrors.password} />
           <p className="mt-1 text-xs text-zinc-500">
-            At Least 8 Characters With Upper, Lower, And A Number.
+            At least 8 characters with upper, lower, and a number.
           </p>
         </div>
         <div>
           <label htmlFor="su-confirm" className={labelClass}>
-            Confirm Password {requiredMark}
+            Confirm password {requiredMark}
           </label>
           <input
             id="su-confirm"
@@ -731,7 +739,7 @@ function SignUpForm() {
 
       <div>
         <label htmlFor="su-business-type" className={labelClass}>
-          Business Type / Experience {requiredMark}
+          Business type / experience {requiredMark}
         </label>
         <select
           id="su-business-type"
@@ -755,7 +763,7 @@ function SignUpForm() {
 
       <div>
         <label htmlFor="su-about" className={labelClass}>
-          Tell Us About Yourself {requiredMark}
+          Tell us about yourself {requiredMark}
         </label>
         <textarea
           id="su-about"
@@ -781,7 +789,7 @@ function SignUpForm() {
         className="flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-red-600 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer"
       >
         {isSubmitting ? null : <IconUserPlus className="h-4 w-4" />}
-        {isSubmitting ? "Creating Account…" : "Create Account"}
+        {isSubmitting ? "Creating account…" : "Create account"}
       </motion.button>
     </form>
   );

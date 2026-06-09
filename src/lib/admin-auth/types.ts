@@ -43,6 +43,10 @@ export type ResellerListResult =
   | { ok: true; resellers: ResellerProfile[] }
   | { ok: false; error: string };
 
+export type ResellerDetailResult =
+  | { ok: true; reseller: ResellerProfile }
+  | { ok: false; error: string };
+
 export type ResellerActionResult =
   | { ok: true; reseller: ResellerProfile; message: string }
   | { ok: false; error: string };

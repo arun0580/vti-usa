@@ -3,7 +3,7 @@ import { VerifyEmailClient } from "./VerifyEmailClient";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Verify Email",
+  title: "Verify email",
   description: "Verify your VTI reseller portal email address.",
 };
 

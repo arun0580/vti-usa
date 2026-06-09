@@ -25,9 +25,10 @@ type AdminDataTableProps<T> = {
   pageSizeOptions?: number[];
 };
 
-const thClass =
-  "whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-zinc-500";
-const tdClass = "whitespace-nowrap px-4 py-4 text-sm text-zinc-700";
+const thClass = "whitespace-nowrap px-6 py-4 text-left";
+const headerLabelClass =
+  "inline-flex items-center gap-1.5 text-sm font-semibold capitalize tracking-[0.06em] text-zinc-500";
+const tdClass = "whitespace-nowrap px-6 py-5 text-sm text-zinc-600";
 
 function compareValues(a: unknown, b: unknown): number {
   if (a instanceof Date && b instanceof Date) {
@@ -49,7 +50,7 @@ export function AdminDataTable<T>({
   columns,
   getRowId,
   loading = false,
-  emptyMessage = "No Records Found.",
+  emptyMessage = "No records found.",
   defaultSort,
   pageSizeOptions = [10, 25, 50],
 }: AdminDataTableProps<T>) {
@@ -106,47 +107,71 @@ export function AdminDataTable<T>({
   }
 
   return (
-    <div className="overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white">
       {loading ? (
-        <p className="px-6 py-10 text-sm text-zinc-500">Loading…</p>
+        <p className="px-6 py-12 text-sm text-zinc-500">Loading…</p>
       ) : sortedData.length === 0 ? (
-        <p className="px-6 py-10 text-sm text-zinc-500">{emptyMessage}</p>
+        <p className="px-6 py-12 text-sm text-zinc-500">{emptyMessage}</p>
       ) : (
         <>
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-zinc-200">
-              <thead className="bg-zinc-50">
-                <tr>
+            <table className="min-w-full">
+              <thead>
+                <tr className="border-b border-dashed border-zinc-200">
                   {columns.map((column) => (
                     <th
                       key={column.id}
                       scope="col"
                       className={cn(thClass, column.headerClassName)}
                     >
-                      {column.sortable ? (
-                        <button
-                          type="button"
-                          onClick={() => toggleSort(column.id)}
-                          className="inline-flex items-center gap-1.5 transition-colors hover:text-zinc-900 cursor-pointer"
-                        >
-                          {column.header}
+                      <span
+                        role={column.sortable ? "button" : undefined}
+                        tabIndex={column.sortable ? 0 : undefined}
+                        onClick={
+                          column.sortable
+                            ? () => toggleSort(column.id)
+                            : undefined
+                        }
+                        onKeyDown={
+                          column.sortable
+                            ? (e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  toggleSort(column.id);
+                                }
+                              }
+                            : undefined
+                        }
+                        className={cn(
+                          headerLabelClass,
+                          column.sortable &&
+                            "cursor-pointer transition-colors hover:text-zinc-600",
+                        )}
+                      >
+                        {column.header}
+                        {column.sortable ? (
                           <SortIndicator
                             active={sortColumnId === column.id}
                             direction={
                               sortColumnId === column.id ? sortDirection : "asc"
                             }
                           />
-                        </button>
-                      ) : (
-                        column.header
-                      )}
+                        ) : null}
+                      </span>
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100 bg-white">
-                {pageData.map((row) => (
-                  <tr key={getRowId(row)} className="hover:bg-zinc-50/60">
+              <tbody>
+                {pageData.map((row, index) => (
+                  <tr
+                    key={getRowId(row)}
+                    className={cn(
+                      "transition-colors hover:bg-zinc-50/50",
+                      index < pageData.length - 1 &&
+                        "border-b border-dashed border-zinc-200",
+                    )}
+                  >
                     {columns.map((column) => (
                       <td
                         key={column.id}
@@ -161,18 +186,18 @@ export function AdminDataTable<T>({
             </table>
           </div>
 
-          <div className="flex flex-col gap-3 border-t border-zinc-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-            <p className="text-sm text-zinc-600">
+          <div className="flex flex-col gap-3 border-t border-dashed border-zinc-200 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-zinc-500">
               Showing {rangeStart}–{rangeEnd} of {sortedData.length}
             </p>
 
             <div className="flex flex-wrap items-center gap-3">
-              <label className="flex items-center gap-2 text-sm text-zinc-600">
+              <label className="flex items-center gap-2 text-sm text-zinc-500">
                 Rows
                 <select
                   value={pageSize}
                   onChange={(e) => setPageSize(Number(e.target.value))}
-                  className="h-9 rounded-lg border border-zinc-200 bg-white px-2 text-sm text-zinc-950 cursor-pointer"
+                  className="h-9 rounded-lg border border-zinc-200 bg-white px-2.5 text-sm text-zinc-700 cursor-pointer"
                 >
                   {pageSizeOptions.map((size) => (
                     <option key={size} value={size}>
@@ -187,18 +212,18 @@ export function AdminDataTable<T>({
                   type="button"
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage <= 1}
-                  className="inline-flex h-9 items-center justify-center rounded-lg border border-zinc-300 bg-white px-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+                  className="inline-flex h-9 items-center justify-center rounded-lg border border-zinc-200 bg-white px-3.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                 >
                   Previous
                 </button>
-                <span className="text-sm text-zinc-600">
+                <span className="text-sm text-zinc-500">
                   Page {currentPage} of {totalPages}
                 </span>
                 <button
                   type="button"
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage >= totalPages}
-                  className="inline-flex h-9 items-center justify-center rounded-lg border border-zinc-300 bg-white px-3 text-sm font-semibold text-zinc-900 hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+                  className="inline-flex h-9 items-center justify-center rounded-lg border border-zinc-200 bg-white px-3.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                 >
                   Next
                 </button>
@@ -222,14 +247,14 @@ function SortIndicator({
     <span
       className={cn(
         "inline-flex flex-col text-[8px] leading-none",
-        active ? "text-red-600" : "text-zinc-400",
+        active ? "text-zinc-600" : "text-zinc-300",
       )}
       aria-hidden
     >
-      <span className={cn(active && direction === "asc" && "text-red-600")}>
+      <span className={cn(active && direction === "asc" && "text-zinc-600")}>
         ▲
       </span>
-      <span className={cn(active && direction === "desc" && "text-red-600")}>
+      <span className={cn(active && direction === "desc" && "text-zinc-600")}>
         ▼
       </span>
     </span>

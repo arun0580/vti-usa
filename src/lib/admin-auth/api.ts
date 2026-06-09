@@ -5,6 +5,7 @@ import type {
   ApiSuccess,
   ResellerActionResult,
   ResellerDeleteResult,
+  ResellerDetailResult,
   ResellerListResult,
   UpdateAdminProfilePayload,
   UpdateAdminProfileResult,
@@ -67,6 +68,24 @@ export async function fetchAdminResellers(
   return { ok: true, resellers: body.data.resellers };
 }
 
+export async function fetchAdminReseller(
+  id: string,
+): Promise<ResellerDetailResult> {
+  const res = await fetch(`/api/admin/resellers/${id}`, {
+    credentials: "include",
+  });
+  const body = await parseJson<
+    ApiSuccess<{ reseller: ResellerProfile }> | ApiErrorResponse
+  >(res);
+  if (!body || !body.success) {
+    return {
+      ok: false,
+      error: body?.error ?? "Unable to load reseller.",
+    };
+  }
+  return { ok: true, reseller: body.data.reseller };
+}
+
 export async function approveReseller(id: string): Promise<ResellerActionResult> {
   const res = await fetch(`/api/admin/resellers/${id}/approve`, {
     method: "POST",
@@ -126,7 +145,7 @@ export async function deleteReseller(id: string): Promise<ResellerDeleteResult> 
   return {
     ok: true,
     id: body.data.id,
-    message: body.message ?? "Reseller Deleted.",
+    message: body.message ?? "Reseller deleted.",
   };
 }
 
@@ -145,7 +164,7 @@ export async function updateAdminProfile(
   if (!body || !body.success) {
     return {
       ok: false,
-      error: body?.error ?? "Unable To Update Profile.",
+      error: body?.error ?? "Unable to update profile.",
       code: body?.code,
       fields: body?.fields,
     };
@@ -153,6 +172,6 @@ export async function updateAdminProfile(
   return {
     ok: true,
     admin: body.data.admin,
-    message: body.message ?? "Profile Updated Successfully.",
+    message: body.message ?? "Profile updated successfully.",
   };
 }

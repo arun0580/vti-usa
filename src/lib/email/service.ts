@@ -89,9 +89,7 @@ export async function submitFormEmail<T extends FormType>(
   options: SubmitFormEmailOptions = {},
 ): Promise<SendEmailResult & { template?: EmailTemplate }> {
   const template = buildTemplateFor(formType, data);
-  const logoUrl = options.baseUrl
-    ? `${options.baseUrl.replace(/\/+$/, "")}/logo.png`
-    : undefined;
+  const logoUrl = buildEmailLogoUrl(options.baseUrl);
   const html = renderEmailHtml(template, { logoUrl });
 
   const result = await sendEmail({
@@ -111,6 +109,11 @@ export async function submitFormEmail<T extends FormType>(
  * `SITE_URL` env override so emails can render the production logo
  * even when sent from preview / local environments.
  */
+export function buildEmailLogoUrl(baseUrl?: string): string | undefined {
+  if (!baseUrl?.trim()) return undefined;
+  return `${baseUrl.replace(/\/+$/, "")}/logo.png`;
+}
+
 export function deriveBaseUrl(req: Request): string {
   const explicit = process.env.SITE_URL?.trim();
   if (explicit) return explicit.replace(/\/+$/, "");

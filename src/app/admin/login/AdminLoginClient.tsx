@@ -14,7 +14,7 @@ export function AdminLoginClient() {
   useEffect(() => {
     if (searchParams.get("error") === "session") {
       setError(
-        "Your Session Could Not Be Verified. Sign In Again. If This Keeps Happening, Check RESELLER_API_URL On The Web Server.",
+        "Your session could not be verified. Sign in again. If this keeps happening, check RESELLER_API_URL on the web server.",
       );
       void adminSignout();
     }
@@ -53,10 +53,10 @@ export function AdminLoginClient() {
       <div className="py-16">
         <Container className="mx-auto max-w-md">
         <h1 className="text-2xl font-bold tracking-tight text-zinc-950">
-          Admin Sign In
+          Admin sign in
         </h1>
         <p className="mt-2 text-sm text-zinc-600">
-          Approve Reseller Applications Before They Can Access The Portal.
+          Approve reseller applications before they can access the portal.
         </p>
 
         <form
@@ -105,7 +105,7 @@ export function AdminLoginClient() {
             disabled={isSubmitting}
             className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-red-600 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60 cursor-pointer"
           >
-            {isSubmitting ? "Signing In…" : "Sign In"}
+            {isSubmitting ? "Signing in…" : "Sign in"}
           </button>
         </form>
         </Container>

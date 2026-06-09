@@ -42,25 +42,25 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
     setFieldErrors({});
 
     const errors: Record<string, string> = {};
-    if (!firstName.trim()) errors.firstName = "First Name Is Required";
-    if (!lastName.trim()) errors.lastName = "Last Name Is Required";
+    if (!firstName.trim()) errors.firstName = "First name is required";
+    if (!lastName.trim()) errors.lastName = "Last name is required";
 
     const changingPassword = Boolean(newPassword.trim() || confirmPassword.trim());
     if (changingPassword) {
       if (!currentPassword.trim()) {
-        errors.currentPassword = "Current Password Is Required";
+        errors.currentPassword = "Current password is required";
       }
       if (newPassword.length < 8) {
-        errors.newPassword = "Password Must Be At Least 8 Characters";
+        errors.newPassword = "Password must be at least 8 characters";
       } else if (!/[A-Z]/.test(newPassword)) {
-        errors.newPassword = "Include At Least One Uppercase Letter";
+        errors.newPassword = "Include at least one uppercase letter";
       } else if (!/[a-z]/.test(newPassword)) {
-        errors.newPassword = "Include At Least One Lowercase Letter";
+        errors.newPassword = "Include at least one lowercase letter";
       } else if (!/[0-9]/.test(newPassword)) {
-        errors.newPassword = "Include At Least One Number";
+        errors.newPassword = "Include at least one number";
       }
       if (newPassword !== confirmPassword) {
-        errors.confirmPassword = "Passwords Do Not Match";
+        errors.confirmPassword = "Passwords do not match";
       }
     }
 
@@ -99,7 +99,7 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
           Profile
         </h1>
         <p className="mt-1 text-sm text-zinc-600">
-          Update Your Admin Account Details And Password.
+          Update your admin account details and password.
         </p>
       </div>
 
@@ -122,7 +122,7 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="admin-first-name" className="text-sm font-medium text-zinc-950">
-              First Name
+              First name
             </label>
             <input
               id="admin-first-name"
@@ -137,7 +137,7 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
           </div>
           <div>
             <label htmlFor="admin-last-name" className="text-sm font-medium text-zinc-950">
-              Last Name
+              Last name
             </label>
             <input
               id="admin-last-name"
@@ -163,13 +163,13 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
             disabled
             className={cn(fieldClass, "cursor-not-allowed bg-zinc-50 text-zinc-500")}
           />
-          <p className="mt-1 text-xs text-zinc-500">Email Cannot Be Changed.</p>
+          <p className="mt-1 text-xs text-zinc-500">Email cannot be changed.</p>
         </div>
 
         <div className="border-t border-zinc-100 pt-6">
-          <h2 className="text-sm font-semibold text-zinc-950">Change Password</h2>
+          <h2 className="text-sm font-semibold text-zinc-950">Change password</h2>
           <p className="mt-1 text-xs text-zinc-500">
-            Leave Blank To Keep Your Current Password.
+            Leave blank to keep your current password.
           </p>
 
           <div className="mt-4 space-y-4">
@@ -178,7 +178,7 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
                 htmlFor="admin-current-password"
                 className="text-sm font-medium text-zinc-950"
               >
-                Current Password
+                Current password
               </label>
               <input
                 id="admin-current-password"
@@ -201,7 +201,7 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
                   htmlFor="admin-new-password"
                   className="text-sm font-medium text-zinc-950"
                 >
-                  New Password
+                  New password
                 </label>
                 <input
                   id="admin-new-password"
@@ -219,7 +219,7 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
                   htmlFor="admin-confirm-password"
                   className="text-sm font-medium text-zinc-950"
                 >
-                  Confirm New Password
+                  Confirm new password
                 </label>
                 <input
                   id="admin-confirm-password"
@@ -244,7 +244,7 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
           disabled={isSubmitting}
           className="inline-flex h-11 items-center justify-center rounded-lg bg-red-600 px-5 text-sm font-semibold text-white hover:bg-red-700 disabled:opacity-60 cursor-pointer"
         >
-          {isSubmitting ? "Saving…" : "Save Changes"}
+          {isSubmitting ? "Saving…" : "Save changes"}
         </button>
       </form>
     </div>

@@ -1,21 +1,35 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { cn } from "@/lib/cn";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
+import {
+  ResellerContactLine,
+  ResellerStatusBadge,
+  ResellerUserAvatar,
+  formatResellerLocation,
+  resellerBusinessTypeLabel,
+} from "@/components/admin/reseller-display";
 import {
   AdminDataTable,
   type AdminDataTableColumn,
 } from "@/components/admin/AdminDataTable";
+import { cn } from "@/lib/cn";
+import {
+  confirmApproveReseller,
+  confirmRejectReseller,
+  confirmRemoveReseller,
+  showResellerActionError,
+  showResellerActionSuccess,
+} from "@/lib/admin/reseller-confirm";
 import {
   approveReseller,
   deleteReseller,
   fetchAdminResellers,
   rejectReseller,
 } from "@/lib/admin-auth/api";
-import {
-  RESELLER_BUSINESS_TYPE_LABELS,
-  type ResellerProfile,
-} from "@/lib/reseller-auth/types";
+import type { ResellerProfile } from "@/lib/reseller-auth/types";
 
 type Filter = "pending" | "active" | "inactive" | "all";
 
@@ -26,34 +40,6 @@ const filters: { id: Filter; label: string }[] = [
   { id: "all", label: "All" },
 ];
 
-function statusBadge(status: ResellerProfile["status"]) {
-  const styles: Record<ResellerProfile["status"], string> = {
-    pending: "bg-amber-50 text-amber-800 ring-amber-200",
-    active: "bg-emerald-50 text-emerald-800 ring-emerald-200",
-    inactive: "bg-zinc-100 text-zinc-700 ring-zinc-200",
-  };
-  return (
-    <span
-      className={cn(
-        "inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold capitalize ring-1 ring-inset",
-        styles[status],
-      )}
-    >
-      {status}
-    </span>
-  );
-}
-
-function formatLocation(r: ResellerProfile): string {
-  const parts = [r.city, r.state].filter(Boolean);
-  return parts.length > 0 ? parts.join(", ") : "—";
-}
-
-function businessTypeLabel(value: string | null | undefined): string {
-  if (!value) return "—";
-  return RESELLER_BUSINESS_TYPE_LABELS[value] ?? value;
-}
-
 function matchesNameSearch(r: ResellerProfile, query: string): boolean {
   const q = query.trim().toLowerCase();
   if (!q) return true;
@@ -62,15 +48,30 @@ function matchesNameSearch(r: ResellerProfile, query: string): boolean {
     fullName.includes(q) ||
     r.firstName.toLowerCase().includes(q) ||
     r.lastName.toLowerCase().includes(q) ||
-    r.companyName.toLowerCase().includes(q)
+    r.companyName.toLowerCase().includes(q) ||
+    r.email.toLowerCase().includes(q)
   );
 }
 
 const fieldClass =
   "h-10 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
-const actionBtnBase =
-  "inline-flex h-8 shrink-0 items-center justify-center rounded-md px-3 text-xs font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer";
+function IconChevronDown({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      className={className}
+      aria-hidden
+    >
+      <path
+        fillRule="evenodd"
+        d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
 
 function ResellerRowActions({
   reseller,
@@ -81,46 +82,154 @@ function ResellerRowActions({
 }: {
   reseller: ResellerProfile;
   busy: boolean;
-  onApprove: (id: string) => void;
-  onReject: (id: string) => void;
-  onDelete: (id: string, companyName: string) => void;
+  onApprove: (reseller: ResellerProfile) => void;
+  onReject: (reseller: ResellerProfile) => void;
+  onDelete: (reseller: ResellerProfile) => void;
 }) {
-  return (
-    <div className="flex flex-nowrap items-center justify-end gap-2">
-      {reseller.status === "pending" ? (
-        <>
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [menuStyle, setMenuStyle] = useState<CSSProperties>({});
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  function updateMenuPosition() {
+    const button = buttonRef.current;
+    if (!button) return;
+
+    const rect = button.getBoundingClientRect();
+    setMenuStyle({
+      position: "fixed",
+      top: rect.bottom + 6,
+      left: rect.right,
+      transform: "translateX(-100%)",
+      zIndex: 50,
+      minWidth: "9.5rem",
+    });
+  }
+
+  useEffect(() => {
+    if (!open) return;
+
+    updateMenuPosition();
+
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+      if (
+        buttonRef.current?.contains(target) ||
+        menuRef.current?.contains(target)
+      ) {
+        return;
+      }
+      setOpen(false);
+    }
+
+    function handleReposition() {
+      updateMenuPosition();
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("resize", handleReposition);
+    window.addEventListener("scroll", handleReposition, true);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("resize", handleReposition);
+      window.removeEventListener("scroll", handleReposition, true);
+    };
+  }, [open]);
+
+  const menuItems: {
+    label: string;
+    onClick: () => void;
+    destructive?: boolean;
+  }[] = [
+    {
+      label: "View",
+      onClick: () => {
+        setOpen(false);
+        router.push(`/admin/resellers/${reseller.id}`);
+      },
+    },
+  ];
+
+  if (reseller.status === "pending") {
+    menuItems.push(
+      {
+        label: "Approve",
+        onClick: () => {
+          setOpen(false);
+          onApprove(reseller);
+        },
+      },
+      {
+        label: "Reject",
+        onClick: () => {
+          setOpen(false);
+          onReject(reseller);
+        },
+      },
+    );
+  }
+
+  menuItems.push({
+    label: "Remove",
+    onClick: () => {
+      setOpen(false);
+      onDelete(reseller);
+    },
+    destructive: true,
+  });
+
+  const menu =
+    open && !busy ? (
+      <div
+        ref={menuRef}
+        style={menuStyle}
+        className="overflow-hidden rounded-lg border border-zinc-200 bg-white py-1 shadow-lg"
+      >
+        {menuItems.map((item) => (
           <button
+            key={item.label}
             type="button"
-            disabled={busy}
-            onClick={() => onApprove(reseller.id)}
-            className={cn(actionBtnBase, "bg-red-600 text-white hover:bg-red-700")}
-          >
-            {busy ? "…" : "Approve"}
-          </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onReject(reseller.id)}
+            onClick={item.onClick}
             className={cn(
-              actionBtnBase,
-              "border border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50",
+              "flex w-full px-3.5 py-2 text-left text-sm transition-colors hover:bg-zinc-50 cursor-pointer",
+              item.destructive
+                ? "text-red-600 hover:bg-red-50"
+                : "text-zinc-700",
             )}
           >
-            Reject
+            {item.label}
           </button>
-        </>
-      ) : null}
+        ))}
+      </div>
+    ) : null;
+
+  return (
+    <div className="flex justify-end">
       <button
+        ref={buttonRef}
         type="button"
         disabled={busy}
-        onClick={() => onDelete(reseller.id, reseller.companyName)}
-        className={cn(
-          actionBtnBase,
-          "border border-zinc-300 bg-white text-red-600 hover:bg-red-50",
-        )}
+        onClick={() => {
+          setOpen((value) => {
+            const next = !value;
+            if (next) {
+              requestAnimationFrame(updateMenuPosition);
+            }
+            return next;
+          });
+        }}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-50 px-3.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-100 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
       >
-        {busy ? "…" : "Remove"}
+        {busy ? "…" : "Actions"}
+        <IconChevronDown className="h-4 w-4 text-zinc-500" />
       </button>
+
+      {typeof document !== "undefined" && menu
+        ? createPortal(menu, document.body)
+        : null}
     </div>
   );
 }
@@ -159,130 +268,150 @@ export function AdminResellersClient({
     await reload(next);
   }
 
-  async function handleApprove(id: string) {
-    setActionId(id);
+  async function handleApprove(reseller: ResellerProfile) {
+    const name = `${reseller.firstName} ${reseller.lastName}`.trim();
+    if (!(await confirmApproveReseller(name, reseller.companyName))) return;
+
+    setActionId(reseller.id);
     setError(null);
-    const result = await approveReseller(id);
+    const result = await approveReseller(reseller.id);
     setActionId(null);
     if (!result.ok) {
       setError(result.error);
+      await showResellerActionError(result.error);
       return;
     }
     setResellers((list) =>
-      list.map((r) => (r.id === id ? result.reseller : r)),
+      list.map((r) => (r.id === reseller.id ? result.reseller : r)),
     );
     await reload(filter);
+    await showResellerActionSuccess(
+      "Approved",
+      "The reseller has been approved and notified by email.",
+    );
   }
 
-  async function handleReject(id: string) {
-    if (!window.confirm("Reject This Reseller Application?")) return;
-    setActionId(id);
+  async function handleReject(reseller: ResellerProfile) {
+    const name = `${reseller.firstName} ${reseller.lastName}`.trim();
+    if (!(await confirmRejectReseller(name, reseller.companyName))) return;
+
+    setActionId(reseller.id);
     setError(null);
-    const result = await rejectReseller(id);
+    const result = await rejectReseller(reseller.id);
     setActionId(null);
     if (!result.ok) {
       setError(result.error);
+      await showResellerActionError(result.error);
       return;
     }
     setResellers((list) =>
-      list.map((r) => (r.id === id ? result.reseller : r)),
+      list.map((r) => (r.id === reseller.id ? result.reseller : r)),
     );
     await reload(filter);
+    await showResellerActionSuccess(
+      "Rejected",
+      "The application was rejected and the reseller was notified by email.",
+    );
   }
 
-  async function handleDelete(id: string, companyName: string) {
-    if (
-      !window.confirm(
-        `Remove ${companyName}? This Permanently Removes The Reseller Account And Cannot Be Undone.`,
-      )
-    ) {
-      return;
-    }
-    setActionId(id);
+  async function handleDelete(reseller: ResellerProfile) {
+    const name = `${reseller.firstName} ${reseller.lastName}`.trim();
+    if (!(await confirmRemoveReseller(name, reseller.companyName))) return;
+
+    setActionId(reseller.id);
     setError(null);
-    const result = await deleteReseller(id);
+    const result = await deleteReseller(reseller.id);
     setActionId(null);
     if (!result.ok) {
       setError(result.error);
+      await showResellerActionError(result.error);
       return;
     }
-    setResellers((list) => list.filter((r) => r.id !== id));
+    setResellers((list) => list.filter((r) => r.id !== reseller.id));
+    await showResellerActionSuccess(
+      "Removed",
+      "The reseller account has been permanently removed.",
+    );
   }
 
   const columns = useMemo((): AdminDataTableColumn<ResellerProfile>[] => {
     return [
       {
-        id: "company",
-        header: "Company",
+        id: "user",
+        header: "Contact",
         sortable: true,
-        sortValue: (r) => r.companyName,
-        cellClassName: "font-semibold text-zinc-950",
+        sortValue: (r) => `${r.firstName} ${r.lastName}`,
+        cellClassName: "!whitespace-normal min-w-[260px]",
         cell: (r) => (
-          <div className="max-w-[200px]">
-            <p className="truncate">{r.companyName}</p>
-            {r.about ? (
-              <p className="mt-0.5 truncate text-xs font-normal text-zinc-500" title={r.about}>
-                {r.about}
-              </p>
-            ) : null}
+          <div className="flex items-center gap-3">
+            <Link
+              href={`/admin/resellers/${r.id}`}
+              className="shrink-0 transition-opacity hover:opacity-80"
+            >
+              <ResellerUserAvatar
+                id={r.id}
+                firstName={r.firstName}
+                lastName={r.lastName}
+              />
+            </Link>
+            <div className="min-w-0">
+              <Link
+                href={`/admin/resellers/${r.id}`}
+                className="inline-flex max-w-full items-start gap-1.5 transition-opacity hover:opacity-80"
+              >
+                <span className="truncate font-semibold text-zinc-900">
+                  {r.firstName} {r.lastName}
+                </span>
+                <span className="shrink-0 pt-px">
+                  <ResellerStatusBadge status={r.status} />
+                </span>
+              </Link>
+              <ResellerContactLine
+                email={r.email}
+                phone={r.phone}
+                className="truncate text-zinc-500"
+              />
+            </div>
           </div>
         ),
       },
       {
-        id: "contact",
-        header: "Contact",
+        id: "company",
+        header: "Company",
         sortable: true,
-        sortValue: (r) => `${r.firstName} ${r.lastName}`,
-        cell: (r) => `${r.firstName} ${r.lastName}`,
-      },
-      {
-        id: "email",
-        header: "Email",
-        sortable: true,
-        sortValue: (r) => r.email,
+        sortValue: (r) => r.companyName,
         cell: (r) => (
-          <span className="block max-w-[220px] truncate" title={r.email}>
-            {r.email}
+          <span className="block max-w-[180px] truncate text-zinc-600">
+            {r.companyName}
           </span>
         ),
-      },
-      {
-        id: "phone",
-        header: "Phone",
-        sortable: true,
-        sortValue: (r) => r.phone,
-        cell: (r) => r.phone || "—",
       },
       {
         id: "location",
         header: "Location",
         sortable: true,
-        sortValue: (r) => formatLocation(r),
-        cell: (r) => formatLocation(r),
+        sortValue: (r) => formatResellerLocation(r),
+        cell: (r) => formatResellerLocation(r),
       },
       {
         id: "businessType",
-        header: "Business Type",
+        header: "Business type",
         sortable: true,
-        sortValue: (r) => businessTypeLabel(r.businessType),
+        sortValue: (r) => resellerBusinessTypeLabel(r.businessType),
         cell: (r) => (
-          <span className="block max-w-[180px] truncate" title={businessTypeLabel(r.businessType)}>
-            {businessTypeLabel(r.businessType)}
+          <span
+            className="block max-w-[160px] truncate text-zinc-600"
+            title={resellerBusinessTypeLabel(r.businessType)}
+          >
+            {resellerBusinessTypeLabel(r.businessType)}
           </span>
         ),
       },
       {
-        id: "status",
-        header: "Status",
-        sortable: true,
-        sortValue: (r) => r.status,
-        cell: (r) => statusBadge(r.status),
-      },
-      {
         id: "actions",
         header: "Actions",
-        headerClassName: "min-w-[220px] text-right",
-        cellClassName: "min-w-[220px] text-right align-middle",
+        headerClassName: "text-right",
+        cellClassName: "text-right align-middle",
         cell: (r) => (
           <ResellerRowActions
             reseller={r}
@@ -304,7 +433,7 @@ export function AdminResellersClient({
             Manage Resellers
           </h1>
           <p className="mt-1 text-sm text-zinc-600">
-            Review And Approve Reseller Portal Applications.
+            Review and approve reseller portal applications.
           </p>
         </div>
 
@@ -330,14 +459,14 @@ export function AdminResellersClient({
 
           <div className="sm:w-64">
             <label htmlFor="reseller-search" className="text-sm font-medium text-zinc-950">
-              Search By Name
+              Search by name
             </label>
             <input
               id="reseller-search"
               type="search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Contact Or Company Name"
+              placeholder="Contact or company name"
               className={cn("mt-1.5", fieldClass)}
             />
           </div>
@@ -352,16 +481,16 @@ export function AdminResellersClient({
 
       <div className="mt-6">
         <AdminDataTable
-        data={visible}
-        columns={columns}
-        getRowId={(r) => r.id}
-        loading={loading}
-        defaultSort={{ columnId: "company", direction: "asc" }}
-        emptyMessage={
-          searchQuery.trim()
-            ? "No Resellers Match Your Search."
-            : "No Resellers In This List."
-        }
+          data={visible}
+          columns={columns}
+          getRowId={(r) => r.id}
+          loading={loading}
+          defaultSort={{ columnId: "user", direction: "asc" }}
+          emptyMessage={
+            searchQuery.trim()
+              ? "No resellers match your search."
+              : "No resellers in this list."
+          }
         />
       </div>
     </div>
