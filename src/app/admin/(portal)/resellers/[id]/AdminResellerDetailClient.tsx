@@ -237,7 +237,7 @@ export function AdminResellerDetailClient({
         ) : null}
       </div>
 
-      <DetailCard title="Company & location" className="mt-6">
+      <DetailCard title="Company & Location" className="mt-6">
         <dl className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <DetailField label="Company">
             {reseller.companyName || "—"}
