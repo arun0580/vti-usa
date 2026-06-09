@@ -40,20 +40,24 @@ export function AnnouncementBanner() {
         <CalendarIcon />
         <span className="inline-flex flex-wrap items-center justify-center gap-x-1 gap-y-1">
           <span className="font-semibold">
-            WEBINAR · MAY 20
+          NCSC26
             <span className="mx-1 font-normal opacity-90" aria-hidden="true">
               |
             </span>
           </span>
-          <span className="font-normal">
-            Turn LED Video Walls Into Your Next Revenue Driver
+          <span className="font-semibold">
+          June 24–June 26, 2026
+          <span className="mx-1 font-normal opacity-90" aria-hidden="true">
+              |
+            </span>
           </span>
           <Link
-            href="https://zoom.us/webinar/register/WN_PgpqF8ZsRsud0AqVsXiTNQ?utm_campaign=Resellers&utm_medium=email&_hsenc=p2ANqtz-_sZdl7JUE-pr6Znj8wactmUeRLnrF_RnyvIqA3V-C_2xdMcyiFPRNbGmAx3CBYsppWE_5QmuGJ_2pMjqev8nlJGTZIUQ&_hsmi=416838137&utm_content=416838137&utm_source=hs_email#/registration"
+            href="/NCSC26.png"
             target="_blank"
+            rel="noopener noreferrer"
             className="ml-1 inline-flex items-center gap-0.5 font-medium underline underline-offset-2 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-red-600"
           >
-            Reserve Your Spot
+            Take Advantage Of NCSC26 Pricing Before The Context
             <span aria-hidden="true">→</span>
           </Link>
         </span>
