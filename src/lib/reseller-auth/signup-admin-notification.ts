@@ -1,8 +1,17 @@
 import "server-only";
 
-import { submitFormEmail } from "@/lib/email/service";
-import type { ResellerSignupFormData } from "@/lib/email/validators";
-import type { ResellerSignupPayload } from "./types";
+import { getNotificationRecipient } from "@/lib/email/client";
+import { buildEmailLogoUrl, sendEmail } from "@/lib/email/service";
+import {
+  buildResellerSignupAdminEmailContent,
+  buildResellerSignupAdminEmailText,
+  renderTransactionalEmailHtml,
+  type ResellerSignupAdminEmailData,
+} from "@/lib/email/templates";
+import {
+  RESELLER_BUSINESS_TYPE_LABELS,
+  type ResellerSignupPayload,
+} from "./types";
 
 export type SignupAdminNotificationInput = {
   signup: Pick<
@@ -20,7 +29,29 @@ export type SignupAdminNotificationInput = {
   resellerId?: string;
 };
 
-function toFormData(input: SignupAdminNotificationInput): ResellerSignupFormData {
+function businessTypeLabel(value: string): string {
+  return (
+    RESELLER_BUSINESS_TYPE_LABELS[value] ??
+    value
+      .split(/[\s/_-]+/g)
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")
+  );
+}
+
+function buildAdminPortalUrl(
+  baseUrl: string | undefined,
+  resellerId?: string,
+): string {
+  const base = (baseUrl ?? "").replace(/\/+$/, "");
+  if (!base) return "/admin/resellers";
+  return resellerId
+    ? `${base}/admin/resellers/${resellerId}`
+    : `${base}/admin/resellers`;
+}
+
+function toEmailData(input: SignupAdminNotificationInput): ResellerSignupAdminEmailData {
   const { signup } = input;
   return {
     fullName: signup.fullName,
@@ -29,25 +60,29 @@ function toFormData(input: SignupAdminNotificationInput): ResellerSignupFormData
     phone: signup.phone,
     city: signup.city,
     state: signup.state,
-    businessType: signup.businessType,
+    businessTypeLabel: businessTypeLabel(signup.businessType),
     about: signup.about || undefined,
+    adminPortalUrl: buildAdminPortalUrl(input.baseUrl, input.resellerId),
   };
-}
-
-function buildAdminReviewUrl(baseUrl: string | undefined, resellerId?: string): string | undefined {
-  if (!baseUrl?.trim() || !resellerId) return undefined;
-  const base = baseUrl.replace(/\/+$/, "");
-  return `${base}/admin/resellers/${resellerId}`;
 }
 
 /** Notify admins that a new reseller signed up (sent to CONTACT_TO_EMAIL). */
 export async function sendResellerSignupAdminNotification(
   input: SignupAdminNotificationInput,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const adminReviewUrl = buildAdminReviewUrl(input.baseUrl, input.resellerId);
-  const result = await submitFormEmail("reseller_signup", toFormData(input), {
-    baseUrl: input.baseUrl,
-    adminReviewUrl,
+  const data = toEmailData(input);
+  const content = buildResellerSignupAdminEmailContent(data);
+  const html = renderTransactionalEmailHtml(content, {
+    logoUrl: buildEmailLogoUrl(input.baseUrl),
+  });
+  const text = buildResellerSignupAdminEmailText(data);
+
+  const result = await sendEmail({
+    to: getNotificationRecipient(),
+    subject: content.subject,
+    html,
+    text,
+    replyTo: data.email,
   });
 
   if (!result.ok) {

@@ -275,10 +275,95 @@ export type TransactionalEmailContent = {
   preheader?: string;
   heading: string;
   paragraphs: string[];
+  infoSection?: { title: string; fields: EmailField[] };
+  descriptionBlock?: { label: string; value: string };
+  nextStep?: { title?: string; text: string };
   cta?: { label: string; url: string };
   linkFallback?: { url: string };
   footnotes?: string[];
 };
+
+export type ResellerSignupAdminEmailData = {
+  fullName: string;
+  company: string;
+  email: string;
+  phone: string;
+  city: string;
+  state: string;
+  businessTypeLabel: string;
+  about?: string;
+  adminPortalUrl: string;
+};
+
+export function buildResellerSignupAdminEmailContent(
+  data: ResellerSignupAdminEmailData,
+): TransactionalEmailContent {
+  const fields: EmailField[] = [
+    { label: "Applicant Name", value: data.fullName },
+    { label: "Company Name", value: data.company },
+    {
+      label: "Email Address",
+      value: data.email,
+      valueHtml: `<a href="mailto:${escapeHtml(
+        data.email,
+      )}" style="color:#dc2626;text-decoration:none;">${escapeHtml(data.email)}</a>`,
+    },
+    { label: "Phone Number", value: data.phone },
+    { label: "Location", value: `${data.city}, ${data.state}` },
+    { label: "Business Type", value: data.businessTypeLabel },
+  ];
+
+  return {
+    subject: "New Reseller Registration Pending Approval",
+    preheader:
+      "A new reseller application has been submitted and is awaiting review.",
+    heading:
+      "A new reseller application has been submitted and is awaiting review.",
+    paragraphs: [
+      "Hello Admin,",
+      "A new reseller has registered through the Reseller Portal and requires approval before gaining access to the platform.",
+    ],
+    infoSection: {
+      title: "Applicant Information",
+      fields,
+    },
+    descriptionBlock: data.about?.trim()
+      ? { label: "Business Description", value: data.about.trim() }
+      : undefined,
+    nextStep: {
+      text: "Please review the application and approve or reject it from the Admin Portal.",
+    },
+    cta: { label: "Open Admin Portal", url: data.adminPortalUrl },
+  };
+}
+
+export function buildResellerSignupAdminEmailText(
+  data: ResellerSignupAdminEmailData,
+): string {
+  const content = buildResellerSignupAdminEmailContent(data);
+  const lines = [
+    content.heading,
+    "",
+    ...content.paragraphs,
+    "",
+    content.infoSection?.title ?? "",
+    ...(content.infoSection?.fields ?? []).map((f) => `${f.label}: ${f.value}`),
+  ];
+
+  if (content.descriptionBlock) {
+    lines.push("", content.descriptionBlock.label, content.descriptionBlock.value);
+  }
+
+  if (content.nextStep) {
+    lines.push("", content.nextStep.text);
+  }
+
+  if (content.cta) {
+    lines.push("", `Review Application: ${content.cta.url}`);
+  }
+
+  return lines.join("\n");
+}
 
 /**
  * Branded layout for transactional emails (verification, approvals, etc.).
@@ -344,6 +429,70 @@ export function renderTransactionalEmailHtml(
     )
     .join("");
 
+  const infoSectionBlock = content.infoSection
+    ? `
+                  <tr>
+                    <td style="padding:20px 22px 0 22px;">
+                      <div style="font-family:${EMAIL_FONT}; font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#71717a;">
+                        ${escapeHtml(content.infoSection.title)}
+                      </div>
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse:separate;border-spacing:0 10px; margin-top:12px;">
+                        ${content.infoSection.fields
+                          .filter((f) => f.value || f.valueHtml)
+                          .map((f) =>
+                            fieldRow(
+                              f.label,
+                              f.valueHtml ?? escapeHtml(f.value),
+                            ),
+                          )
+                          .join("")}
+                      </table>
+                    </td>
+                  </tr>`
+    : "";
+
+  const descriptionBlock = content.descriptionBlock
+    ? `
+                  <tr>
+                    <td align="left" valign="top" style="padding:18px 22px 0 22px;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" align="left" style="width:100%;">
+                        <tr>
+                          <td align="left" valign="top" style="font-family:${EMAIL_FONT}; font-size:12px; font-weight:700; letter-spacing:0.12em; color:#71717a; text-align:left;">
+                            ${escapeHtml(content.descriptionBlock.label.toUpperCase())}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="left" valign="top" style="padding-top:8px; text-align:left;">
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" align="left" style="width:100%; background:#fafafa; border:1px solid #e4e4e7; border-radius:14px;">
+                              <tr>
+                                <td align="left" valign="top" style="padding:14px; font-family:${EMAIL_FONT}; font-size:14px; color:#18181b; line-height:1.6; text-align:left; text-indent:0; mso-line-height-rule:exactly;">${escapeHtml(content.descriptionBlock.value.trim())}</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>`
+    : "";
+
+  const nextStepBlock = content.nextStep
+    ? `
+                  <tr>
+                    <td style="padding:20px 22px 0 22px;">
+                      ${
+                        content.nextStep.title
+                          ? `<div style="font-family:${EMAIL_FONT}; font-size:13px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#71717a;">
+                        ${escapeHtml(content.nextStep.title)}
+                      </div>`
+                          : ""
+                      }
+                      <div style="font-family:${EMAIL_FONT}; font-size:14px; color:#3f3f46; line-height:1.65;${content.nextStep.title ? " margin-top:10px;" : ""}">
+                        ${escapeHtml(content.nextStep.text)}
+                      </div>
+                    </td>
+                  </tr>`
+    : "";
+
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -382,6 +531,9 @@ export function renderTransactionalEmailHtml(
                       ${paragraphBlocks}
                     </td>
                   </tr>
+                  ${infoSectionBlock}
+                  ${descriptionBlock}
+                  ${nextStepBlock}
                   ${ctaBlock}
                   ${linkFallbackBlock}
                   ${footnoteBlocks}
