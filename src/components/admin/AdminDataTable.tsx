@@ -5,12 +5,17 @@ import { cn } from "@/lib/cn";
 
 export type SortDirection = "asc" | "desc";
 
+export type AdminDataTableRowMeta = {
+  rowIndex: number;
+  globalIndex: number;
+};
+
 export type AdminDataTableColumn<T> = {
   id: string;
   header: string;
   sortable?: boolean;
   sortValue?: (row: T) => string | number | Date | boolean;
-  cell: (row: T) => ReactNode;
+  cell: (row: T, meta?: AdminDataTableRowMeta) => ReactNode;
   headerClassName?: string;
   cellClassName?: string;
 };
@@ -163,25 +168,32 @@ export function AdminDataTable<T>({
                 </tr>
               </thead>
               <tbody>
-                {pageData.map((row, index) => (
-                  <tr
-                    key={getRowId(row)}
-                    className={cn(
-                      "transition-colors hover:bg-zinc-50/50",
-                      index < pageData.length - 1 &&
-                        "border-b border-dashed border-zinc-200",
-                    )}
-                  >
-                    {columns.map((column) => (
-                      <td
-                        key={column.id}
-                        className={cn(tdClass, column.cellClassName)}
-                      >
-                        {column.cell(row)}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+                {pageData.map((row, index) => {
+                  const meta: AdminDataTableRowMeta = {
+                    rowIndex: index,
+                    globalIndex: (currentPage - 1) * pageSize + index,
+                  };
+
+                  return (
+                    <tr
+                      key={getRowId(row)}
+                      className={cn(
+                        "transition-colors hover:bg-zinc-50/50",
+                        index < pageData.length - 1 &&
+                          "border-b border-dashed border-zinc-200",
+                      )}
+                    >
+                      {columns.map((column) => (
+                        <td
+                          key={column.id}
+                          className={cn(tdClass, column.cellClassName)}
+                        >
+                          {column.cell(row, meta)}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

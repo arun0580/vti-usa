@@ -32,13 +32,26 @@ export async function proxyToAdminApi(
   token?: string,
 ): Promise<Response> {
   const adminToken = token ?? (await getServerAdminToken());
-  return proxyToApi(path, {
-    ...init,
-    headers: {
-      ...init?.headers,
-      ...(adminToken ? { Authorization: `Bearer ${adminToken}` } : {}),
-    },
-  });
+  try {
+    return await proxyToApi(path, {
+      ...init,
+      headers: {
+        ...init?.headers,
+        ...(adminToken ? { Authorization: `Bearer ${adminToken}` } : {}),
+      },
+    });
+  } catch (err) {
+    console.error("[admin api] upstream unreachable at", getApiBase(), err);
+    return new Response(
+      JSON.stringify({
+        success: false,
+        error:
+          "Auth service unavailable. Start the API server or check RESELLER_API_URL.",
+        code: "API_UNREACHABLE",
+      }),
+      { status: 503, headers: { "Content-Type": "application/json" } },
+    );
+  }
 }
 
 export { getApiBase };

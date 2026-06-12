@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchActiveAnnouncement } from "@/lib/announcements/api";
+import type { PublicAnnouncement } from "@/lib/announcements/types";
 
 function CalendarIcon() {
   return (
@@ -21,12 +23,28 @@ function CalendarIcon() {
 }
 
 export function AnnouncementBanner() {
-  // Dismissal is intentionally in-memory only: a refresh, a new tab, or a
-  // later visit will bring the banner back. This protects users who close it
-  // by accident — they only need to reload to see it again.
+  const [announcement, setAnnouncement] = useState<PublicAnnouncement | null>(null);
+  const [loaded, setLoaded] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
-  if (dismissed) {
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      const active = await fetchActiveAnnouncement();
+      if (!cancelled) {
+        setAnnouncement(active);
+        setLoaded(true);
+      }
+    }
+
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (!loaded || dismissed || !announcement) {
     return null;
   }
 
@@ -40,24 +58,24 @@ export function AnnouncementBanner() {
         <CalendarIcon />
         <span className="inline-flex flex-wrap items-center justify-center gap-x-1 gap-y-1">
           <span className="font-semibold">
-          NCSC26
+            {announcement.title}
             <span className="mx-1 font-normal opacity-90" aria-hidden="true">
               |
             </span>
           </span>
           <span className="font-semibold">
-          June 24–June 26, 2026
-          <span className="mx-1 font-normal opacity-90" aria-hidden="true">
+            {announcement.dateRangeLabel}
+            <span className="mx-1 font-normal opacity-90" aria-hidden="true">
               |
             </span>
           </span>
           <Link
-            href="/NCSC26.png"
+            href={announcement.linkUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="ml-1 inline-flex items-center gap-0.5 font-medium underline underline-offset-2 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-red-600"
           >
-            Take Advantage Of NCSC26 Pricing Before The Context
+            {announcement.linkText}
             <span aria-hidden="true">→</span>
           </Link>
         </span>
