@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Container } from "@/components/site/Container";
 import { Logo } from "@/components/site/Logo";
+import { PasswordInput } from "@/components/site/PasswordInput";
 import { adminSignin, adminSignout } from "@/lib/admin-auth/api";
 
 export function AdminLoginClient() {
@@ -90,14 +91,15 @@ export function AdminLoginClient() {
             >
               Password
             </label>
-            <input
-              id="admin-password"
-              name="password"
-              type="password"
-              required
-              autoComplete="current-password"
-              className="mt-1.5 h-11 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20"
-            />
+            <div className="mt-1.5">
+              <PasswordInput
+                id="admin-password"
+                name="password"
+                required
+                autoComplete="current-password"
+                className="h-11 w-full rounded-lg border border-zinc-200 bg-white pl-3 pr-11 text-sm text-zinc-950 placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20"
+              />
+            </div>
           </div>
 
           <button

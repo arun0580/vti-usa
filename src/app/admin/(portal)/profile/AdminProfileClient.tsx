@@ -2,12 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { PasswordInput } from "@/components/site/PasswordInput";
 import { cn } from "@/lib/cn";
 import { updateAdminProfile } from "@/lib/admin-auth/api";
 import type { AdminProfile } from "@/lib/admin-auth/types";
 
 const fieldClass =
   "mt-1.5 h-11 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
+
+const passwordFieldClass = fieldClass.replace("px-3", "pl-3 pr-11");
 
 const fieldErrorClass =
   "border-red-300 focus:border-red-500 focus:ring-red-500/30";
@@ -180,15 +183,15 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
               >
                 Current password
               </label>
-              <input
+              <PasswordInput
                 id="admin-current-password"
                 name="currentPassword"
-                type="password"
                 autoComplete="current-password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
+                invalid={Boolean(fieldErrors.currentPassword)}
                 className={cn(
-                  fieldClass,
+                  passwordFieldClass,
                   fieldErrors.currentPassword && fieldErrorClass,
                 )}
               />
@@ -203,14 +206,17 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
                 >
                   New password
                 </label>
-                <input
+                <PasswordInput
                   id="admin-new-password"
                   name="newPassword"
-                  type="password"
                   autoComplete="new-password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className={cn(fieldClass, fieldErrors.newPassword && fieldErrorClass)}
+                  invalid={Boolean(fieldErrors.newPassword)}
+                  className={cn(
+                    passwordFieldClass,
+                    fieldErrors.newPassword && fieldErrorClass,
+                  )}
                 />
                 <FieldError message={fieldErrors.newPassword} />
               </div>
@@ -221,15 +227,15 @@ export function AdminProfileClient({ admin }: { admin: AdminProfile }) {
                 >
                   Confirm new password
                 </label>
-                <input
+                <PasswordInput
                   id="admin-confirm-password"
                   name="confirmPassword"
-                  type="password"
                   autoComplete="new-password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  invalid={Boolean(fieldErrors.confirmPassword)}
                   className={cn(
-                    fieldClass,
+                    passwordFieldClass,
                     fieldErrors.confirmPassword && fieldErrorClass,
                   )}
                 />
