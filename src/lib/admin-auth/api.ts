@@ -87,7 +87,7 @@ export async function fetchAdminReseller(
 }
 
 export async function approveReseller(id: string): Promise<ResellerActionResult> {
-  const res = await fetch(`/api/admin/resellers/${id}/approve`, {
+  const res = await fetch(`/api/admin/resellers/approve/${id}`, {
     method: "POST",
     credentials: "include",
   });
@@ -108,7 +108,7 @@ export async function approveReseller(id: string): Promise<ResellerActionResult>
 }
 
 export async function rejectReseller(id: string): Promise<ResellerActionResult> {
-  const res = await fetch(`/api/admin/resellers/${id}/reject`, {
+  const res = await fetch(`/api/admin/resellers/reject/${id}`, {
     method: "POST",
     credentials: "include",
   });
@@ -129,7 +129,7 @@ export async function rejectReseller(id: string): Promise<ResellerActionResult> 
 }
 
 export async function deleteReseller(id: string): Promise<ResellerDeleteResult> {
-  const res = await fetch(`/api/admin/resellers/${id}/delete`, {
+  const res = await fetch(`/api/admin/resellers/delete/${id}`, {
     method: "POST",
     credentials: "include",
   });

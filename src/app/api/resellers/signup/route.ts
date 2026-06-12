@@ -4,6 +4,8 @@ import {
   buildVerificationUrl,
   sendResellerVerificationEmail,
 } from "@/lib/reseller-auth/verification-email";
+import { sendResellerSignupAdminNotification } from "@/lib/reseller-auth/signup-admin-notification";
+import type { ResellerSignupPayload } from "@/lib/reseller-auth/types";
 import { deriveBaseUrl } from "@/lib/email/service";
 
 export const runtime = "nodejs";
@@ -34,13 +36,14 @@ export async function POST(request: Request) {
   }
 
   const reseller = data.data?.reseller as {
+    id: string;
     email: string;
     firstName: string;
   } | undefined;
   const verificationToken = data.data?.verificationToken as string | undefined;
+  const baseUrl = deriveBaseUrl(request);
 
   if (reseller && verificationToken) {
-    const baseUrl = deriveBaseUrl(request);
     const verifyUrl = buildVerificationUrl(verificationToken, baseUrl);
     const emailResult = await sendResellerVerificationEmail({
       to: reseller.email,
@@ -61,6 +64,29 @@ export async function POST(request: Request) {
         { status: 503 },
       );
     }
+  }
+
+  const signupPayload = body as ResellerSignupPayload;
+  const adminEmailResult = await sendResellerSignupAdminNotification({
+    signup: {
+      fullName: signupPayload.fullName,
+      companyName: signupPayload.companyName,
+      email: signupPayload.email,
+      phone: signupPayload.phone,
+      city: signupPayload.city,
+      state: signupPayload.state,
+      businessType: signupPayload.businessType,
+      about: signupPayload.about,
+    },
+    baseUrl,
+    resellerId: reseller?.id,
+  });
+
+  if (!adminEmailResult.ok) {
+    console.error(
+      "[reseller signup] Admin notification failed:",
+      adminEmailResult.error,
+    );
   }
 
   return NextResponse.json({

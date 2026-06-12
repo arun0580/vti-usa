@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Reveal } from "@/components/motion";
 import { resellerVerifyEmail } from "@/lib/reseller-auth/api";
@@ -11,6 +11,7 @@ type Status = "idle" | "verifying" | "success" | "error";
 
 export function VerifyEmailClient({ token }: { token: string }) {
   const router = useRouter();
+  const verifyStartedRef = useRef(false);
   const [status, setStatus] = useState<Status>(token ? "verifying" : "error");
   const [message, setMessage] = useState(
     token
@@ -19,7 +20,8 @@ export function VerifyEmailClient({ token }: { token: string }) {
   );
 
   useEffect(() => {
-    if (!token) return;
+    if (!token || verifyStartedRef.current) return;
+    verifyStartedRef.current = true;
 
     let cancelled = false;
 

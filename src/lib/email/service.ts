@@ -76,6 +76,8 @@ export type SubmitFormEmailOptions = {
   to?: string | string[];
   /** Absolute URL of the site for embedding the logo. */
   baseUrl?: string;
+  /** Direct link to review this signup in the admin portal. */
+  adminReviewUrl?: string;
 };
 
 /**
@@ -88,7 +90,12 @@ export async function submitFormEmail<T extends FormType>(
   data: FormDataMap[T],
   options: SubmitFormEmailOptions = {},
 ): Promise<SendEmailResult & { template?: EmailTemplate }> {
-  const template = buildTemplateFor(formType, data);
+  const template =
+    formType === "reseller_signup"
+      ? buildTemplateFor(formType, data, {
+          adminReviewUrl: options.adminReviewUrl,
+        })
+      : buildTemplateFor(formType, data);
   const logoUrl = buildEmailLogoUrl(options.baseUrl);
   const html = renderEmailHtml(template, { logoUrl });
 
@@ -105,9 +112,10 @@ export async function submitFormEmail<T extends FormType>(
 }
 
 /**
- * Best-effort base-URL extraction from a request. Honours an explicit
- * `SITE_URL` env override so emails can render the production logo
- * even when sent from preview / local environments.
+ * Best-effort base-URL extraction from a request. Prefers the incoming
+ * request host so verification and other action links target the same
+ * environment that handled the signup (local, preview, or production).
+ * Falls back to `SITE_URL` only when the request has no host.
  */
 export function buildEmailLogoUrl(baseUrl?: string): string | undefined {
   if (!baseUrl?.trim()) return undefined;
@@ -115,11 +123,15 @@ export function buildEmailLogoUrl(baseUrl?: string): string | undefined {
 }
 
 export function deriveBaseUrl(req: Request): string {
-  const explicit = process.env.SITE_URL?.trim();
-  if (explicit) return explicit.replace(/\/+$/, "");
-
   const proto = req.headers.get("x-forwarded-proto") ?? "http";
   const host =
     req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "";
-  return host ? `${proto}://${host}` : "";
+  if (host) {
+    return `${proto}://${host}`.replace(/\/+$/, "");
+  }
+
+  const explicit = process.env.SITE_URL?.trim();
+  if (explicit) return explicit.replace(/\/+$/, "");
+
+  return "";
 }

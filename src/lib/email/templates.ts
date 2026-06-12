@@ -101,8 +101,13 @@ export function buildContactTemplate(data: ContactFormData): EmailTemplate {
   return template;
 }
 
+export type ResellerSignupTemplateOptions = {
+  adminReviewUrl?: string;
+};
+
 export function buildResellerSignupTemplate(
   data: ResellerSignupFormData,
+  options: ResellerSignupTemplateOptions = {},
 ): EmailTemplate {
   const businessType = capitalizeWords(data.businessType);
   const subject = `VTI Reseller signup: ${data.fullName} — ${data.company}`;
@@ -121,6 +126,17 @@ export function buildResellerSignupTemplate(
     { label: "Phone", value: data.phone },
     { label: "Location", value: `${data.city}, ${data.state}` },
     { label: "Business type", value: businessType },
+    ...(options.adminReviewUrl
+      ? [
+          {
+            label: "Admin review",
+            value: options.adminReviewUrl,
+            valueHtml: `<a href="${escapeHtml(
+              options.adminReviewUrl,
+            )}" style="color:#dc2626;text-decoration:none;" target="_blank" rel="noreferrer">Open application in admin portal</a>`,
+          },
+        ]
+      : []),
   ];
 
   const template: EmailTemplate = {
@@ -204,12 +220,16 @@ type AnyFormData = ContactFormData | ResellerSignupFormData | PartnerApplication
 export function buildTemplateFor(
   formType: FormType,
   data: AnyFormData,
+  options: ResellerSignupTemplateOptions = {},
 ): EmailTemplate {
   switch (formType) {
     case "contact":
       return buildContactTemplate(data as ContactFormData);
     case "reseller_signup":
-      return buildResellerSignupTemplate(data as ResellerSignupFormData);
+      return buildResellerSignupTemplate(
+        data as ResellerSignupFormData,
+        options,
+      );
     case "partner_application":
       return buildPartnerApplicationTemplate(
         data as PartnerApplicationFormData,

@@ -94,8 +94,12 @@ function IconCheck({ className }: { className?: string }) {
 const inputClass =
   "h-12 w-full rounded-lg border border-zinc-200 bg-white pl-11 pr-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
 
+const inputPasswordClass = inputClass.replace("pr-3", "pr-11");
+
 const fieldClass =
   "h-12 w-full rounded-lg border border-zinc-200 bg-white px-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
+
+const fieldPasswordClass = fieldClass.replace("px-3", "pl-3 pr-11");
 
 const textareaClass =
   "w-full rounded-lg border border-zinc-200 bg-white px-3 py-3 text-sm text-zinc-950 shadow-sm transition-colors placeholder:text-zinc-400 focus:border-red-500/50 focus:outline-none focus:ring-2 focus:ring-red-500/20";
@@ -126,6 +130,107 @@ function FieldError({ message }: { message?: string }) {
     <p className="mt-1.5 text-xs font-medium text-red-600" role="alert">
       {message}
     </p>
+  );
+}
+
+function IconEye({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function IconEyeOff({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+      <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+      <line x1="2" x2="22" y1="2" y2="22" />
+    </svg>
+  );
+}
+
+function PasswordInput({
+  id,
+  name,
+  autoComplete,
+  placeholder,
+  invalid,
+  className,
+  withLockIcon,
+}: {
+  id: string;
+  name: string;
+  autoComplete?: string;
+  placeholder?: string;
+  invalid?: boolean;
+  className?: string;
+  withLockIcon?: boolean;
+}) {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <div className="relative">
+      {withLockIcon ? (
+        <span
+          className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400"
+          aria-hidden
+        >
+          <svg
+            className="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <rect x="4" y="10" width="16" height="10" rx="1" />
+            <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+          </svg>
+        </span>
+      ) : null}
+      <input
+        id={id}
+        name={name}
+        type={visible ? "text" : "password"}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        aria-invalid={invalid}
+        className={className}
+      />
+      <button
+        type="button"
+        onClick={() => setVisible((v) => !v)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-0.5 text-zinc-400 transition-colors hover:text-zinc-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 cursor-pointer"
+        aria-label={visible ? "Hide password" : "Show password"}
+      >
+        {visible ? (
+          <IconEyeOff className="h-5 w-5" />
+        ) : (
+          <IconEye className="h-5 w-5" />
+        )}
+      </button>
+    </div>
   );
 }
 
@@ -428,30 +533,18 @@ function SignInForm() {
         >
           Password {requiredMark}
         </label>
-        <div className="relative mt-1.5">
-          <span
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400"
-            aria-hidden
-          >
-            <svg
-              className="h-5 w-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <rect x="4" y="10" width="16" height="10" rx="1" />
-              <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-            </svg>
-          </span>
-          <input
+        <div className="mt-1.5">
+          <PasswordInput
             id="portal-password"
             name="password"
-            type="password"
             autoComplete="current-password"
             placeholder="••••••••"
-            aria-invalid={Boolean(fieldErrors.password)}
-            className={cn(inputClass, fieldErrors.password && fieldErrorClass)}
+            invalid={Boolean(fieldErrors.password)}
+            withLockIcon
+            className={cn(
+              inputPasswordClass,
+              fieldErrors.password && fieldErrorClass,
+            )}
           />
         </div>
         <FieldError message={fieldErrors.password} />
@@ -660,18 +753,18 @@ function SignUpForm() {
           <label htmlFor="su-password" className={labelClass}>
             Password {requiredMark}
           </label>
-          <input
-            id="su-password"
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            aria-invalid={Boolean(fieldErrors.password)}
-            className={cn(
-              "mt-1.5",
-              fieldClass,
-              fieldErrors.password && fieldErrorClass,
-            )}
-          />
+          <div className="mt-1.5">
+            <PasswordInput
+              id="su-password"
+              name="password"
+              autoComplete="new-password"
+              invalid={Boolean(fieldErrors.password)}
+              className={cn(
+                fieldPasswordClass,
+                fieldErrors.password && fieldErrorClass,
+              )}
+            />
+          </div>
           <FieldError message={fieldErrors.password} />
           <p className="mt-1 text-xs text-zinc-500">
             At least 8 characters with upper, lower, and a number.
@@ -681,18 +774,18 @@ function SignUpForm() {
           <label htmlFor="su-confirm" className={labelClass}>
             Confirm password {requiredMark}
           </label>
-          <input
-            id="su-confirm"
-            name="confirmPassword"
-            type="password"
-            autoComplete="new-password"
-            aria-invalid={Boolean(fieldErrors.confirmPassword)}
-            className={cn(
-              "mt-1.5",
-              fieldClass,
-              fieldErrors.confirmPassword && fieldErrorClass,
-            )}
-          />
+          <div className="mt-1.5">
+            <PasswordInput
+              id="su-confirm"
+              name="confirmPassword"
+              autoComplete="new-password"
+              invalid={Boolean(fieldErrors.confirmPassword)}
+              className={cn(
+                fieldPasswordClass,
+                fieldErrors.confirmPassword && fieldErrorClass,
+              )}
+            />
+          </div>
           <FieldError message={fieldErrors.confirmPassword} />
         </div>
       </div>
