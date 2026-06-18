@@ -11,7 +11,7 @@ import {
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MAX_BYTES = 5 * 1024 * 1024;
+const MAX_BYTES = 10 * 1024 * 1024;
 const ALLOWED_TYPES = new Set([
   "image/png",
   "image/jpeg",
@@ -19,6 +19,7 @@ const ALLOWED_TYPES = new Set([
   "image/webp",
   "image/gif",
   "image/svg+xml",
+  "application/pdf",
 ]);
 
 const EXT_BY_TYPE: Record<string, string> = {
@@ -28,6 +29,7 @@ const EXT_BY_TYPE: Record<string, string> = {
   "image/webp": ".webp",
   "image/gif": ".gif",
   "image/svg+xml": ".svg",
+  "application/pdf": ".pdf",
 };
 
 export async function POST(request: Request) {
@@ -52,7 +54,7 @@ export async function POST(request: Request) {
   const file = formData.get("file");
   if (!(file instanceof File)) {
     return NextResponse.json(
-      { success: false, error: "No image file provided", code: "BAD_REQUEST" },
+      { success: false, error: "No file provided", code: "BAD_REQUEST" },
       { status: 400 },
     );
   }
@@ -61,7 +63,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: false,
-        error: "Only PNG, JPG, WebP, GIF, or SVG images are allowed",
+        error: "Only PNG, JPG, WebP, GIF, SVG images or PDF files are allowed",
         code: "INVALID_FILE_TYPE",
       },
       { status: 400 },
@@ -70,7 +72,7 @@ export async function POST(request: Request) {
 
   if (file.size > MAX_BYTES) {
     return NextResponse.json(
-      { success: false, error: "Image must be 5 MB or smaller", code: "FILE_TOO_LARGE" },
+      { success: false, error: "File must be 10 MB or smaller", code: "FILE_TOO_LARGE" },
       { status: 400 },
     );
   }

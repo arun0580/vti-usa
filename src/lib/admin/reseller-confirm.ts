@@ -63,6 +63,38 @@ export async function confirmRemoveReseller(
   return result.isConfirmed;
 }
 
+type BulkAction = "approve" | "reject" | "remove";
+
+const bulkCopy: Record<
+  BulkAction,
+  { title: string; verb: string; icon: "question" | "warning" | "error"; confirm: string }
+> = {
+  approve: { title: "Approve Resellers", verb: "approve", icon: "question", confirm: "Yes, approve" },
+  reject: { title: "Reject Resellers", verb: "reject", icon: "warning", confirm: "Yes, reject" },
+  remove: { title: "Remove Resellers", verb: "remove", icon: "error", confirm: "Yes, remove" },
+};
+
+export async function confirmBulkResellerAction(
+  action: BulkAction,
+  count: number,
+): Promise<boolean> {
+  const copy = bulkCopy[action];
+  const noun = count === 1 ? "reseller" : "resellers";
+  const result = await Swal.fire({
+    title: copy.title,
+    html: `Are you sure you want to ${copy.verb} <strong>${count}</strong> ${noun}?`,
+    icon: copy.icon,
+    showCancelButton: true,
+    confirmButtonColor,
+    cancelButtonColor,
+    confirmButtonText: copy.confirm,
+    cancelButtonText: "Cancel",
+    reverseButtons: true,
+    focusCancel: true,
+  });
+  return result.isConfirmed;
+}
+
 export async function showResellerActionSuccess(
   title: string,
   message: string,

@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
+
+const EMPTY_SELECTION: ReadonlySet<string> = new Set();
 
 export type SortDirection = "asc" | "desc";
 
@@ -28,6 +30,10 @@ type AdminDataTableProps<T> = {
   emptyMessage?: string;
   defaultSort?: { columnId: string; direction: SortDirection };
   pageSizeOptions?: number[];
+  selectable?: boolean;
+  selectedIds?: ReadonlySet<string>;
+  onSelectedIdsChange?: (next: Set<string>) => void;
+  isRowSelectable?: (row: T) => boolean;
 };
 
 const thClass = "whitespace-nowrap px-6 py-4 text-left";
@@ -58,6 +64,10 @@ export function AdminDataTable<T>({
   emptyMessage = "No records found.",
   defaultSort,
   pageSizeOptions = [10, 25, 50],
+  selectable = false,
+  selectedIds = EMPTY_SELECTION,
+  onSelectedIdsChange,
+  isRowSelectable,
 }: AdminDataTableProps<T>) {
   const [sortColumnId, setSortColumnId] = useState(
     defaultSort?.columnId ?? columns[0]?.id ?? "",
@@ -111,6 +121,36 @@ export function AdminDataTable<T>({
     setSortDirection("asc");
   }
 
+  const selectionEnabled = selectable && typeof onSelectedIdsChange === "function";
+  const selectablePageRows = selectionEnabled
+    ? pageData.filter((row) => (isRowSelectable ? isRowSelectable(row) : true))
+    : [];
+  const selectablePageIds = selectablePageRows.map(getRowId);
+  const allPageSelected =
+    selectablePageIds.length > 0 &&
+    selectablePageIds.every((id) => selectedIds.has(id));
+  const somePageSelected = selectablePageIds.some((id) => selectedIds.has(id));
+
+  function toggleRow(id: string) {
+    const next = new Set(selectedIds);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    onSelectedIdsChange?.(next);
+  }
+
+  function toggleAllOnPage() {
+    const next = new Set(selectedIds);
+    if (allPageSelected) {
+      selectablePageIds.forEach((id) => next.delete(id));
+    } else {
+      selectablePageIds.forEach((id) => next.add(id));
+    }
+    onSelectedIdsChange?.(next);
+  }
+
   return (
     <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white">
       {loading ? (
@@ -123,6 +163,17 @@ export function AdminDataTable<T>({
             <table className="min-w-full">
               <thead>
                 <tr className="border-b border-dashed border-zinc-200">
+                  {selectionEnabled ? (
+                    <th scope="col" className={cn(thClass, "w-10 pr-0")}>
+                      <IndeterminateCheckbox
+                        checked={allPageSelected}
+                        indeterminate={!allPageSelected && somePageSelected}
+                        disabled={selectablePageIds.length === 0}
+                        onChange={toggleAllOnPage}
+                        aria-label="Select all rows on this page"
+                      />
+                    </th>
+                  ) : null}
                   {columns.map((column) => (
                     <th
                       key={column.id}
@@ -174,15 +225,34 @@ export function AdminDataTable<T>({
                     globalIndex: (currentPage - 1) * pageSize + index,
                   };
 
+                  const rowId = getRowId(row);
+                  const rowSelectable = selectionEnabled
+                    ? isRowSelectable
+                      ? isRowSelectable(row)
+                      : true
+                    : false;
+
                   return (
                     <tr
-                      key={getRowId(row)}
+                      key={rowId}
+                      data-selected={selectedIds.has(rowId) ? "true" : undefined}
                       className={cn(
-                        "transition-colors hover:bg-zinc-50/50",
+                        "transition-colors hover:bg-zinc-50/50 data-[selected=true]:bg-red-50/40",
                         index < pageData.length - 1 &&
                           "border-b border-dashed border-zinc-200",
                       )}
                     >
+                      {selectionEnabled ? (
+                        <td className={cn(tdClass, "w-10 pr-0")}>
+                          {rowSelectable ? (
+                            <IndeterminateCheckbox
+                              checked={selectedIds.has(rowId)}
+                              onChange={() => toggleRow(rowId)}
+                              aria-label="Select row"
+                            />
+                          ) : null}
+                        </td>
+                      ) : null}
                       {columns.map((column) => (
                         <td
                           key={column.id}
@@ -245,6 +315,40 @@ export function AdminDataTable<T>({
         </>
       )}
     </div>
+  );
+}
+
+function IndeterminateCheckbox({
+  checked,
+  indeterminate = false,
+  disabled = false,
+  onChange,
+  "aria-label": ariaLabel,
+}: {
+  checked: boolean;
+  indeterminate?: boolean;
+  disabled?: boolean;
+  onChange: () => void;
+  "aria-label"?: string;
+}) {
+  const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.indeterminate = indeterminate;
+    }
+  }, [indeterminate]);
+
+  return (
+    <input
+      ref={ref}
+      type="checkbox"
+      checked={checked}
+      disabled={disabled}
+      onChange={onChange}
+      aria-label={ariaLabel}
+      className="h-4 w-4 cursor-pointer rounded border-zinc-300 text-emerald-600 accent-emerald-600 focus:ring-2 focus:ring-emerald-500/30 disabled:cursor-not-allowed disabled:opacity-40"
+    />
   );
 }
 

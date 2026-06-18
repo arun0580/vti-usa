@@ -15,13 +15,13 @@ async function parseJson<T>(res: Response): Promise<T | null> {
   }
 }
 
-export async function fetchActiveAnnouncement(): Promise<PublicAnnouncement | null> {
+export async function fetchActiveAnnouncements(): Promise<PublicAnnouncement[]> {
   const res = await fetch("/api/announcements/active", { cache: "no-store" });
   const body = await parseJson<
-    ApiSuccess<{ announcement: PublicAnnouncement | null }>
+    ApiSuccess<{ announcements: PublicAnnouncement[] }>
   >(res);
-  if (!body?.success) return null;
-  return body.data.announcement;
+  if (!body?.success) return [];
+  return body.data.announcements ?? [];
 }
 
 export async function fetchAdminAnnouncements(): Promise<

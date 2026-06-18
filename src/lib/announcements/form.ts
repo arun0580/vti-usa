@@ -31,7 +31,7 @@ export function inferLinkInputMode(linkUrl: string): LinkInputMode {
   if (isAnnouncementImagePath(linkUrl)) {
     return "image";
   }
-  if (/\.(png|jpe?g|gif|webp|svg)$/i.test(linkUrl) && linkUrl.startsWith("/")) {
+  if (/\.(png|jpe?g|gif|webp|svg|pdf)$/i.test(linkUrl) && linkUrl.startsWith("/")) {
     return "image";
   }
   return "url";

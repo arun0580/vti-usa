@@ -11,6 +11,7 @@ import {
   inferLinkInputMode,
   type LinkInputMode,
 } from "@/lib/announcements/form";
+import { isPdfUrl } from "@/lib/announcements/uploads";
 import type { AnnouncementPayload, SiteAnnouncement } from "@/lib/announcements/types";
 
 type AnnouncementFormData = Omit<AnnouncementPayload, "status">;
@@ -34,7 +35,7 @@ async function uploadAnnouncementImage(
   });
   const json = await res.json().catch(() => null);
   if (!res.ok || !json?.success) {
-    return { ok: false, error: json?.error ?? "Image upload failed." };
+    return { ok: false, error: json?.error ?? "File upload failed." };
   }
   return { ok: true, url: json.data.url as string };
 }
@@ -102,7 +103,7 @@ export function AnnouncementForm({
     if (busy || uploading) return;
 
     if (linkMode === "image" && !form.linkUrl.trim()) {
-      setFieldErrors({ linkUrl: "Upload an image or switch to URL." });
+      setFieldErrors({ linkUrl: "Upload a file or switch to URL." });
       return;
     }
 
@@ -253,7 +254,7 @@ export function AnnouncementForm({
                   : "border-zinc-200 text-zinc-600 hover:bg-zinc-50",
               )}
             >
-              Image Upload
+              Image / PDF Upload
             </button>
           </div>
 
@@ -275,23 +276,50 @@ export function AnnouncementForm({
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+                accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml,application/pdf,.pdf"
                 onChange={handleImageSelect}
                 className="block w-full text-sm text-zinc-600 file:mr-4 file:rounded-lg file:border-0 file:bg-red-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-red-700 hover:file:bg-red-100"
               />
+              <p className="text-xs text-zinc-500">
+                PNG, JPG, WebP, GIF, SVG, or PDF — up to 10 MB.
+              </p>
               {uploading ? (
-                <p className="text-sm text-zinc-500">Uploading Image…</p>
+                <p className="text-sm text-zinc-500">Uploading File…</p>
               ) : null}
               {form.linkUrl ? (
                 <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3">
-                  <p className="text-xs font-medium text-zinc-500">Uploaded Image</p>
+                  <p className="text-xs font-medium text-zinc-500">Uploaded File</p>
                   <p className="mt-1 break-all text-sm text-zinc-800">{form.linkUrl}</p>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={form.linkUrl}
-                    alt="Uploaded announcement link preview"
-                    className="mt-3 max-h-32 rounded-md border border-zinc-200 object-contain"
-                  />
+                  {isPdfUrl(form.linkUrl) ? (
+                    <a
+                      href={form.linkUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-2 rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-50"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4"
+                        aria-hidden
+                      >
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 2v6h6" />
+                      </svg>
+                      View PDF
+                    </a>
+                  ) : (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={form.linkUrl}
+                      alt="Uploaded announcement link preview"
+                      className="mt-3 max-h-32 rounded-md border border-zinc-200 object-contain"
+                    />
+                  )}
                 </div>
               ) : null}
             </div>

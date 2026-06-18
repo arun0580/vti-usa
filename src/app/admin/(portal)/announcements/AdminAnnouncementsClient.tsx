@@ -79,11 +79,9 @@ export function AdminAnnouncementsClient({
     }
 
     setAnnouncements((current) =>
-      current.map((item) => {
-        if (item.id === result.announcement.id) return result.announcement;
-        if (active) return { ...item, status: "inactive" };
-        return item;
-      }),
+      current.map((item) =>
+        item.id === result.announcement.id ? result.announcement : item,
+      ),
     );
     router.refresh();
   }
@@ -192,7 +190,6 @@ export function AdminAnnouncementsClient({
           </h1>
           <p className="mt-1 text-sm text-zinc-600">
             Manage announcements shown at the top of the public site.
-            Only one announcement can be active at a time.
           </p>
         </div>
 

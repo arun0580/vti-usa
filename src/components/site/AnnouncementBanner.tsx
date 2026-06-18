@@ -2,8 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { fetchActiveAnnouncement } from "@/lib/announcements/api";
+import { fetchActiveAnnouncements } from "@/lib/announcements/api";
 import type { PublicAnnouncement } from "@/lib/announcements/types";
+import { cn } from "@/lib/cn";
+
+const ROTATE_INTERVAL_MS = 5000;
+const FADE_DURATION_MS = 400;
 
 function CalendarIcon() {
   return (
@@ -23,17 +27,19 @@ function CalendarIcon() {
 }
 
 export function AnnouncementBanner() {
-  const [announcement, setAnnouncement] = useState<PublicAnnouncement | null>(null);
+  const [announcements, setAnnouncements] = useState<PublicAnnouncement[]>([]);
   const [loaded, setLoaded] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
 
     async function load() {
-      const active = await fetchActiveAnnouncement();
+      const active = await fetchActiveAnnouncements();
       if (!cancelled) {
-        setAnnouncement(active);
+        setAnnouncements(active);
         setLoaded(true);
       }
     }
@@ -44,9 +50,38 @@ export function AnnouncementBanner() {
     };
   }, []);
 
-  if (!loaded || dismissed || !announcement) {
+  useEffect(() => {
+    if (announcements.length <= 1) {
+      setIndex(0);
+      setVisible(true);
+      return;
+    }
+
+    const interval = window.setInterval(() => {
+      setVisible(false);
+      window.setTimeout(() => {
+        setIndex((current) => (current + 1) % announcements.length);
+        setVisible(true);
+      }, FADE_DURATION_MS);
+    }, ROTATE_INTERVAL_MS);
+
+    return () => window.clearInterval(interval);
+  }, [announcements.length]);
+
+  function goToIndex(next: number) {
+    if (next === index) return;
+    setVisible(false);
+    window.setTimeout(() => {
+      setIndex(next);
+      setVisible(true);
+    }, FADE_DURATION_MS);
+  }
+
+  if (!loaded || dismissed || announcements.length === 0) {
     return null;
   }
+
+  const announcement = announcements[index] ?? announcements[0];
 
   return (
     <div
@@ -54,7 +89,11 @@ export function AnnouncementBanner() {
       role="region"
       aria-label="Site announcement"
     >
-      <div className="mx-auto flex max-w-[1280px] items-center justify-center gap-2 px-4 py-2.5 pr-12 text-center text-[13px] leading-snug sm:gap-2.5 sm:px-5 sm:pr-14 sm:text-[15px]">
+      <div
+        key={announcement.id}
+        className="mx-auto flex max-w-[1280px] items-center justify-center gap-2 px-4 py-2.5 pr-28 text-center text-[13px] leading-snug transition-opacity duration-300 sm:gap-2.5 sm:px-5 sm:pr-32 sm:text-[15px]"
+        style={{ opacity: visible ? 1 : 0 }}
+      >
         <CalendarIcon />
         <span className="inline-flex flex-wrap items-center justify-center gap-x-1 gap-y-1">
           <span className="font-semibold">
@@ -80,6 +119,29 @@ export function AnnouncementBanner() {
           </Link>
         </span>
       </div>
+
+      {announcements.length > 1 ? (
+        <span
+          className="absolute right-12 top-1/2 inline-flex -translate-y-1/2 items-center gap-1.5 sm:right-14"
+          role="tablist"
+          aria-label="Announcement indicators"
+        >
+          {announcements.map((item, i) => (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={i === index}
+              aria-label={`Show announcement ${i + 1} of ${announcements.length}`}
+              onClick={() => goToIndex(i)}
+              className={cn(
+                "h-2 w-2 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
+                i === index ? "bg-white" : "bg-white/50 hover:bg-white/80",
+              )}
+            />
+          ))}
+        </span>
+      ) : null}
       <button
         type="button"
         onClick={() => setDismissed(true)}

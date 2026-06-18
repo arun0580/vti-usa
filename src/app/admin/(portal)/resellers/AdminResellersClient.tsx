@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/cn";
 import {
   confirmApproveReseller,
+  confirmBulkResellerAction,
   confirmRejectReseller,
   confirmRemoveReseller,
   showResellerActionError,
@@ -245,8 +246,19 @@ export function AdminResellersClient({
   const [loading, setLoading] = useState(false);
   const [actionId, setActionId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkBusy, setBulkBusy] = useState(false);
 
   const visible = resellers.filter((r) => matchesNameSearch(r, searchQuery));
+
+  const selectedResellers = visible.filter((r) => selectedIds.has(r.id));
+  const selectedPendingCount = selectedResellers.filter(
+    (r) => r.status === "pending",
+  ).length;
+
+  function clearSelection() {
+    setSelectedIds(new Set());
+  }
 
   async function reload(nextFilter: Filter) {
     setLoading(true);
@@ -265,6 +277,7 @@ export function AdminResellersClient({
   async function handleFilter(next: Filter) {
     setFilter(next);
     setResellers([]);
+    clearSelection();
     await reload(next);
   }
 
@@ -332,6 +345,80 @@ export function AdminResellersClient({
       "Removed",
       "The reseller account has been permanently removed.",
     );
+  }
+
+  async function runBulk(
+    action: "approve" | "reject" | "remove",
+    targets: ResellerProfile[],
+  ) {
+    if (targets.length === 0) {
+      await showResellerActionError(
+        action === "remove"
+          ? "Select at least one reseller to remove."
+          : "Select at least one pending reseller.",
+      );
+      return;
+    }
+
+    if (!(await confirmBulkResellerAction(action, targets.length))) return;
+
+    setBulkBusy(true);
+    setError(null);
+
+    let succeeded = 0;
+    const failures: string[] = [];
+
+    for (const reseller of targets) {
+      const name = `${reseller.firstName} ${reseller.lastName}`.trim();
+      const result =
+        action === "approve"
+          ? await approveReseller(reseller.id)
+          : action === "reject"
+            ? await rejectReseller(reseller.id)
+            : await deleteReseller(reseller.id);
+
+      if (result.ok) {
+        succeeded += 1;
+      } else {
+        failures.push(`${name}: ${result.error}`);
+      }
+    }
+
+    setBulkBusy(false);
+    clearSelection();
+    await reload(filter);
+
+    const verb =
+      action === "approve" ? "approved" : action === "reject" ? "rejected" : "removed";
+
+    if (failures.length === 0) {
+      await showResellerActionSuccess(
+        "Done",
+        `${succeeded} reseller${succeeded === 1 ? "" : "s"} ${verb} successfully.`,
+      );
+    } else {
+      await showResellerActionError(
+        `${succeeded} ${verb}, ${failures.length} failed.\n\n${failures.join("\n")}`,
+      );
+    }
+  }
+
+  function handleBulkApprove() {
+    void runBulk(
+      "approve",
+      selectedResellers.filter((r) => r.status === "pending"),
+    );
+  }
+
+  function handleBulkReject() {
+    void runBulk(
+      "reject",
+      selectedResellers.filter((r) => r.status === "pending"),
+    );
+  }
+
+  function handleBulkRemove() {
+    void runBulk("remove", selectedResellers);
   }
 
   const columns = useMemo((): AdminDataTableColumn<ResellerProfile>[] => {
@@ -479,12 +566,47 @@ export function AdminResellersClient({
         </p>
       ) : null}
 
+      {selectedResellers.length > 0 ? (
+        <div className="mt-6 flex justify-end">
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <button
+              type="button"
+              onClick={handleBulkApprove}
+              disabled={bulkBusy || selectedPendingCount === 0}
+              className="inline-flex h-9 items-center justify-center rounded-lg bg-emerald-600 px-4 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+            >
+              Approve
+            </button>
+            <button
+              type="button"
+              onClick={handleBulkReject}
+              disabled={bulkBusy || selectedPendingCount === 0}
+              className="inline-flex h-9 items-center justify-center rounded-lg bg-amber-500 px-4 text-sm font-semibold text-white transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+            >
+              Reject
+            </button>
+            <button
+              type="button"
+              onClick={handleBulkRemove}
+              disabled={bulkBusy}
+              className="inline-flex h-9 items-center justify-center rounded-lg bg-red-600 px-4 text-sm font-semibold text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      ) : null}
+
       <div className="mt-6">
         <AdminDataTable
           data={visible}
           columns={columns}
           getRowId={(r) => r.id}
           loading={loading}
+          selectable
+          selectedIds={selectedIds}
+          onSelectedIdsChange={setSelectedIds}
+          isRowSelectable={(r) => r.status === "pending"}
           defaultSort={{ columnId: "user", direction: "asc" }}
           emptyMessage={
             searchQuery.trim()
