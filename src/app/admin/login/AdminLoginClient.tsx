@@ -56,7 +56,7 @@ export function AdminLoginClient() {
             priority
             unoptimized
           />
-          <h1 className="mt-4 text-2xl font-semi-bold tracking-tight text-zinc-950">
+          <h1 className="mt-4 text-xl font-semi-bold tracking-tight text-zinc-950">
             Content Management System
           </h1>
         </div>
