@@ -464,21 +464,20 @@ export function AdminResellersClient({
       },
       {
         id: "company",
-        header: "Company",
+        header: "Company Details",
         sortable: true,
         sortValue: (r) => r.companyName,
+        cellClassName: "!whitespace-normal",
         cell: (r) => (
-          <span className="block max-w-[180px] truncate text-zinc-600">
-            {r.companyName}
-          </span>
+          <div className="min-w-0 max-w-[220px]">
+            <span className="block truncate font-semibold text-zinc-900">
+              {r.companyName}
+            </span>
+            <span className="block truncate text-zinc-500">
+              {formatResellerLocation(r)}
+            </span>
+          </div>
         ),
-      },
-      {
-        id: "location",
-        header: "Location",
-        sortable: true,
-        sortValue: (r) => formatResellerLocation(r),
-        cell: (r) => formatResellerLocation(r),
       },
       {
         id: "businessType",
