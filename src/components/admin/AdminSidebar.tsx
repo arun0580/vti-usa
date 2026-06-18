@@ -71,9 +71,9 @@ export function AdminSidebar({
       )}
     >
       <div className="px-4 py-5">
-        <p className="text-base font-bold tracking-[0.08em] text-primary normal-case">
+        {/* <p className="text-base font-bold tracking-[0.08em] text-primary normal-case">
           VTI Admin Panel
-        </p>
+        </p> */}
       </div>
       <nav className="flex-1 px-3 pb-6" aria-label="Admin navigation">
         <ul className="space-y-1">

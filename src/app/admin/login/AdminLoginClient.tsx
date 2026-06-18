@@ -1,11 +1,11 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Container } from "@/components/site/Container";
-import { Logo } from "@/components/site/Logo";
 import { PasswordInput } from "@/components/site/PasswordInput";
 import { adminSignin, adminSignout } from "@/lib/admin-auth/api";
+import logoAsset from "../../../../public/logo.png";
 
 export function AdminLoginClient() {
   const searchParams = useSearchParams();
@@ -44,28 +44,28 @@ export function AdminLoginClient() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <header className="border-b border-zinc-200 bg-white px-4 py-4 sm:px-6">
-        <Logo
-          href="/admin/login"
-          imageClassName="rounded-md object-contain h-9 w-auto"
-        />
-      </header>
-      <div className="py-16">
-        <Container className="mx-auto max-w-md">
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-950">
-          Admin sign in
-        </h1>
-        <p className="mt-2 text-sm text-zinc-600">
-          Approve reseller applications before they can access the portal.
-        </p>
+    <div className="flex min-h-screen items-center justify-center px-4 py-12">
+      <div className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
+        <div className="flex flex-col items-center text-center">
+          <Image
+            src={logoAsset}
+            alt="VTI USA"
+            width={logoAsset.width}
+            height={logoAsset.height}
+            className="h-14 w-auto object-contain"
+            priority
+            unoptimized
+          />
+          <h1 className="mt-4 text-2xl font-semi-bold tracking-tight text-zinc-950">
+            Content Management System
+          </h1>
+        </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="mt-8 space-y-5 rounded-xl border border-zinc-200 bg-white p-6 shadow-sm"
-        >
+        <div className="my-6 border-t border-zinc-200" />
+
+        <form onSubmit={handleSubmit} className="space-y-6">
           {error ? (
-            <p className="text-sm font-medium text-red-600" role="alert">
+            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-600" role="alert">
               {error}
             </p>
           ) : null}
@@ -110,7 +110,6 @@ export function AdminLoginClient() {
             {isSubmitting ? "Signing in…" : "Sign in"}
           </button>
         </form>
-        </Container>
       </div>
     </div>
   );
