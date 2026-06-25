@@ -252,9 +252,8 @@ function AssetListCard({
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  download
                   className={rowClass}
-                  title={`Download ${label}`}
+                  title={`Open ${label}`}
                 >
                   <span>{label}</span>
                   <IconDownload className="text-zinc-500 transition-colors group-hover:text-red-600" />
