@@ -219,12 +219,18 @@ function ActionCard({
   );
 }
 
+type AssetItem = string | { label: string; href?: string };
+
+function normalizeAssetItem(item: AssetItem): { label: string; href?: string } {
+  return typeof item === "string" ? { label: item } : item;
+}
+
 function AssetListCard({
   title,
   items,
 }: {
   title: string;
-  items: readonly string[];
+  items: readonly AssetItem[];
 }) {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-zinc-200/90 bg-white shadow-sm">
@@ -235,18 +241,37 @@ function AssetListCard({
         </h3>
       </div>
       <ul className="flex flex-1 flex-col divide-y divide-zinc-100">
-        {items.map((item) => (
-          <li key={item}>
-            <button
-              type="button"
-              className="group flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left text-sm text-zinc-900 transition-colors hover:bg-zinc-50/80"
-              title="Download coming soon"
-            >
-              <span>{item}</span>
-              <IconDownload className="text-zinc-500 transition-colors group-hover:text-red-600" />
-            </button>
-          </li>
-        ))}
+        {items.map((item) => {
+          const { label, href } = normalizeAssetItem(item);
+          const rowClass =
+            "group flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left text-sm text-zinc-900 transition-colors hover:bg-zinc-50/80";
+          return (
+            <li key={label}>
+              {href ? (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className={rowClass}
+                  title={`Download ${label}`}
+                >
+                  <span>{label}</span>
+                  <IconDownload className="text-zinc-500 transition-colors group-hover:text-red-600" />
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  className={rowClass}
+                  title="Download coming soon"
+                >
+                  <span>{label}</span>
+                  <IconDownload className="text-zinc-500 transition-colors group-hover:text-red-600" />
+                </button>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

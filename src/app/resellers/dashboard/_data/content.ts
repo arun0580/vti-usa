@@ -45,26 +45,26 @@ export const quickActions = [
 ] as const;
 
 export const specSheets = [
-  "VT-Pro Series",
-  "VT105 Touch Panel",
-  "VT-IR Series",
-  "Scooter 32",
+  { label: "VT-Pro Series", href: "/pdf/specs/vt-pro.pdf" },
+  { label: "VT105 Touch Panel", href: "/pdf/specs/vt105.pdf"},
+  { label: "VT-IR Series", href: "/pdf/specs/vt13-ir.pdf"},
+  { label: "Scooter 32" , href: "/pdf/specs/scooter-32.pdf"},
 ] as const;
 
 export const onescreenAssets = [
-  "OneScreen Hubble",
-  "OneScreen Touch",
-  "InFocus JTouch",
-  "InFocus Mondopad",
+  { label: "OneScreen Hubble", href: "/pdf/specs/os-hubble.pdf" },
+  { label: "OneScreen Touch", href: "/pdf/specs/os-touch.pdf" },
+  { label: "InFocus JTouch", href: "/pdf/specs/if-jtouch.pdf" },
+  { label: "InFocus Mondopad", href: "/pdf/specs/if-mondopad.pdf" },
 ] as const;
 
 export const ledSignageAssets = [
-  "LED Wall Systems",
-  "DvLED Poster",
-  "LED Scoreboard",
-  "Menuboard Signage",
-  "Wayfinding Signage",
-  "Window Display",
+  { label: "LED Wall Systems", href: "/pdf/specs/led-wall.pdf" },
+  { label: "DvLED Poster", href: "/pdf/specs/led-poster.pdf" },
+  { label: "LED Scoreboard", href: "/pdf/specs/led-scoreboard.pdf" },
+  { label: "Menuboard Signage", href: "/pdf/specs/sig-menuboard.pdf" },
+  { label: "Wayfinding Signage", href: "/pdf/specs/sig-wayfinding.pdf" },
+  { label: "Window Display", href: "/pdf/specs/sig-window.pdf" },
 ] as const;
 
 export const assetActions = [
