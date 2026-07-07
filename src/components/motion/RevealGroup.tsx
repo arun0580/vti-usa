@@ -1,10 +1,13 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { motion, type HTMLMotionProps } from "motion/react";
 import { staggerContainer, staggerItem, viewportOnce } from "@/lib/motion";
 
 type GroupProps = HTMLMotionProps<"div"> & {
   onMount?: boolean;
+  /** Skip entrance animations — use in CMS editors when items are added dynamically. */
+  disableAnimation?: boolean;
   as?: "div" | "ul" | "ol" | "section";
 };
 
@@ -17,10 +20,17 @@ type GroupProps = HTMLMotionProps<"div"> & {
  */
 export function RevealGroup({
   onMount = false,
+  disableAnimation = false,
   as = "div",
   children,
   ...rest
 }: GroupProps) {
+  if (disableAnimation) {
+    const { className } = rest;
+    const Tag = as;
+    return <Tag className={className}>{children as ReactNode}</Tag>;
+  }
+
   const MotionTag = motion[as] as typeof motion.div;
   return (
     <MotionTag
@@ -37,11 +47,23 @@ export function RevealGroup({
 }
 
 type ItemProps = HTMLMotionProps<"div"> & {
+  disableAnimation?: boolean;
   as?: "div" | "li" | "article" | "section" | "figure";
 };
 
 /** Single child of a `RevealGroup`. Inherits the shared `fadeUp` variant. */
-export function RevealItem({ as = "div", children, ...rest }: ItemProps) {
+export function RevealItem({
+  as = "div",
+  disableAnimation = false,
+  children,
+  ...rest
+}: ItemProps) {
+  if (disableAnimation) {
+    const { className } = rest;
+    const Tag = as;
+    return <Tag className={className}>{children as ReactNode}</Tag>;
+  }
+
   const MotionTag = motion[as] as typeof motion.div;
   return (
     <MotionTag variants={staggerItem} {...rest}>

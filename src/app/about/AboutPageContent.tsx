@@ -1,13 +1,30 @@
 "use client";
 
-import { ButtonLink } from "@/components/site/Button";
+import type { Dispatch, SetStateAction } from "react";
 import { Container } from "@/components/site/Container";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
 import { motion } from "motion/react";
 import { hoverLift, tapPress } from "@/lib/motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import {
+  TeamMemberEditModal,
+  ValueCardEditModal,
+} from "@/lib/about-page/AboutEditModals";
+import type { CmsItemModalMode } from "@/lib/page-cms/cmsModalMode";
+import type { AboutPageContent as AboutContent } from "@/lib/about-page/types";
+import { uploadAboutFile } from "@/lib/about-page/uploadApi";
+import { AboutValueIcon } from "@/lib/about-page/ValueIcon";
+import { EditableButtonLink } from "@/lib/page-cms/EditableButtonLink";
+import { EditableText, EditableTextarea } from "@/lib/products-page/EditableField";
+import { EditableImage } from "@/lib/products-page/EditableImage";
+import {
+  CmsAddProductCard,
+  CmsProductActions,
+} from "@/lib/products-page/CmsProductActions";
 import { PartnerApplicationForm } from "./PartnerApplicationForm";
+
+type ItemModalState = { mode: CmsItemModalMode; index?: number } | null;
 
 type TabId = "story" | "team" | "values" | "join";
 
@@ -101,255 +118,59 @@ const tabs: {
   },
 ];
 
-const teamMembers: {
-  name: string;
-  role: string;
-  location: string;
-  imageSrc: string;
-  imageAlt: string;
-}[] = [
-  {
-    name: "Kevin & Toni Talentino",
-    role: "CEO & CFO · Owners",
-    location: "GA",
-    imageSrc: "/about/Kevin-Toni-Headshot.jpg",
-    imageAlt: "Kevin and Toni Talentino, CEO & CFO, Owners",
-  },
-  {
-    name: "Tyler King",
-    role: "Sales & Operations",
-    location: "GA",
-    imageSrc: "/about/tyler-king.png",
-    imageAlt: "Tyler King, Sales & Operations",
-  },
-  {
-    name: "Aaron Montoya",
-    role: "Sales Rep",
-    location: "NM",
-    imageSrc: "/about/aaron-montoya-BtVkiaC4.jpg",
-    imageAlt: "Aaron Montoya, Sales Rep",
-  },
-  {
-    name: "James Baxley",
-    role: "Sales Rep",
-    location: "FL",
-    imageSrc: "/about/james-baxley-BA0-aBVd.jpg",
-    imageAlt: "James Baxley, Sales Rep",
-  },
-  {
-    name: "Eddie Longoria",
-    role: "Sales Rep",
-    location: "TX",
-    imageSrc: "/about/eddie-longoria-ByEfT8V_.jpg",
-    imageAlt: "Eddie Longoria, Sales Rep",
-  },
-  {
-    name: "Tina McCord",
-    role: "Sales Rep · K-12 Educator / Trainer",
-    location: "AR",
-    imageSrc: "/about/tina-mccord-CkeHAHlB.jpg",
-    imageAlt: "Tina McCord, Sales Rep · K-12 Educator / Trainer",
-  },
-  {
-    name: "Zarrar Khan",
-    role: "OneScreen Liaison",
-    location: "MD",
-    imageSrc: "/about/zarrar-khan-DuLJC3xb.jpg",
-    imageAlt: "Zarrar Khan, OneScreen Liaison",
-  },
-  {
-    name: "Dr. David Weems Sr.",
-    role: "Sales Rep · K-12 Educator",
-    location: "TX",
-    imageSrc: "/about/david-weems.jpg",
-    imageAlt: "Dr. David Weems Sr., Sales Rep · K-12 Educator",
-  },
-];
-
-type ValueIconId =
-  | "heart"
-  | "handshake"
-  | "award"
-  | "lightbulb"
-  | "support"
-  | "globe";
-
-const valueCards: { title: string; desc: string; icon: ValueIconId }[] = [
-  {
-    icon: "heart",
-    title: "Built for the classroom. Scaled for the real world.",
-    desc: "Every product decision starts with the classroom—then scales to boardrooms, control rooms, and public spaces where clarity and reliability matter just as much.",
-  },
-  {
-    icon: "handshake",
-    title: "Resellers as partners",
-    desc: "We win when our partners win. Honest collaboration, deal protection, and shared success are non-negotiable.",
-  },
-  {
-    icon: "award",
-    title: "Quality without compromise",
-    desc: "Hardened glass, anti-glare coatings, components rated for 100,000 hours, and manufacturer's warranty coverage.",
-  },
-  {
-    icon: "lightbulb",
-    title: "Practical innovation",
-    desc: "We ship features that solve real classroom, boardroom, and mission-critical environment problems — not specs designed for marketing slides.",
-  },
-  {
-    icon: "support",
-    title: "Personalized human support",
-    desc: "Get a dedicated rep who knows your account — not chatbots, ticket queues, or overseas call centers.",
-  },
-  {
-    icon: "globe",
-    title: "Built for the long haul",
-    desc: "Displays are infrastructure. We build for schools, government facilities, and commercial environments that need to perform reliably for a decade or more.",
-  },
-];
-
-function ValueIcon({ id }: { id: ValueIconId }) {
-  const c = "h-6 w-6 shrink-0 text-red-600";
-  const sw = 1.5;
-  switch (id) {
-    case "heart":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" className={c} aria-hidden>
-          <path
-            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-          />
-        </svg>
-      );
-    case "handshake":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" className={c} aria-hidden>
-          <path
-            d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <circle
-            cx="9"
-            cy="7"
-            r="4"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M23 21v-2a4 4 0 0 0-3-3.87"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M16 3.13a4 4 0 0 1 0 7.75"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      );
-    case "award":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" className={c} aria-hidden>
-          <circle
-            cx="12"
-            cy="8"
-            r="6"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M8.2 14L7 23l5-3 5 3-1.2-8.8"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      );
-    case "lightbulb":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" className={c} aria-hidden>
-          <path
-            d="M15 14c.2-1 .7-1.7 1.5-2.5C17.3 10.1 18 7.6 18 5a6 6 0 10-12 0c0 2.6.7 5.1 2.5 6.5.8.8 1.3 1.5 1.5 2.5"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M9 18h6M10 22h4"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      );
-    case "support":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" className={c} aria-hidden>
-          <path
-            d="M3 18v-6a9 9 0 0 1 18 0v6"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      );
-    case "globe":
-      return (
-        <svg viewBox="0 0 24 24" fill="none" className={c} aria-hidden>
-          <circle
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M2 12h20"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-            stroke="currentColor"
-            strokeWidth={sw}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      );
-  }
-}
-
-export function AboutPageContent() {
+export function AboutPageContent({
+  content,
+  editable = false,
+  onContentChange,
+}: {
+  content: AboutContent;
+  editable?: boolean;
+  onContentChange?: Dispatch<SetStateAction<AboutContent>>;
+}) {
   const [active, setActive] = useState<TabId>("story");
+  const [teamModal, setTeamModal] = useState<ItemModalState>(null);
+  const [valueModal, setValueModal] = useState<ItemModalState>(null);
+
+  const { hero, tabsPrompt, story, team, values, join, bottomCta } = content;
+
+  function patchString(
+    updater: (draft: AboutContent, value: string) => AboutContent,
+  ): ((value: string) => void) | undefined {
+    if (!editable || !onContentChange) return undefined;
+    return (value: string) => onContentChange((prev) => updater(prev, value));
+  }
+
+  function removeTeamMember(index: number) {
+    if (!onContentChange) return;
+    if (!window.confirm("Remove this team member?")) return;
+    onContentChange((prev) => ({
+      ...prev,
+      team: {
+        ...prev.team,
+        members: prev.team.members.filter((_, i) => i !== index),
+      },
+    }));
+  }
+
+  function addTeamMember() {
+    setTeamModal({ mode: "add" });
+  }
+
+  function removeValueCard(index: number) {
+    if (!onContentChange) return;
+    if (!window.confirm("Remove this value card?")) return;
+    onContentChange((prev) => ({
+      ...prev,
+      values: {
+        ...prev.values,
+        cards: prev.values.cards.filter((_, i) => i !== index),
+      },
+    }));
+  }
+
+  function addValueCard() {
+    setValueModal({ mode: "add" });
+  }
 
   useEffect(() => {
     const applyHash = () => {
@@ -377,30 +198,50 @@ export function AboutPageContent() {
     <div className="bg-white text-zinc-950">
       <Container className="pt-10 pb-6 sm:pt-16 sm:pb-8">
         <Reveal onMount className="max-w-3xl">
-          <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-            ABOUT VTI
-          </div>
-          <h1 className="mt-2 text-[32px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]">
-            Built by pioneers.
-          </h1>
-          <h1 className="mt-1 text-[32px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]">
-            Trusted nationwide.
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-6 text-zinc-600 sm:text-[18px] sm:leading-7">
-            From the earliest days of interactive technology to today&apos;s
-            classrooms, boardrooms, and government spaces—VTI delivers displays
-            people rely on every day, powered by a coast-to-coast reseller
-            network.
-          </p>
+          <EditableText
+            as="div"
+            className="text-[12px] font-semibold tracking-[0.22em] text-red-600"
+            value={hero.kicker}
+            onChange={patchString((d, kicker) => ({ ...d, hero: { ...d.hero, kicker } }))}
+          />
+          <EditableText
+            as="h1"
+            className="mt-2 text-[32px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]"
+            value={hero.titleLine1}
+            onChange={patchString((d, titleLine1) => ({
+              ...d,
+              hero: { ...d.hero, titleLine1 },
+            }))}
+          />
+          <EditableText
+            as="h1"
+            className="mt-1 text-[32px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-[56px]"
+            value={hero.titleLine2}
+            onChange={patchString((d, titleLine2) => ({
+              ...d,
+              hero: { ...d.hero, titleLine2 },
+            }))}
+          />
+          <EditableTextarea
+            className="mt-4 max-w-2xl text-base leading-6 text-zinc-600 sm:text-[18px] sm:leading-7"
+            value={hero.description}
+            onChange={patchString((d, description) => ({
+              ...d,
+              hero: { ...d.hero, description },
+            }))}
+          />
         </Reveal>
       </Container>
 
       <div className="border-b border-zinc-200 bg-zinc-50/60">
         <Container className="py-5">
           <Reveal onMount delay={0.1}>
-            <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500">
-              Explore VTI — pick a section
-            </p>
+            <EditableText
+              as="p"
+              className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-500"
+              value={tabsPrompt}
+              onChange={patchString((d, tabsPrompt) => ({ ...d, tabsPrompt }))}
+            />
             <RevealGroup
               onMount
               className="grid w-full grid-cols-2 gap-2 sm:flex sm:h-auto sm:flex-wrap sm:justify-center sm:gap-3"
@@ -454,43 +295,44 @@ export function AboutPageContent() {
               className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12"
             >
               <Reveal onMount>
-                <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-                  OUR STORY
-                </div>
-                <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-                  From the early days of interactive — to current days'
-                  technology.
-                </h2>
+                <EditableText
+                  as="div"
+                  className="text-[12px] font-semibold tracking-[0.22em] text-red-600"
+                  value={story.kicker}
+                  onChange={patchString((d, kicker) => ({
+                    ...d,
+                    story: { ...d.story, kicker },
+                  }))}
+                />
+                <EditableText
+                  as="h2"
+                  className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl"
+                  value={story.title}
+                  onChange={patchString((d, title) => ({
+                    ...d,
+                    story: { ...d.story, title },
+                  }))}
+                />
                 <div className="mt-6 space-y-4 text-base leading-7 text-zinc-600">
-                  <p>
-                    We entered the industry at the very beginning. Among
-                    manufacturers in China, we are known simply as the company
-                    that sells. We were the first to bring Promethean
-                    interactive whiteboards to North America—back when
-                    classrooms still relied on chalk, overhead projectors, and
-                    whiteboards. There is not a major whiteboard we have not
-                    sold or handled.
-                  </p>
-                  <p>
-                    Over the decades, we have built several AV technology
-                    companies, designed short cuts to help speed the
-                    installation process and helped bring the technology that
-                    defined modern collaboration into classrooms and boardrooms
-                    around the world.
-                  </p>
-                  <p>
-                    In 2013, we founded Virtual Technologies, Inc. Drawing on
-                    decades of experience, we built a company focused on
-                    delivering best-in-class interactive displays, LED walls,
-                    and digital signage—designed for the people who use them
-                    every day.
-                  </p>
-                  <p>
-                    Today, VTI displays have been installed in K–12 districts,
-                    universities, Fortune 500 boardrooms, and federal facilities
-                    across all 50 states—supported by a nationwide reseller
-                    network.
-                  </p>
+                  {story.paragraphs.map((paragraph, index) => (
+                    <EditableTextarea
+                      key={index}
+                      value={paragraph}
+                      onChange={
+                        editable && onContentChange
+                          ? (value) =>
+                              onContentChange((prev) => {
+                                const paragraphs = [...prev.story.paragraphs];
+                                paragraphs[index] = value;
+                                return {
+                                  ...prev,
+                                  story: { ...prev.story, paragraphs },
+                                };
+                              })
+                          : undefined
+                      }
+                    />
+                  ))}
                 </div>
               </Reveal>
               <Reveal
@@ -500,26 +342,76 @@ export function AboutPageContent() {
               >
                 <figure>
                   <div className="overflow-hidden rounded-2xl shadow-lg shadow-zinc-950/10 ring-1 ring-zinc-200/80">
-                    <Image
-                      src="/about/bandit-mascot.jpg"
-                      alt="Bandit, the VTI mascot"
-                      width={560}
-                      height={700}
-                      className="h-auto w-full object-cover"
-                      sizes="(min-width: 1024px) 400px, 100vw"
-                      priority
-                    />
+                    {editable && onContentChange ? (
+                      <div className="relative aspect-[4/5] w-full">
+                        <EditableImage
+                          src={story.mascot.imageSrc}
+                          alt={story.mascot.imageAlt}
+                          className="relative h-full w-full"
+                          imageClassName="object-cover"
+                          sizes="(min-width: 1024px) 400px, 100vw"
+                          priority
+                          uploadFile={uploadAboutFile}
+                          onChange={(imageSrc) =>
+                            onContentChange((prev) => ({
+                              ...prev,
+                              story: {
+                                ...prev.story,
+                                mascot: { ...prev.story.mascot, imageSrc },
+                              },
+                            }))
+                          }
+                        />
+                      </div>
+                    ) : (
+                      <Image
+                        src={story.mascot.imageSrc}
+                        alt={story.mascot.imageAlt}
+                        width={560}
+                        height={700}
+                        className="h-auto w-full object-cover"
+                        sizes="(min-width: 1024px) 400px, 100vw"
+                        priority
+                      />
+                    )}
                   </div>
                   <figcaption className="mt-4 text-center">
-                    <div className="text-lg font-bold text-zinc-950">
-                      Bandit
-                    </div>
-                    <div className="text-sm font-semibold text-red-600">
-                      VTI Mascot
-                    </div>
-                    <div className="mt-1 text-[11px] font-semibold tracking-[0.2em] text-zinc-500">
-                      Chief Morale Officer
-                    </div>
+                    <EditableText
+                      as="div"
+                      className="text-lg font-bold text-zinc-950"
+                      value={story.mascot.name}
+                      onChange={patchString((d, name) => ({
+                        ...d,
+                        story: {
+                          ...d.story,
+                          mascot: { ...d.story.mascot, name },
+                        },
+                      }))}
+                    />
+                    <EditableText
+                      as="div"
+                      className="text-sm font-semibold text-red-600"
+                      value={story.mascot.role}
+                      onChange={patchString((d, role) => ({
+                        ...d,
+                        story: {
+                          ...d.story,
+                          mascot: { ...d.story.mascot, role },
+                        },
+                      }))}
+                    />
+                    <EditableText
+                      as="div"
+                      className="mt-1 text-[11px] font-semibold tracking-[0.2em] text-zinc-500"
+                      value={story.mascot.subtitle}
+                      onChange={patchString((d, subtitle) => ({
+                        ...d,
+                        story: {
+                          ...d.story,
+                          mascot: { ...d.story.mascot, subtitle },
+                        },
+                      }))}
+                    />
                   </figcaption>
                 </figure>
               </Reveal>
@@ -536,17 +428,32 @@ export function AboutPageContent() {
           {active === "team" && (
             <div key="team" id="our-team" className="scroll-mt-28">
               <Reveal onMount>
-                <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-                  OUR TEAM
-                </div>
-                <h2 className="mt-2 max-w-4xl text-2xl font-bold tracking-tight sm:text-3xl">
-                  Family-owned. Veteran-owned. Woman-owned.
-                </h2>
-                <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-600">
-                  In business since 2013 with over 100 years of combined
-                  industry experience — meet the people behind every VTI quote,
-                  install, and support call.
-                </p>
+                <EditableText
+                  as="div"
+                  className="text-[12px] font-semibold tracking-[0.22em] text-red-600"
+                  value={team.kicker}
+                  onChange={patchString((d, kicker) => ({
+                    ...d,
+                    team: { ...d.team, kicker },
+                  }))}
+                />
+                <EditableText
+                  as="h2"
+                  className="mt-2 max-w-4xl text-2xl font-bold tracking-tight sm:text-3xl"
+                  value={team.title}
+                  onChange={patchString((d, title) => ({
+                    ...d,
+                    team: { ...d.team, title },
+                  }))}
+                />
+                <EditableTextarea
+                  className="mt-4 max-w-3xl text-base leading-7 text-zinc-600"
+                  value={team.description}
+                  onChange={patchString((d, description) => ({
+                    ...d,
+                    team: { ...d.team, description },
+                  }))}
+                />
               </Reveal>
 
               <RevealGroup
@@ -554,12 +461,18 @@ export function AboutPageContent() {
                 as="ul"
                 className="mt-10 grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4"
               >
-                {teamMembers.map((m) => (
-                  <RevealItem as="li" key={m.name}>
+                {team.members.map((m, index) => (
+                  <RevealItem as="li" key={m.id}>
                     <motion.article
-                      whileHover={hoverLift}
-                      className="h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md hover:shadow-zinc-950/5"
+                      whileHover={editable ? undefined : hoverLift}
+                      className="relative h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md hover:shadow-zinc-950/5"
                     >
+                      {editable ? (
+                        <CmsProductActions
+                          onEdit={() => setTeamModal({ mode: "edit", index })}
+                          onDelete={() => removeTeamMember(index)}
+                        />
+                      ) : null}
                       <div className="relative aspect-[3/4] w-full">
                         <Image
                           src={m.imageSrc}
@@ -583,6 +496,14 @@ export function AboutPageContent() {
                     </motion.article>
                   </RevealItem>
                 ))}
+                {editable ? (
+                  <RevealItem as="li">
+                    <CmsAddProductCard
+                      onClick={addTeamMember}
+                      label="Add team member"
+                    />
+                  </RevealItem>
+                ) : null}
               </RevealGroup>
             </div>
           )}
@@ -597,12 +518,24 @@ export function AboutPageContent() {
           {active === "values" && (
             <div key="values" id="our-values" className="scroll-mt-28">
               <Reveal onMount>
-                <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-                  OUR VALUES
-                </div>
-                <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-                  Values behind every display we build.
-                </h2>
+                <EditableText
+                  as="div"
+                  className="text-[12px] font-semibold tracking-[0.22em] text-red-600"
+                  value={values.kicker}
+                  onChange={patchString((d, kicker) => ({
+                    ...d,
+                    values: { ...d.values, kicker },
+                  }))}
+                />
+                <EditableText
+                  as="h2"
+                  className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl"
+                  value={values.title}
+                  onChange={patchString((d, title) => ({
+                    ...d,
+                    values: { ...d.values, title },
+                  }))}
+                />
               </Reveal>
 
               <div className="mt-8 sm:mt-10">
@@ -611,17 +544,23 @@ export function AboutPageContent() {
                   as="ul"
                   className="grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-3"
                 >
-                  {valueCards.map((v) => (
-                    <RevealItem as="li" key={v.title}>
+                  {values.cards.map((v, index) => (
+                    <RevealItem as="li" key={v.id}>
                       <motion.article
-                        whileHover={hoverLift}
-                        className="flex h-full flex-col rounded-2xl border border-zinc-100 bg-white p-7 shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                        whileHover={editable ? undefined : hoverLift}
+                        className="relative flex h-full flex-col rounded-2xl border border-zinc-100 bg-white p-7 shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                       >
+                        {editable ? (
+                          <CmsProductActions
+                            onEdit={() => setValueModal({ mode: "edit", index })}
+                            onDelete={() => removeValueCard(index)}
+                          />
+                        ) : null}
                         <div
                           className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-[#FDF2F2]"
                           aria-hidden
                         >
-                          <ValueIcon id={v.icon} />
+                          <AboutValueIcon id={v.icon} />
                         </div>
                         <h3 className="text-base font-bold leading-snug text-zinc-950">
                           {v.title}
@@ -632,6 +571,14 @@ export function AboutPageContent() {
                       </motion.article>
                     </RevealItem>
                   ))}
+                  {editable ? (
+                    <RevealItem as="li">
+                      <CmsAddProductCard
+                        onClick={addValueCard}
+                        label="Add value card"
+                      />
+                    </RevealItem>
+                  ) : null}
                 </RevealGroup>
               </div>
             </div>
@@ -650,25 +597,36 @@ export function AboutPageContent() {
               className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start lg:gap-12"
             >
               <Reveal onMount>
-                <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-                  BECOME A PARTNER
-                </div>
-                <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-                  Tell us about you and your business.
-                </h2>
-                <p className="mt-4 text-base leading-7 text-zinc-600">
-                  VTI sells exclusively through certified resellers and
-                  integrators. Share a few details and the right person on our
-                  team will reach out — usually within one business day.
-                </p>
+                <EditableText
+                  as="div"
+                  className="text-[12px] font-semibold tracking-[0.22em] text-red-600"
+                  value={join.kicker}
+                  onChange={patchString((d, kicker) => ({
+                    ...d,
+                    join: { ...d.join, kicker },
+                  }))}
+                />
+                <EditableText
+                  as="h2"
+                  className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl"
+                  value={join.title}
+                  onChange={patchString((d, title) => ({
+                    ...d,
+                    join: { ...d.join, title },
+                  }))}
+                />
+                <EditableTextarea
+                  className="mt-4 text-base leading-7 text-zinc-600"
+                  value={join.description}
+                  onChange={patchString((d, description) => ({
+                    ...d,
+                    join: { ...d.join, description },
+                  }))}
+                />
 
                 <ul className="mt-8 space-y-3 text-sm text-zinc-700">
-                  {[
-                    "Local support, backed by direct factory access",
-                    "Deal registration and territory protection",
-                    "Technical training and certification",
-                  ].map((item) => (
-                    <li key={item} className="flex gap-3">
+                  {join.bullets.map((item, index) => (
+                    <li key={index} className="flex gap-3">
                       <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-red-200 text-red-600">
                         <svg
                           viewBox="0 0 24 24"
@@ -685,7 +643,24 @@ export function AboutPageContent() {
                           />
                         </svg>
                       </span>
-                      <span>{item}</span>
+                      <EditableText
+                        as="span"
+                        className="flex-1"
+                        value={item}
+                        onChange={
+                          editable && onContentChange
+                            ? (value) =>
+                                onContentChange((prev) => {
+                                  const bullets = [...prev.join.bullets];
+                                  bullets[index] = value;
+                                  return {
+                                    ...prev,
+                                    join: { ...prev.join, bullets },
+                                  };
+                                })
+                            : undefined
+                        }
+                      />
                     </li>
                   ))}
                 </ul>
@@ -705,57 +680,179 @@ export function AboutPageContent() {
 
       <section className="relative overflow-hidden border-t border-zinc-800 bg-zinc-950 text-white">
         <div className="absolute inset-0">
-          <Image
-            src="/about/corporate-boardroom-panel-2wOF230t.png"
-            alt=""
-            fill
-            className="object-cover object-center opacity-100"
-            sizes="100vw"
-            priority={false}
-          />
+          {editable ? (
+            <EditableImage
+              src={bottomCta.backgroundImageSrc}
+              alt=""
+              fill
+              className="object-cover object-center opacity-100"
+              sizes="100vw"
+              uploadFile={uploadAboutFile}
+              onChange={
+                onContentChange
+                  ? (backgroundImageSrc) =>
+                      onContentChange((prev) => ({
+                        ...prev,
+                        bottomCta: { ...prev.bottomCta, backgroundImageSrc },
+                      }))
+                  : undefined
+              }
+            />
+          ) : (
+            <Image
+              src={bottomCta.backgroundImageSrc}
+              alt=""
+              fill
+              className="object-cover object-center opacity-100"
+              sizes="100vw"
+              priority={false}
+            />
+          )}
           <div className="absolute inset-0 bg-black/10" aria-hidden />
         </div>
         <Container className="relative z-10 py-10 sm:py-16">
           <Reveal className="grid items-center gap-6 sm:gap-8 lg:grid-cols-[1fr_auto_auto]">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-                Ready to see VTI for yourself?
-              </h2>
-              <p className="mt-3 max-w-xl text-sm leading-6 text-zinc-200 sm:text-base sm:leading-7">
-                Connect with our team for a guided product walkthrough or a
-                referral to your nearest certified VTI reseller.
-              </p>
+              <EditableText
+                as="h2"
+                className="text-2xl font-bold tracking-tight sm:text-3xl"
+                value={bottomCta.title}
+                onChange={patchString((d, title) => ({
+                  ...d,
+                  bottomCta: { ...d.bottomCta, title },
+                }))}
+              />
+              <EditableTextarea
+                className="mt-3 max-w-xl text-sm leading-6 text-zinc-200 sm:text-base sm:leading-7"
+                value={bottomCta.description}
+                onChange={patchString((d, description) => ({
+                  ...d,
+                  bottomCta: { ...d.bottomCta, description },
+                }))}
+              />
             </div>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <ButtonLink
-                href="/contact"
+              <EditableButtonLink
+                label={bottomCta.primaryCta.label}
+                href={bottomCta.primaryCta.href}
+                onChange={
+                  onContentChange
+                    ? (value) =>
+                        onContentChange((prev) => ({
+                          ...prev,
+                          bottomCta: { ...prev.bottomCta, primaryCta: value },
+                        }))
+                    : undefined
+                }
                 className="!bg-red-600 !text-white border-0 shadow-sm hover:!bg-red-700 focus-visible:ring-red-500/40"
               >
-                Talk to VTI <span aria-hidden="true">→</span>
-              </ButtonLink>
+                {bottomCta.primaryCta.label}{" "}
+                <span aria-hidden="true">→</span>
+              </EditableButtonLink>
               {active === "values" ? null : (
-                <ButtonLink
-                  href="/products"
+                <EditableButtonLink
+                  label={bottomCta.secondaryCta.label}
+                  href={bottomCta.secondaryCta.href}
+                  onChange={
+                    onContentChange
+                      ? (value) =>
+                          onContentChange((prev) => ({
+                            ...prev,
+                            bottomCta: { ...prev.bottomCta, secondaryCta: value },
+                          }))
+                      : undefined
+                  }
                   variant="secondary"
                   className="border-0 bg-white text-zinc-950 hover:bg-zinc-100"
                 >
-                  View product lineup
-                </ButtonLink>
+                  {bottomCta.secondaryCta.label}
+                </EditableButtonLink>
               )}
             </div>
             <div className="hidden lg:flex lg:justify-end">
-              <Image
-                src="/mascot-puppy.png"
-                alt="VTI mascot puppy"
-                width={680}
-                height={1024}
-                className="h-auto w-36 drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)] xl:w-44"
-                priority={false}
-              />
+              {editable && onContentChange ? (
+                <div className="relative w-36 xl:w-44">
+                  <EditableImage
+                    src={bottomCta.mascotImageSrc}
+                    alt={bottomCta.mascotImageAlt}
+                    className="relative aspect-[680/1024] w-full"
+                    imageClassName="object-contain drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)]"
+                    uploadFile={uploadAboutFile}
+                    onChange={(mascotImageSrc) =>
+                      onContentChange((prev) => ({
+                        ...prev,
+                        bottomCta: { ...prev.bottomCta, mascotImageSrc },
+                      }))
+                    }
+                  />
+                </div>
+              ) : (
+                <Image
+                  src={bottomCta.mascotImageSrc}
+                  alt={bottomCta.mascotImageAlt}
+                  width={680}
+                  height={1024}
+                  className="h-auto w-36 drop-shadow-[0_10px_24px_rgba(0,0,0,0.55)] xl:w-44"
+                  priority={false}
+                />
+              )}
             </div>
           </Reveal>
         </Container>
       </section>
+
+      <TeamMemberEditModal
+        open={teamModal !== null}
+        mode={teamModal?.mode ?? "edit"}
+        item={
+          teamModal?.mode === "edit" && teamModal.index !== undefined
+            ? team.members[teamModal.index] ?? null
+            : null
+        }
+        onClose={() => setTeamModal(null)}
+        onSave={(item) => {
+          if (!teamModal || !onContentChange) return;
+          if (teamModal.mode === "add") {
+            onContentChange((prev) => ({
+              ...prev,
+              team: { ...prev.team, members: [...prev.team.members, item] },
+            }));
+          } else if (teamModal.index !== undefined) {
+            onContentChange((prev) => {
+              const members = [...prev.team.members];
+              members[teamModal.index!] = item;
+              return { ...prev, team: { ...prev.team, members } };
+            });
+          }
+          setTeamModal(null);
+        }}
+      />
+      <ValueCardEditModal
+        open={valueModal !== null}
+        mode={valueModal?.mode ?? "edit"}
+        item={
+          valueModal?.mode === "edit" && valueModal.index !== undefined
+            ? values.cards[valueModal.index] ?? null
+            : null
+        }
+        onClose={() => setValueModal(null)}
+        onSave={(item) => {
+          if (!valueModal || !onContentChange) return;
+          if (valueModal.mode === "add") {
+            onContentChange((prev) => ({
+              ...prev,
+              values: { ...prev.values, cards: [...prev.values.cards, item] },
+            }));
+          } else if (valueModal.index !== undefined) {
+            onContentChange((prev) => {
+              const cards = [...prev.values.cards];
+              cards[valueModal.index!] = item;
+              return { ...prev, values: { ...prev.values, cards } };
+            });
+          }
+          setValueModal(null);
+        }}
+      />
     </div>
   );
 }

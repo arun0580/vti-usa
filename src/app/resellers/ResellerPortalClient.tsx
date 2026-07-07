@@ -1,5 +1,6 @@
 "use client";
 
+import type { Dispatch, SetStateAction } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -22,14 +23,8 @@ import type {
   ResellerSigninPayload,
   ResellerSignupPayload,
 } from "@/lib/reseller-auth/types";
-
-const benefits = [
-  "Pricing sheets & current price lists",
-  "Generate customer quotes",
-  "Deal registration & territory protection",
-  "Spec sheets, brochures & marketing assets",
-  "Direct line to your dedicated VTI rep",
-] as const;
+import { EditableText, EditableTextarea } from "@/lib/products-page/EditableField";
+import type { ResellersPageContent } from "@/lib/resellers-page/types";
 
 function IconLogIn({ className }: { className?: string }) {
   return (
@@ -159,50 +154,116 @@ function FormAlert({
 
 type Mode = "signin" | "signup";
 
-export function ResellerPortalClient() {
+export function ResellerPortalClient({
+  content,
+  editable = false,
+  onContentChange,
+}: {
+  content: ResellersPageContent;
+  editable?: boolean;
+  onContentChange?: Dispatch<SetStateAction<ResellersPageContent>>;
+}) {
   const [mode, setMode] = useState<Mode>("signin");
+  const { hero, portal } = content;
+
+  function patchString(
+    updater: (draft: ResellersPageContent, value: string) => ResellersPageContent,
+  ): ((value: string) => void) | undefined {
+    if (!editable || !onContentChange) return undefined;
+    return (value: string) => onContentChange((prev) => updater(prev, value));
+  }
 
   return (
     <div className="bg-white">
-      <Container className="px-0 pb-10 sm:pb-16 sm:px-0 border-b border-zinc-200">
+      <Container
+        className={cn(
+          "border-b border-zinc-200 pb-10 sm:pb-16",
+          editable && "pt-6 sm:pt-8",
+        )}
+      >
         <Reveal onMount className="max-w-3xl">
-          <div className="text-[12px] font-semibold tracking-[0.22em] text-red-600">
-            For Partners
-          </div>
-          <h1 className="mt-3 text-[34px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-6xl">
-            Built around real partnership.
-          </h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 sm:text-[18px]">
-            VTI sells exclusively through certified resellers and integrators.
-            Local support, direct factory access, and a team that picks up the
-            phone.
-          </p>
+          <EditableText
+            as="div"
+            className="text-[12px] font-semibold tracking-[0.22em] text-red-600"
+            value={hero.kicker}
+            onChange={patchString((d, kicker) => ({
+              ...d,
+              hero: { ...d.hero, kicker },
+            }))}
+          />
+          <EditableText
+            as="h1"
+            className="mt-3 text-[34px] font-extrabold leading-[0.95] tracking-tight text-zinc-950 sm:text-6xl"
+            value={hero.title}
+            onChange={patchString((d, title) => ({
+              ...d,
+              hero: { ...d.hero, title },
+            }))}
+          />
+          <EditableTextarea
+            className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 sm:text-[18px]"
+            value={hero.description}
+            onChange={patchString((d, description) => ({
+              ...d,
+              hero: { ...d.hero, description },
+            }))}
+          />
         </Reveal>
       </Container>
-      <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-10 xl:gap-16 py-10 sm:py-16">
+      <Container className="py-10 sm:py-16">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-10 xl:gap-16">
         <Reveal>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-red-600">
-            Reseller Portal Access
-          </p>
+          <EditableText
+            as="p"
+            className="text-xs font-bold uppercase tracking-[0.2em] text-red-600"
+            value={portal.kicker}
+            onChange={patchString((d, kicker) => ({
+              ...d,
+              portal: { ...d.portal, kicker },
+            }))}
+          />
           <h1 className="mt-3 text-2xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
             {mode === "signin" ? (
-              <>Already a VTI reseller?</>
+              <EditableText
+                as="span"
+                value={portal.signInTitle}
+                onChange={patchString((d, signInTitle) => ({
+                  ...d,
+                  portal: { ...d.portal, signInTitle },
+                }))}
+                inline
+              />
             ) : (
-              <>Interested in becoming a reseller?</>
+              <EditableText
+                as="span"
+                value={portal.signUpTitle}
+                onChange={patchString((d, signUpTitle) => ({
+                  ...d,
+                  portal: { ...d.portal, signUpTitle },
+                }))}
+                inline
+              />
             )}
           </h1>
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600">
+          <div className="mt-4 max-w-lg text-base leading-relaxed text-zinc-600">
             {mode === "signin" ? (
-              <>
-                Sign in to access pricing sheets, generate quotes, register
-                deals, and download marketing assets.
-              </>
+              <EditableTextarea
+                value={portal.signInDescription}
+                onChange={patchString((d, signInDescription) => ({
+                  ...d,
+                  portal: { ...d.portal, signInDescription },
+                }))}
+              />
             ) : (
-              <>
-                Tell us about your business and we'll set up portal access for your team. Most applications get a response within one business day.
-              </>
+              <EditableTextarea
+                value={portal.signUpDescription}
+                onChange={patchString((d, signUpDescription) => ({
+                  ...d,
+                  portal: { ...d.portal, signUpDescription },
+                }))}
+              />
             )}
-          </p>
+          </div>
 
           <div
             className="mt-8 flex w-full flex-col gap-2 rounded-2xl bg-zinc-100 p-1.5 sm:max-w-md sm:flex-row lg:w-[50%]"
@@ -248,16 +309,32 @@ export function ResellerPortalClient() {
           </div>
 
           <RevealGroup as="ul" className="mt-10 space-y-3.5">
-            {benefits.map((line) => (
+            {portal.benefits.map((line, index) => (
               <RevealItem
                 as="li"
-                key={line}
+                key={index}
                 className="flex gap-3 text-sm text-zinc-800"
               >
                 <span className="mt-0.5 shrink-0">
                   <IconCheck className="h-5 w-5" />
                 </span>
-                <span>{line}</span>
+                <EditableText
+                  as="span"
+                  value={line}
+                  onChange={
+                    editable && onContentChange
+                      ? (value) =>
+                          onContentChange((prev) => {
+                            const benefits = [...prev.portal.benefits];
+                            benefits[index] = value;
+                            return {
+                              ...prev,
+                              portal: { ...prev.portal, benefits },
+                            };
+                          })
+                      : undefined
+                  }
+                />
               </RevealItem>
             ))}
           </RevealGroup>
@@ -272,7 +349,8 @@ export function ResellerPortalClient() {
         >
           {mode === "signin" ? <SignInForm /> : <SignUpForm />}
         </Reveal>
-      </div>
+        </div>
+      </Container>
     </div>
   );
 }

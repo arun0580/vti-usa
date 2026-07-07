@@ -1,5 +1,3 @@
-"use client";
-
 export const interactivePanels = [
   {
     name: "VT-IR Series",

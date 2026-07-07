@@ -1,271 +1,194 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ButtonLink } from "@/components/site/Button";
+import { ArrowRight, Cpu, Layers, Maximize, ShieldCheck, Volume2, Wifi } from "lucide-react";
+import { EditableButtonLink } from "@/lib/page-cms/EditableButtonLink";
+import { EditableImage } from "@/lib/products-page/EditableImage";
+import { EditableText, EditableTextarea } from "@/lib/products-page/EditableField";
+import type { FeaturedVt13Content } from "@/lib/products-page/types";
 
 const iconWrap =
   "flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-red-500/10 text-red-500";
 
-function IconMaximize() {
-  return (
-    <svg
-      className="h-4 w-4"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M8 3H5a2 2 0 0 0-2 2v3" />
-      <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
-      <path d="M3 16v3a2 2 0 0 0 2 2h3" />
-      <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
-    </svg>
-  );
-}
+const FEATURE_ICONS = [Maximize, Layers, Cpu, Wifi, Volume2, ShieldCheck] as const;
 
-function IconLayers() {
-  return (
-    <svg
-      className="h-4 w-4"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
-      <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
-      <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" />
-    </svg>
-  );
-}
-
-function IconCpu() {
-  return (
-    <svg
-      className="h-4 w-4"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M12 20v2" />
-      <path d="M12 2v2" />
-      <path d="M17 20v2" />
-      <path d="M17 2v2" />
-      <path d="M2 12h2" />
-      <path d="M2 17h2" />
-      <path d="M2 7h2" />
-      <path d="M20 12h2" />
-      <path d="M20 17h2" />
-      <path d="M20 7h2" />
-      <path d="M7 20v2" />
-      <path d="M7 2v2" />
-      <rect x="4" y="4" width="16" height="16" rx="2" />
-      <rect x="8" y="8" width="8" height="8" rx="1" />
-    </svg>
-  );
-}
-
-function IconWifi() {
-  return (
-    <svg
-      className="h-4 w-4"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M12 20h.01" />
-      <path d="M2 8.82a15 15 0 0 1 20 0" />
-      <path d="M5 12.859a10 10 0 0 1 14 0" />
-      <path d="M8.5 16.429a5 5 0 0 1 7 0" />
-    </svg>
-  );
-}
-
-function IconVolume2() {
-  return (
-    <svg
-      className="h-4 w-4"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z" />
-      <path d="M16 9a5 5 0 0 1 0 6" />
-      <path d="M19.364 18.364a9 9 0 0 0 0-12.728" />
-    </svg>
-  );
-}
-
-function IconShieldCheck() {
-  return (
-    <svg
-      className="h-4 w-4"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
+function FeatureIcon({ index }: { index: number }) {
+  const Icon = FEATURE_ICONS[index] ?? Maximize;
+  return <Icon className="h-4 w-4" aria-hidden />;
 }
 
 function StarGlyph({ className }: { className?: string }) {
   return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden
-    >
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" />
     </svg>
   );
 }
 
-type Feature = {
-  label: string;
-  Icon: () => React.JSX.Element;
-  href?: string;
-};
+export function FeaturedVt13Band({
+  content,
+  editable = false,
+  onChange,
+}: {
+  content: FeaturedVt13Content;
+  editable?: boolean;
+  onChange?: (content: FeaturedVt13Content) => void;
+}) {
+  function patch<K extends keyof FeaturedVt13Content>(
+    key: K,
+    value: FeaturedVt13Content[K],
+  ): ((v: string) => void) | undefined {
+    if (!editable || !onChange) return undefined;
+    return (v: string) => onChange({ ...content, [key]: value ?? v } as FeaturedVt13Content);
+  }
 
-const FEATURES: readonly Feature[] = [
-  { label: "4K UHD anti-glare", Icon: IconMaximize },
-  { label: "40-point IR multi-touch", Icon: IconLayers },
-  { label: "Built-in Android + OPS slot", Icon: IconCpu },
-  { label: "Wireless screen casting", Icon: IconWifi },
-  { label: "Front-firing speakers", Icon: IconVolume2 },
-  {
-    label: "Manufacturer's warranty",
-    Icon: IconShieldCheck,
-    href: "/pdf/Warranty-Statement-Virtual-Panels.pdf",
-  },
-] as const;
+  function patchField<K extends keyof FeaturedVt13Content>(
+    key: K,
+  ): ((v: string) => void) | undefined {
+    if (!editable || !onChange) return undefined;
+    return (v: string) => onChange({ ...content, [key]: v } as FeaturedVt13Content);
+  }
 
-export function FeaturedVt13Band() {
   return (
     <section className="mt-12 sm:mt-16">
-      <div className="overflow-hidden rounded-2xl border border-zinc-800/80 bg-[#121212] p-5 text-white shadow-xl shadow-zinc-950/40 sm:p-8 md:p-10 md:rounded-3xl">
+      <div className="overflow-hidden rounded-2xl border border-zinc-800/80 bg-[#121212] p-5 text-white shadow-xl shadow-zinc-950/40 sm:p-8 md:rounded-3xl md:p-10">
         <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_0.95fr] lg:gap-12">
-          <div className="min-w-0 order-2 lg:order-1">
+          <div className="order-2 min-w-0 lg:order-1">
             <div className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white">
               <StarGlyph className="h-3.5 w-3.5 text-white" />
-              Featured · Virtual
+              <EditableText
+                inline
+                className="text-xs font-semibold uppercase tracking-wider text-white"
+                value={content.badge}
+                onChange={patchField("badge")}
+              />
             </div>
 
-            <h3 className="mt-4 text-2xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl md:text-4xl">
-              VT-IR Series
-            </h3>
-            <p className="mt-2 text-sm font-medium text-white/70 md:text-base">
-              Interactive flat panel · 65&quot; · 75&quot; · 86&quot; · 98&quot;
-            </p>
+            <EditableText
+              as="h3"
+              className="mt-4 text-2xl font-extrabold leading-tight tracking-tight text-white sm:text-3xl md:text-4xl"
+              value={content.title}
+              onChange={patchField("title")}
+            />
+            <EditableText
+              as="p"
+              className="mt-2 text-sm font-medium text-white/70 md:text-base"
+              value={content.sizes}
+              onChange={patchField("sizes")}
+            />
+            <EditableTextarea
+              className="mt-4 max-w-xl text-sm leading-6 text-white/80 sm:text-base sm:leading-relaxed"
+              value={content.description}
+              rows={3}
+              onChange={patchField("description")}
+            />
 
-            <p className="mt-4 max-w-xl text-sm leading-6 text-white/80 sm:text-base sm:leading-relaxed">
-              The display of choice for thousands of K-12 classrooms across the
-              country. Built for daily use, fully warrantied to industry
-              standards, and supported by a team you can actually reach.
-            </p>
-
-            <div className="mt-6 grid gap-2.5 sm:mt-8 sm:gap-3 sm:grid-cols-2">
-              {FEATURES.map(({ label, Icon, href }) => {
-                const content = (
+            <div className="mt-6 grid gap-2.5 sm:mt-8 sm:grid-cols-2 sm:gap-3">
+              {content.features.map((feature, index) => {
+                const inner = (
                   <>
                     <span className={iconWrap}>
-                      <Icon />
+                      <FeatureIcon index={index} />
                     </span>
-                    <span className="text-sm font-medium text-white/90">
-                      {label}
-                    </span>
+                    <EditableText
+                      inline
+                      className="text-sm font-medium text-white/90"
+                      value={feature.label}
+                      onChange={
+                        editable && onChange
+                          ? (label) => {
+                              const features = [...content.features];
+                              features[index] = { ...feature, label };
+                              onChange({ ...content, features });
+                            }
+                          : undefined
+                      }
+                    />
                   </>
                 );
-
-                if (href) {
+                if (feature.href && !editable) {
                   return (
                     <a
-                      key={label}
-                      href={href}
+                      key={`${feature.label}-${index}`}
+                      href={feature.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-3 rounded-lg bg-[#1e1e1e] px-3 py-2.5 transition hover:bg-[#262626] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60"
+                      className="flex items-center gap-3 rounded-lg bg-[#1e1e1e] px-3 py-2.5 transition hover:bg-[#262626]"
                     >
-                      {content}
+                      {inner}
                     </a>
                   );
                 }
-
                 return (
-                  <div
-                    key={label}
-                    className="flex items-center gap-3 rounded-lg bg-[#1e1e1e] px-3 py-2.5"
-                  >
-                    {content}
+                  <div key={`${feature.label}-${index}`} className="flex items-center gap-3 rounded-lg bg-[#1e1e1e] px-3 py-2.5">
+                    {inner}
                   </div>
                 );
               })}
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
-              <ButtonLink
-                href="/contact"
-                size="sm"
-                className="rounded-md border-0 !bg-primary !text-white shadow-sm hover:!bg-primary/80"
-              >
-                <span>Request a quote</span>
-                <svg
-                  className="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden
-                >
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </ButtonLink>
-              <Link
-                href="/gallery"
-                className="inline-flex h-10 items-center justify-center rounded-md border border-white/30 bg-transparent px-4 text-sm font-semibold text-white transition hover:bg-white/10"
-              >
-                See it installed
-              </Link>
+              {editable && onChange ? (
+                <>
+                  <EditableButtonLink
+                    label={content.primaryCta}
+                    href={content.primaryHref}
+                    onChange={(value) =>
+                      onChange({
+                        ...content,
+                        primaryCta: value.label,
+                        primaryHref: value.href,
+                      })
+                    }
+                    size="sm"
+                    className="rounded-md border-0 !bg-primary !text-white shadow-sm hover:!bg-primary/80"
+                  >
+                    {content.primaryCta}
+                  </EditableButtonLink>
+                  <EditableButtonLink
+                    label={content.secondaryCta}
+                    href={content.secondaryHref}
+                    onChange={(value) =>
+                      onChange({
+                        ...content,
+                        secondaryCta: value.label,
+                        secondaryHref: value.href,
+                      })
+                    }
+                    size="sm"
+                    variant="ghost"
+                    className="rounded-md border border-white/30 bg-transparent !text-white hover:bg-white/10"
+                  >
+                    {content.secondaryCta}
+                  </EditableButtonLink>
+                </>
+              ) : (
+                <>
+                  <a
+                    href={content.primaryHref}
+                    className="inline-flex h-10 items-center justify-center gap-2 rounded-md border-0 bg-primary px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/80"
+                  >
+                    <span>{content.primaryCta}</span>
+                    <ArrowRight className="h-4 w-4" aria-hidden />
+                  </a>
+                  <a
+                    href={content.secondaryHref}
+                    className="inline-flex h-10 items-center justify-center rounded-md border border-white/30 bg-transparent px-4 text-sm font-semibold text-white transition hover:bg-white/10"
+                  >
+                    {content.secondaryCta}
+                  </a>
+                </>
+              )}
             </div>
           </div>
 
           <div className="order-1 min-w-0 rounded-2xl bg-[#1a1a1a] p-3 ring-1 ring-inset ring-white/10 sm:p-4 lg:order-2">
-            <div className="relative mx-auto aspect-square w-full max-w-[min(100%,18rem)] overflow-hidden rounded-full bg-zinc-950 sm:max-w-[min(100%,22rem)]">
-              <Image
-                src="/vt-panel-hero.png"
-                alt="VTI VT-IR interactive flat panel display"
-                fill
-                className="object-cover"
-                sizes="(min-width: 1024px) 400px, (min-width: 640px) 60vw, 80vw"
-                priority
-              />
-            </div>
+            <EditableImage
+              src={content.imageSrc}
+              alt="VTI VT-IR interactive flat panel display"
+              onChange={patchField("imageSrc")}
+              className="relative mx-auto aspect-square w-full max-w-[min(100%,18rem)] overflow-hidden rounded-full bg-zinc-950 sm:max-w-[min(100%,22rem)]"
+              imageClassName="object-cover"
+              sizes="(min-width: 1024px) 400px, (min-width: 640px) 60vw, 80vw"
+              priority
+            />
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
-import { Container } from "@/components/site/Container";
 import { ResellerPortalClient } from "./ResellerPortalClient";
+import { fetchResellersPageContent } from "@/lib/resellers-page/server";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,12 +8,12 @@ export const metadata: Metadata = {
     "Sign in to the VTI reseller portal for pricing, quotes, deal registration, and marketing assets.",
 };
 
-export default function ResellersPage() {
+export default async function ResellersPage() {
+  const content = await fetchResellersPageContent();
+
   return (
-    <div className="min-h-[70vh] bg-white">
-      <Container className="py-12 sm:py-16">
-        <ResellerPortalClient />
-      </Container>
+    <div className="min-h-[70vh] bg-white py-12 sm:py-16">
+      <ResellerPortalClient content={content} />
     </div>
   );
 }

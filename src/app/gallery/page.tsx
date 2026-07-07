@@ -1,8 +1,10 @@
 import { Suspense } from "react";
-
 import { GalleryClient } from "./GalleryClient";
+import { fetchGalleryPageContent } from "@/lib/gallery-page/server";
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const content = await fetchGalleryPageContent();
+
   return (
     <Suspense
       fallback={
@@ -22,7 +24,7 @@ export default function GalleryPage() {
         </div>
       }
     >
-      <GalleryClient />
+      <GalleryClient content={content} />
     </Suspense>
   );
 }

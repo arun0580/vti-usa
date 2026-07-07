@@ -7,14 +7,18 @@ export function CategoryCard({
   href,
   onClick,
   label,
+  labelNode,
   icon,
   isActive,
+  editable = false,
 }: {
   href?: string;
   onClick?: () => void;
   label: string;
+  labelNode?: React.ReactNode;
   icon: React.ReactNode;
   isActive?: boolean;
+  editable?: boolean;
 }) {
   const className = isActive
     ? "group relative flex h-24 w-full flex-col items-center justify-center gap-1.5 overflow-hidden rounded-xl border-2 border-red-600 bg-red-600 px-3 py-3 text-center text-red-50 shadow-sm shadow-zinc-950/10 transition-colors md:h-28"
@@ -37,10 +41,27 @@ export function CategoryCard({
           "md:text-xs",
         ].join(" ")}
       >
-        {label}
+        {labelNode ?? label}
       </div>
     </div>
   );
+
+  if (onClick && editable) {
+    return (
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={onClick}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") onClick();
+        }}
+        aria-pressed={isActive}
+        className={`${className} cursor-pointer`}
+      >
+        {inner}
+      </div>
+    );
+  }
 
   if (onClick) {
     return (

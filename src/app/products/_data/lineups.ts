@@ -1,5 +1,3 @@
-"use client";
-
 type LedLineupItem = {
   name: string;
   badge: string;
