@@ -33,7 +33,7 @@ export function AdminPageToolbar({
   success: string | null;
 }) {
   return (
-    <div className="sticky top-0 z-30 border-b border-zinc-200 bg-white/95 px-4 py-3 shadow-sm backdrop-blur sm:px-6">
+    <div className="sticky top-16 z-20 border-b border-zinc-200 bg-white/95 px-4 py-3 shadow-sm backdrop-blur sm:px-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0 flex-1">
           <p className="text-sm font-bold capitalize text-zinc-950">{title}</p>

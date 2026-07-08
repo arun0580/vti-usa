@@ -12,7 +12,7 @@ export function AdminHeader({
   onMenuToggle?: () => void;
 }) {
   return (
-    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-3 border-b border-zinc-200 bg-white px-4 sm:px-6">
+    <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-3 overflow-visible border-b border-zinc-200 bg-white px-4 sm:px-6">
       {onMenuToggle ? (
         <button
           type="button"
