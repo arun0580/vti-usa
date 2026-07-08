@@ -50,7 +50,7 @@ const contentNavItems = [
   },
   {
     href: "/admin/reseller-portal",
-    label: "Reseller Portal Page",
+    label: "Reseller Portal",
     icon: IconPackage,
   },
   {
