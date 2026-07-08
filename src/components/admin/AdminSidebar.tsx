@@ -44,9 +44,14 @@ const contentNavItems = [
     icon: IconInfo,
   },
   {
-    href: "/admin/reseller-portal",
+    href: "/admin/resellers-page",
     label: "Resellers Page",
     icon: IconStore,
+  },
+  {
+    href: "/admin/reseller-portal",
+    label: "Reseller Portal Page",
+    icon: IconPackage,
   },
   {
     href: "/admin/contact",

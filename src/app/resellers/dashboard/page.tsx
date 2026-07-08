@@ -5,6 +5,7 @@ import {
 } from "@/lib/reseller-auth/server";
 import type { ResellerProfile } from "@/lib/reseller-auth/types";
 import { ResellerDashboardClient } from "./ResellerDashboardClient";
+import { fetchResellerPortalPageContent } from "@/lib/reseller-portal-page/server";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -34,5 +35,7 @@ export default async function ResellerDashboardPage() {
     redirect("/resellers");
   }
 
-  return <ResellerDashboardClient reseller={reseller} />;
+  const content = await fetchResellerPortalPageContent();
+
+  return <ResellerDashboardClient reseller={reseller} content={content} />;
 }

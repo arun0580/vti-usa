@@ -7,6 +7,7 @@ const CMS_PAGE_PATHS: Record<string, string> = {
   events: "/events",
   about: "/about",
   resellers: "/resellers",
+  "reseller-portal": "/resellers/dashboard",
   contact: "/contact",
 };
 

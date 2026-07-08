@@ -7,7 +7,7 @@ export function CmsProductActions({
   onDelete,
 }: {
   onEdit?: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
 }) {
   return (
     <div className="absolute right-2 top-2 z-20 flex gap-1">
@@ -21,14 +21,16 @@ export function CmsProductActions({
           Edit
         </button>
       ) : null}
-      <button
-        type="button"
-        onClick={onDelete}
-        className="inline-flex h-8 items-center gap-1 rounded-lg border border-red-200 bg-white/95 px-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50"
-      >
-        <Trash2 className="h-3.5 w-3.5" />
-        Remove
-      </button>
+      {onDelete ? (
+        <button
+          type="button"
+          onClick={onDelete}
+          className="inline-flex h-8 items-center gap-1 rounded-lg border border-red-200 bg-white/95 px-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50"
+        >
+          <Trash2 className="h-3.5 w-3.5" />
+          Remove
+        </button>
+      ) : null}
     </div>
   );
 }

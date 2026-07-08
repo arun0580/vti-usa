@@ -16,7 +16,7 @@ export function AdminResellersPageClient({
     <AdminPageEditor
       initialPage={initialPage}
       title="Resellers page editor"
-      description="Edit the public /resellers portal landing page copy. Sign-in and sign-up forms are unchanged."
+      description="Edit the public /resellers login and sign-up page copy. Forms are unchanged."
       previewHref="/resellers"
       mergeContent={mergeResellersContent}
       saveContent={saveResellersPageContent}

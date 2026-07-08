@@ -1,4 +1,4 @@
-export default function ResellerPortalAdminLayout({
+export default function ResellersPageAdminLayout({
   children,
 }: {
   children: React.ReactNode;
