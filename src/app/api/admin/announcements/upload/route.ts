@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { NextResponse } from "next/server";
 import { getServerAdminToken } from "@/lib/admin-auth/server";
+import { getPublicUploadDir } from "@/lib/uploads/storage";
 import {
   ANNOUNCEMENT_IMAGE_DIR,
   ANNOUNCEMENT_IMAGE_URL_PREFIX,
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
   const ext =
     EXT_BY_TYPE[file.type] ?? (path.extname(file.name).toLowerCase() || ".png");
   const filename = `${randomUUID()}${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", ANNOUNCEMENT_IMAGE_DIR);
+  const uploadDir = getPublicUploadDir(ANNOUNCEMENT_IMAGE_DIR);
   await mkdir(uploadDir, { recursive: true });
 
   const buffer = Buffer.from(await file.arrayBuffer());
