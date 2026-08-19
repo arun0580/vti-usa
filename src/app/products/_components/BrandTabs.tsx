@@ -3,7 +3,13 @@
 import { motion } from "motion/react";
 import { tapPress } from "@/lib/motion";
 
-export type InteractiveBrand = "virtual" | "onescreen" | "infocus" | "vivi";
+export const INTERACTIVE_BRAND_TABS = [
+  { label: "Virtual", value: "virtual" },
+  { label: "OneScreen", value: "onescreen" },
+  { label: "InFocus", value: "infocus" },
+] as const;
+
+export type InteractiveBrand = (typeof INTERACTIVE_BRAND_TABS)[number]["value"];
 
 export function BrandTabs({
   active,
@@ -12,12 +18,7 @@ export function BrandTabs({
   active: InteractiveBrand;
   onChange: (next: InteractiveBrand) => void;
 }) {
-  const items = [
-    { label: "Virtual", value: "virtual" },
-    { label: "OneScreen", value: "onescreen" },
-    { label: "InFocus", value: "infocus" },
-    { label: "Vivi", value: "vivi" },
-  ] as const;
+  const items = INTERACTIVE_BRAND_TABS;
 
   return (
     <div
