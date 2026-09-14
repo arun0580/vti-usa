@@ -61,7 +61,10 @@ export const defaultResellerPortalContent: ResellerPortalPageContent = {
   },
   assetLibrary: {
     label: "Asset library",
-    title: "Spec sheets, pricing & marketing collateral.",
+    title: "Spec Sheets & Marketing Collateral.",
+    pricingLabel: "",
+    pricingTitle: "Pricing",
+    sectionOrder: "specs-first",
     specSheetsTitle: "Spec sheets",
     specSheets: [
       { label: "VT-Pro Series", href: "/pdf/specs/vt-pro.pdf" },

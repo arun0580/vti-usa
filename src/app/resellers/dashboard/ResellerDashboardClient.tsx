@@ -1,6 +1,6 @@
 "use client";
 
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import type { Dispatch, DragEvent, ReactNode, SetStateAction } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -11,6 +11,7 @@ import { cn } from "@/lib/cn";
 import { hoverLift, tapPress } from "@/lib/motion";
 import { isPdfPath } from "@/lib/products-page/uploads";
 import type { CmsItemModalMode } from "@/lib/page-cms/cmsModalMode";
+import { ArrowDown, ArrowUp, GripVertical } from "lucide-react";
 import { CmsAddProductCard, CmsProductActions } from "@/lib/products-page/CmsProductActions";
 import { EditableText } from "@/lib/products-page/EditableField";
 import { resellerSignout } from "@/lib/reseller-auth/api";
@@ -23,6 +24,7 @@ import {
   TrainingCourseEditModal,
 } from "@/lib/reseller-portal-page/PortalEditModals";
 import type {
+  AssetLibrarySectionOrder,
   PortalActionCard,
   PortalAnnouncement,
   PortalAssetItem,
@@ -66,23 +68,26 @@ function SectionHeading({
   onLabelChange,
   onTitleChange,
 }: {
-  label: string;
+  label?: string;
   title: string;
   className?: string;
   onLabelChange?: (value: string) => void;
   onTitleChange?: (value: string) => void;
 }) {
+  const showLabel = Boolean(label) || Boolean(onLabelChange);
   return (
     <div className={className}>
-      <EditableText
-        as="p"
-        className={labelClass}
-        value={label}
-        onChange={onLabelChange}
-      />
+      {showLabel ? (
+        <EditableText
+          as="p"
+          className={labelClass}
+          value={label ?? ""}
+          onChange={onLabelChange}
+        />
+      ) : null}
       <EditableText
         as="h2"
-        className="mt-2 text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl"
+        className={`${showLabel ? "mt-2 " : ""}text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl`}
         value={title}
         onChange={onTitleChange}
       />
@@ -92,6 +97,26 @@ function SectionHeading({
 
 const resourceCtaClass =
   "mt-6 inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-red-600 hover:text-red-700";
+
+function SectionMoveButton({
+  direction,
+  onClick,
+}: {
+  direction: "up" | "down";
+  onClick: () => void;
+}) {
+  const Icon = direction === "up" ? ArrowUp : ArrowDown;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex h-8 shrink-0 items-center gap-1 rounded-lg border border-red-200 bg-white/95 px-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50"
+    >
+      <Icon className="h-3.5 w-3.5" />
+      {direction === "up" ? "Move up" : "Move down"}
+    </button>
+  );
+}
 
 function IconBadge({ children }: { children: ReactNode }) {
   return (
@@ -238,6 +263,16 @@ function ResourceCardCta({
   );
 }
 
+function reorderItems<T>(items: T[], from: number, to: number): T[] {
+  if (from === to || from < 0 || to < 0 || from >= items.length || to >= items.length) {
+    return items;
+  }
+  const next = [...items];
+  const [moved] = next.splice(from, 1);
+  next.splice(to, 0, moved);
+  return next;
+}
+
 function ResourceCard({
   title,
   description,
@@ -248,21 +283,59 @@ function ResourceCard({
   onEdit,
   onDelete,
   onComingSoon,
+  draggable,
+  isDragging,
+  isDropTarget,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  onDragEnd,
 }: PortalActionCard & {
   editable?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
   onComingSoon?: () => void;
+  draggable?: boolean;
+  isDragging?: boolean;
+  isDropTarget?: boolean;
+  onDragStart?: (event: DragEvent<HTMLButtonElement>) => void;
+  onDragOver?: (event: DragEvent<HTMLDivElement>) => void;
+  onDrop?: (event: DragEvent<HTMLDivElement>) => void;
+  onDragEnd?: () => void;
 }) {
   return (
     <motion.div
-      whileHover={hasPortalLink(href) ? hoverLift : undefined}
+      whileHover={!isDragging && hasPortalLink(href) ? hoverLift : undefined}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+      onDragEnd={onDragEnd}
       className={cn(
         "relative flex h-full flex-col rounded-xl border border-zinc-200/90 bg-white p-6 shadow-sm",
         editable && "ring-1 ring-red-100/40",
+        isDragging && "opacity-50",
+        isDropTarget && "ring-2 ring-red-400",
       )}
     >
-      {editable ? <CmsProductActions onEdit={onEdit!} onDelete={onDelete!} /> : null}
+      {editable ? (
+        <CmsProductActions
+          onEdit={onEdit!}
+          onDelete={onDelete!}
+          dragHandle={
+            draggable ? (
+              <button
+                type="button"
+                draggable
+                onDragStart={onDragStart}
+                aria-label="Drag and drop to reorder"
+                className="inline-flex h-8 cursor-grab items-center gap-1 rounded-lg border border-red-200 bg-white/95 px-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50 active:cursor-grabbing"
+              >
+                <GripVertical className="h-3.5 w-3.5" />
+                Drag & Drop
+              </button>
+            ) : null
+          }
+        />
+      ) : null}
       <IconBadge>
         <ResourceIcon name={icon} />
       </IconBadge>
@@ -407,8 +480,35 @@ export function ResellerDashboardClient({
   const [editTarget, setEditTarget] = useState<EditTarget>(null);
   const [comingSoonOpen, setComingSoonOpen] = useState(false);
   const [accountTeamModalOpen, setAccountTeamModalOpen] = useState(false);
+  const [pricingDragIndex, setPricingDragIndex] = useState<number | null>(null);
+  const [pricingOverIndex, setPricingOverIndex] = useState<number | null>(null);
 
   const { hero, quickActions, assetLibrary, training, announcements, accountTeam } = content;
+  const pricingFirst = assetLibrary.sectionOrder === "pricing-first";
+
+  function setAssetSectionOrder(sectionOrder: AssetLibrarySectionOrder) {
+    if (!editable || !onContentChange) return;
+    onContentChange((prev) => ({
+      ...prev,
+      assetLibrary: { ...prev.assetLibrary, sectionOrder },
+    }));
+  }
+
+  function moveResourceCard(from: number, to: number) {
+    if (!editable || !onContentChange || from === to) return;
+    onContentChange((prev) => ({
+      ...prev,
+      assetLibrary: {
+        ...prev.assetLibrary,
+        resourceCards: reorderItems(prev.assetLibrary.resourceCards, from, to),
+      },
+    }));
+  }
+
+  function clearPricingDrag() {
+    setPricingDragIndex(null);
+    setPricingOverIndex(null);
+  }
 
   function showComingSoon() {
     if (editable) return;
@@ -587,19 +687,32 @@ export function ResellerDashboardClient({
       </section>
 
       <section className="dashboard-section-muted">
-        <Container className="py-12 sm:py-16">
-          <SectionHeading
-            label={assetLibrary.label}
-            title={assetLibrary.title}
-            onLabelChange={patchString((d, label) => ({
+        <Container className="flex flex-col py-12 sm:py-16">
+          <EditableText
+            as="p"
+            className={labelClass}
+            value={assetLibrary.label}
+            onChange={patchString((d, label) => ({
               ...d,
               assetLibrary: { ...d.assetLibrary, label },
             }))}
-            onTitleChange={patchString((d, title) => ({
-              ...d,
-              assetLibrary: { ...d.assetLibrary, title },
-            }))}
           />
+          <div className={pricingFirst ? "order-2 mt-8" : "order-1 mt-2"}>
+            <div className="flex items-start justify-between gap-4">
+              <SectionHeading
+                title={assetLibrary.title}
+                onTitleChange={patchString((d, title) => ({
+                  ...d,
+                  assetLibrary: { ...d.assetLibrary, title },
+                }))}
+              />
+              {editable ? (
+                <SectionMoveButton
+                  direction={pricingFirst ? "up" : "down"}
+                  onClick={() => setAssetSectionOrder(pricingFirst ? "specs-first" : "pricing-first")}
+                />
+              ) : null}
+            </div>
           <div className="mt-8 grid items-stretch gap-5 lg:grid-cols-3">
             <Reveal className="h-full">
               <AssetListCard
@@ -683,13 +796,51 @@ export function ResellerDashboardClient({
               />
             </Reveal>
           </div>
+          </div>
+          <div className={pricingFirst ? "order-1 mt-2" : "order-2 mt-8"}>
+            <div className="flex items-start justify-between gap-4">
+              <SectionHeading
+                title={assetLibrary.pricingTitle}
+                onTitleChange={patchString((d, pricingTitle) => ({
+                  ...d,
+                  assetLibrary: { ...d.assetLibrary, pricingTitle },
+                }))}
+              />
+              {editable ? (
+                <SectionMoveButton
+                  direction={pricingFirst ? "down" : "up"}
+                  onClick={() => setAssetSectionOrder(pricingFirst ? "specs-first" : "pricing-first")}
+                />
+              ) : null}
+            </div>
           <div className="mt-5 grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {assetLibrary.resourceCards.map((action, i) => (
-              <Reveal key={`${action.title}-${i}`} delay={0.08 + i * 0.04} className="h-full">
+              <Reveal key={`${action.title}-${action.href}-${action.cta}`} delay={0.08 + i * 0.04} className="h-full">
                 <ResourceCard
                   {...action}
                   editable={editable}
+                  draggable={editable}
+                  isDragging={pricingDragIndex === i}
+                  isDropTarget={pricingDragIndex !== null && pricingOverIndex === i && pricingDragIndex !== i}
                   onComingSoon={showComingSoon}
+                  onDragStart={(event) => {
+                    event.dataTransfer.effectAllowed = "move";
+                    event.dataTransfer.setData("text/plain", String(i));
+                    setPricingDragIndex(i);
+                    setPricingOverIndex(i);
+                  }}
+                  onDragOver={(event) => {
+                    if (pricingDragIndex === null) return;
+                    event.preventDefault();
+                    event.dataTransfer.dropEffect = "move";
+                    if (pricingOverIndex !== i) setPricingOverIndex(i);
+                  }}
+                  onDrop={(event) => {
+                    event.preventDefault();
+                    if (pricingDragIndex !== null) moveResourceCard(pricingDragIndex, i);
+                    clearPricingDrag();
+                  }}
+                  onDragEnd={clearPricingDrag}
                   onEdit={() => setEditTarget({ kind: "resourceCard", mode: "edit", index: i })}
                   onDelete={() =>
                     removeItem((prev) => ({
@@ -709,6 +860,7 @@ export function ResellerDashboardClient({
                 onClick={() => setEditTarget({ kind: "resourceCard", mode: "add" })}
               />
             ) : null}
+          </div>
           </div>
         </Container>
       </section>

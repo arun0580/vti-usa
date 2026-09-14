@@ -1,16 +1,20 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 
 export function CmsProductActions({
   onEdit,
   onDelete,
+  dragHandle,
 }: {
   onEdit?: () => void;
   onDelete?: () => void;
+  dragHandle?: ReactNode;
 }) {
   return (
     <div className="absolute right-2 top-2 z-20 flex gap-1">
+      {dragHandle}
       {onEdit ? (
         <button
           type="button"

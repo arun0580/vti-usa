@@ -25,6 +25,8 @@ export type PortalAnnouncement = {
   href: string;
 };
 
+export type AssetLibrarySectionOrder = "specs-first" | "pricing-first";
+
 export type ResellerPortalPageContent = {
   hero: {
     kicker: string;
@@ -37,6 +39,9 @@ export type ResellerPortalPageContent = {
   assetLibrary: {
     label: string;
     title: string;
+    pricingLabel: string;
+    pricingTitle: string;
+    sectionOrder: AssetLibrarySectionOrder;
     specSheetsTitle: string;
     specSheets: PortalAssetItem[];
     onescreenTitle: string;
