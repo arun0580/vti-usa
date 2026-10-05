@@ -333,7 +333,7 @@ export function ProductsPageClient({
       panel: "interactive panel",
       led: "LED product",
       signage: "signage product",
-      infocus: "InFocus product",
+      infocus: "Hisense product",
       accessory: "accessory",
       managementApp: "management app",
     };
@@ -1043,7 +1043,7 @@ export function ProductsPageClient({
               {editable ? (
                 <RevealItem>
                   <CmsAddProductCard
-                    label="Add InFocus product"
+                    label="Add Hisense product"
                     onClick={() => addProduct("infocus")}
                   />
                 </RevealItem>

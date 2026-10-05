@@ -6,7 +6,7 @@ import { tapPress } from "@/lib/motion";
 export const INTERACTIVE_BRAND_TABS = [
   { label: "Virtual", value: "virtual" },
   { label: "OneScreen", value: "onescreen" },
-  { label: "InFocus", value: "infocus" },
+  { label: "Hisense", value: "infocus" },
 ] as const;
 
 export type InteractiveBrand = (typeof INTERACTIVE_BRAND_TABS)[number]["value"];
