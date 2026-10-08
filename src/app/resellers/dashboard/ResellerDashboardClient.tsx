@@ -390,6 +390,13 @@ function AssetListCard({
   onDeleteItem,
   onAddItem,
   onComingSoon,
+  onReorderItem,
+  dragIndex,
+  overIndex,
+  onDragStart,
+  onDragEnd,
+  onDragOver,
+  onDrop,
 }: {
   title: string;
   items: PortalAssetItem[];
@@ -399,6 +406,13 @@ function AssetListCard({
   onDeleteItem?: (index: number) => void;
   onAddItem?: () => void;
   onComingSoon?: () => void;
+  onReorderItem?: (from: number, to: number) => void;
+  dragIndex?: number | null;
+  overIndex?: number | null;
+  onDragStart?: (index: number) => void;
+  onDragEnd?: () => void;
+  onDragOver?: (index: number) => void;
+  onDrop?: (index: number) => void;
 }) {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-zinc-200/90 bg-white shadow-sm">
@@ -415,8 +429,35 @@ function AssetListCard({
         {items.map((item, index) => {
           const rowClass =
             "group flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left text-sm text-zinc-900 transition-colors hover:bg-zinc-50/80";
+          const isDragging = dragIndex === index;
+          const isDropTarget = dragIndex !== null && overIndex === index && dragIndex !== index;
           return (
-            <li key={`${item.label}-${index}`} className={cn("relative", editable && "pr-20")}>
+            <li
+              key={`${item.label}-${index}`}
+              draggable={editable}
+              onDragStart={editable ? (e) => {
+                e.dataTransfer.effectAllowed = "move";
+                e.dataTransfer.setData("text/plain", String(index));
+                onDragStart?.(index);
+              } : undefined}
+              onDragOver={editable ? (e) => {
+                if (dragIndex === null) return;
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "move";
+                onDragOver?.(index);
+              } : undefined}
+              onDrop={editable ? (e) => {
+                e.preventDefault();
+                onDrop?.(index);
+              } : undefined}
+              onDragEnd={editable ? onDragEnd : undefined}
+              className={cn(
+                "relative",
+                editable && "cursor-grab pr-20 active:cursor-grabbing",
+                isDragging && "opacity-50",
+                isDropTarget && "ring-2 ring-inset ring-red-400",
+              )}
+            >
               {editable ? (
                 <CmsProductActions
                   onEdit={() => onEditItem?.(index)}
@@ -482,6 +523,16 @@ export function ResellerDashboardClient({
   const [accountTeamModalOpen, setAccountTeamModalOpen] = useState(false);
   const [pricingDragIndex, setPricingDragIndex] = useState<number | null>(null);
   const [pricingOverIndex, setPricingOverIndex] = useState<number | null>(null);
+  const [trainingDragIndex, setTrainingDragIndex] = useState<number | null>(null);
+  const [trainingOverIndex, setTrainingOverIndex] = useState<number | null>(null);
+  const [announcementDragIndex, setAnnouncementDragIndex] = useState<number | null>(null);
+  const [announcementOverIndex, setAnnouncementOverIndex] = useState<number | null>(null);
+  const [specSheetsDragIndex, setSpecSheetsDragIndex] = useState<number | null>(null);
+  const [specSheetsOverIndex, setSpecSheetsOverIndex] = useState<number | null>(null);
+  const [onescreenDragIndex, setOnescreenDragIndex] = useState<number | null>(null);
+  const [onescreenOverIndex, setOnescreenOverIndex] = useState<number | null>(null);
+  const [ledSignageDragIndex, setLedSignageDragIndex] = useState<number | null>(null);
+  const [ledSignageOverIndex, setLedSignageOverIndex] = useState<number | null>(null);
 
   const { hero, quickActions, assetLibrary, training, announcements, accountTeam } = content;
   const pricingFirst = assetLibrary.sectionOrder === "pricing-first";
@@ -508,6 +559,71 @@ export function ResellerDashboardClient({
   function clearPricingDrag() {
     setPricingDragIndex(null);
     setPricingOverIndex(null);
+  }
+
+  function clearTrainingDrag() {
+    setTrainingDragIndex(null);
+    setTrainingOverIndex(null);
+  }
+
+  function clearAnnouncementDrag() {
+    setAnnouncementDragIndex(null);
+    setAnnouncementOverIndex(null);
+  }
+
+  function moveTrainingItem(from: number, to: number) {
+    if (!editable || !onContentChange || from === to) return;
+    onContentChange((prev) => ({
+      ...prev,
+      training: {
+        ...prev.training,
+        courses: reorderItems(prev.training.courses, from, to),
+      },
+    }));
+  }
+
+  function moveAnnouncementItem(from: number, to: number) {
+    if (!editable || !onContentChange || from === to) return;
+    onContentChange((prev) => ({
+      ...prev,
+      announcements: {
+        ...prev.announcements,
+        items: reorderItems(prev.announcements.items, from, to),
+      },
+    }));
+  }
+
+  function moveSpecSheetsItem(from: number, to: number) {
+    if (!editable || !onContentChange || from === to) return;
+    onContentChange((prev) => ({
+      ...prev,
+      assetLibrary: {
+        ...prev.assetLibrary,
+        specSheets: reorderItems(prev.assetLibrary.specSheets, from, to),
+      },
+    }));
+  }
+
+  function moveOnescreenItem(from: number, to: number) {
+    if (!editable || !onContentChange || from === to) return;
+    onContentChange((prev) => ({
+      ...prev,
+      assetLibrary: {
+        ...prev.assetLibrary,
+        onescreenAssets: reorderItems(prev.assetLibrary.onescreenAssets, from, to),
+      },
+    }));
+  }
+
+  function moveLedSignageItem(from: number, to: number) {
+    if (!editable || !onContentChange || from === to) return;
+    onContentChange((prev) => ({
+      ...prev,
+      assetLibrary: {
+        ...prev.assetLibrary,
+        ledSignageAssets: reorderItems(prev.assetLibrary.ledSignageAssets, from, to),
+      },
+    }));
   }
 
   function showComingSoon() {
@@ -739,6 +855,24 @@ export function ResellerDashboardClient({
                 onAddItem={() =>
                   setEditTarget({ kind: "asset", list: "specSheets", mode: "add" })
                 }
+                dragIndex={specSheetsDragIndex}
+                overIndex={specSheetsOverIndex}
+                onDragStart={(index) => {
+                  setSpecSheetsDragIndex(index);
+                  setSpecSheetsOverIndex(index);
+                }}
+                onDragOver={(index) => {
+                  if (specSheetsOverIndex !== index) setSpecSheetsOverIndex(index);
+                }}
+                onDrop={(index) => {
+                  if (specSheetsDragIndex !== null) moveSpecSheetsItem(specSheetsDragIndex, index);
+                  setSpecSheetsDragIndex(null);
+                  setSpecSheetsOverIndex(null);
+                }}
+                onDragEnd={() => {
+                  setSpecSheetsDragIndex(null);
+                  setSpecSheetsOverIndex(null);
+                }}
               />
             </Reveal>
             <Reveal delay={0.05} className="h-full">
@@ -766,6 +900,24 @@ export function ResellerDashboardClient({
                 onAddItem={() =>
                   setEditTarget({ kind: "asset", list: "onescreenAssets", mode: "add" })
                 }
+                dragIndex={onescreenDragIndex}
+                overIndex={onescreenOverIndex}
+                onDragStart={(index) => {
+                  setOnescreenDragIndex(index);
+                  setOnescreenOverIndex(index);
+                }}
+                onDragOver={(index) => {
+                  if (onescreenOverIndex !== index) setOnescreenOverIndex(index);
+                }}
+                onDrop={(index) => {
+                  if (onescreenDragIndex !== null) moveOnescreenItem(onescreenDragIndex, index);
+                  setOnescreenDragIndex(null);
+                  setOnescreenOverIndex(null);
+                }}
+                onDragEnd={() => {
+                  setOnescreenDragIndex(null);
+                  setOnescreenOverIndex(null);
+                }}
               />
             </Reveal>
             <Reveal delay={0.1} className="h-full">
@@ -793,6 +945,24 @@ export function ResellerDashboardClient({
                 onAddItem={() =>
                   setEditTarget({ kind: "asset", list: "ledSignageAssets", mode: "add" })
                 }
+                dragIndex={ledSignageDragIndex}
+                overIndex={ledSignageOverIndex}
+                onDragStart={(index) => {
+                  setLedSignageDragIndex(index);
+                  setLedSignageOverIndex(index);
+                }}
+                onDragOver={(index) => {
+                  if (ledSignageOverIndex !== index) setLedSignageOverIndex(index);
+                }}
+                onDrop={(index) => {
+                  if (ledSignageDragIndex !== null) moveLedSignageItem(ledSignageDragIndex, index);
+                  setLedSignageDragIndex(null);
+                  setLedSignageOverIndex(null);
+                }}
+                onDragEnd={() => {
+                  setLedSignageDragIndex(null);
+                  setLedSignageOverIndex(null);
+                }}
               />
             </Reveal>
           </div>
@@ -885,10 +1055,31 @@ export function ResellerDashboardClient({
                 {training.courses.map((course, i) => (
                   <div
                     key={`${course.title}-${i}`}
+                    draggable={editable}
+                    onDragStart={editable ? (event) => {
+                      event.dataTransfer.effectAllowed = "move";
+                      event.dataTransfer.setData("text/plain", String(i));
+                      setTrainingDragIndex(i);
+                      setTrainingOverIndex(i);
+                    } : undefined}
+                    onDragOver={editable ? (event) => {
+                      if (trainingDragIndex === null) return;
+                      event.preventDefault();
+                      event.dataTransfer.dropEffect = "move";
+                      if (trainingOverIndex !== i) setTrainingOverIndex(i);
+                    } : undefined}
+                    onDrop={editable ? (event) => {
+                      event.preventDefault();
+                      if (trainingDragIndex !== null) moveTrainingItem(trainingDragIndex, i);
+                      clearTrainingDrag();
+                    } : undefined}
+                    onDragEnd={editable ? clearTrainingDrag : undefined}
                     className={cn(
                       "relative flex gap-4 bg-white px-5 py-5 sm:gap-5 sm:px-6 sm:py-6",
                       i > 0 && "border-t border-zinc-100",
-                      editable && "pr-24",
+                      editable && "cursor-grab pr-24 active:cursor-grabbing",
+                      trainingDragIndex === i && "opacity-50",
+                      trainingDragIndex !== null && trainingOverIndex === i && trainingDragIndex !== i && "ring-2 ring-inset ring-red-400",
                     )}
                   >
                     {editable ? (
@@ -968,10 +1159,31 @@ export function ResellerDashboardClient({
                 {announcements.items.map((item, i) => (
                   <div
                     key={`${item.title}-${i}`}
+                    draggable={editable}
+                    onDragStart={editable ? (event) => {
+                      event.dataTransfer.effectAllowed = "move";
+                      event.dataTransfer.setData("text/plain", String(i));
+                      setAnnouncementDragIndex(i);
+                      setAnnouncementOverIndex(i);
+                    } : undefined}
+                    onDragOver={editable ? (event) => {
+                      if (announcementDragIndex === null) return;
+                      event.preventDefault();
+                      event.dataTransfer.dropEffect = "move";
+                      if (announcementOverIndex !== i) setAnnouncementOverIndex(i);
+                    } : undefined}
+                    onDrop={editable ? (event) => {
+                      event.preventDefault();
+                      if (announcementDragIndex !== null) moveAnnouncementItem(announcementDragIndex, i);
+                      clearAnnouncementDrag();
+                    } : undefined}
+                    onDragEnd={editable ? clearAnnouncementDrag : undefined}
                     className={cn(
                       "relative flex gap-4 bg-white px-5 py-5 sm:gap-5 sm:px-6 sm:py-6",
                       i > 0 && "border-t border-zinc-100",
-                      editable && "pr-24",
+                      editable && "cursor-grab pr-24 active:cursor-grabbing",
+                      announcementDragIndex === i && "opacity-50",
+                      announcementDragIndex !== null && announcementOverIndex === i && announcementDragIndex !== i && "ring-2 ring-inset ring-red-400",
                     )}
                   >
                     {editable ? (
