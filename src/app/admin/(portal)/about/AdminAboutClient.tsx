@@ -16,7 +16,7 @@ export function AdminAboutClient({
     <AdminPageEditor
       initialPage={initialPage}
       title="About page editor"
-      description="Click text to edit inline. Use Edit on team and value cards for photos and full details."
+      description="Click text to edit inline. Use Edit on team and value cards for photos and full details. Drag team cards to change their order."
       previewHref="/about"
       mergeContent={mergeAboutContent}
       saveContent={saveAboutPageContent}

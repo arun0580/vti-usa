@@ -1,6 +1,6 @@
 "use client";
 
-import type { Dispatch, SetStateAction } from "react";
+import type { Dispatch, DragEvent, SetStateAction } from "react";
 import { Container } from "@/components/site/Container";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion";
 import { motion } from "motion/react";
@@ -23,8 +23,17 @@ import {
   CmsProductActions,
 } from "@/lib/products-page/CmsProductActions";
 import { PartnerApplicationForm } from "./PartnerApplicationForm";
+import { GripVertical } from "lucide-react";
 
 type ItemModalState = { mode: CmsItemModalMode; index?: number } | null;
+
+function reorderListItems<T>(items: T[], from: number, to: number): T[] {
+  if (from === to) return items;
+  const next = [...items];
+  const [moved] = next.splice(from, 1);
+  next.splice(to, 0, moved);
+  return next;
+}
 
 type TabId = "story" | "team" | "values" | "join";
 
@@ -130,6 +139,8 @@ export function AboutPageContent({
   const [active, setActive] = useState<TabId>("story");
   const [teamModal, setTeamModal] = useState<ItemModalState>(null);
   const [valueModal, setValueModal] = useState<ItemModalState>(null);
+  const [teamDragIndex, setTeamDragIndex] = useState<number | null>(null);
+  const [teamOverIndex, setTeamOverIndex] = useState<number | null>(null);
 
   const { hero, tabsPrompt, story, team, values, join, bottomCta } = content;
 
@@ -154,6 +165,22 @@ export function AboutPageContent({
 
   function addTeamMember() {
     setTeamModal({ mode: "add" });
+  }
+
+  function clearTeamDrag() {
+    setTeamDragIndex(null);
+    setTeamOverIndex(null);
+  }
+
+  function moveTeamMember(from: number, to: number) {
+    if (!editable || !onContentChange || from === to) return;
+    onContentChange((prev) => ({
+      ...prev,
+      team: {
+        ...prev.team,
+        members: reorderListItems(prev.team.members, from, to),
+      },
+    }));
   }
 
   function removeValueCard(index: number) {
@@ -458,19 +485,69 @@ export function AboutPageContent({
 
               <RevealGroup
                 onMount
+                disableAnimation={editable}
                 as="ul"
                 className="mt-10 grid list-none gap-6 p-0 sm:grid-cols-2 lg:grid-cols-4"
               >
                 {team.members.map((m, index) => (
-                  <RevealItem as="li" key={m.id}>
+                  <RevealItem disableAnimation={editable} as="li" key={m.id}>
                     <motion.article
                       whileHover={editable ? undefined : hoverLift}
-                      className="relative h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md hover:shadow-zinc-950/5"
+                      onDragOver={
+                        editable
+                          ? (event) => {
+                              if (teamDragIndex === null) return;
+                              event.preventDefault();
+                              event.dataTransfer.dropEffect = "move";
+                              if (teamOverIndex !== index) setTeamOverIndex(index);
+                            }
+                          : undefined
+                      }
+                      onDrop={
+                        editable
+                          ? (event) => {
+                              event.preventDefault();
+                              if (teamDragIndex !== null) {
+                                moveTeamMember(teamDragIndex, index);
+                              }
+                              clearTeamDrag();
+                            }
+                          : undefined
+                      }
+                      onDragEnd={editable ? clearTeamDrag : undefined}
+                      className={[
+                        "relative h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md hover:shadow-zinc-950/5",
+                        editable && "ring-1 ring-red-100/40",
+                        teamDragIndex === index && "opacity-50",
+                        teamDragIndex !== null &&
+                          teamOverIndex === index &&
+                          teamDragIndex !== index &&
+                          "ring-2 ring-red-400",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                     >
                       {editable ? (
                         <CmsProductActions
                           onEdit={() => setTeamModal({ mode: "edit", index })}
                           onDelete={() => removeTeamMember(index)}
+                          dragHandle={
+                            <button
+                              type="button"
+                              draggable
+                              onDragStart={(event: DragEvent<HTMLButtonElement>) => {
+                                event.dataTransfer.effectAllowed = "move";
+                                event.dataTransfer.setData("text/plain", String(index));
+                                setTeamDragIndex(index);
+                                setTeamOverIndex(index);
+                              }}
+                              aria-label="Drag and drop to reorder"
+                              className="inline-flex h-8 cursor-grab items-center gap-1 rounded-lg border border-red-200 bg-white/95 px-2 text-xs font-semibold text-red-700 shadow-sm hover:bg-red-50 active:cursor-grabbing"
+                            >
+                              <GripVertical className="h-3.5 w-3.5" />
+                              Drag
+                            </button>
+                          }
                         />
                       ) : null}
                       <div className="relative aspect-[3/4] w-full">
@@ -497,7 +574,7 @@ export function AboutPageContent({
                   </RevealItem>
                 ))}
                 {editable ? (
-                  <RevealItem as="li">
+                  <RevealItem disableAnimation as="li">
                     <CmsAddProductCard
                       onClick={addTeamMember}
                       label="Add team member"
