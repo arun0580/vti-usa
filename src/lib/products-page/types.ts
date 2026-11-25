@@ -81,6 +81,59 @@ export type BrandLineupSection = {
   lineup: CatalogItem[];
 };
 
+export type OneScreenLink = {
+  label: string;
+  href: string;
+};
+
+export type OneScreenApp = {
+  name: string;
+  desc: string;
+  icon: string;
+};
+
+export type OneScreenProduct = {
+  badge: string;
+  imageSrc: string;
+  imageAlt: string;
+  overlayTitle: string;
+  overlaySubtitle: string;
+  kicker: string;
+  title: string;
+  body1: string;
+  body2: string;
+  highlights: string[];
+  links: OneScreenLink[];
+};
+
+export type OneScreenGuruCard = {
+  badge: string;
+  imageSrc: string;
+  imageAlt: string;
+  kicker: string;
+  title: string;
+  subtitle: string;
+  body: string;
+  highlights: string[];
+  footerNote: string;
+};
+
+export type OneScreenContent = {
+  kicker: string;
+  title: string;
+  description: string;
+  products: OneScreenProduct[];
+  guruCards: OneScreenGuruCard[];
+  softwareSuite: {
+    kicker: string;
+    title: string;
+    apps: OneScreenApp[];
+    ctaPrefix: string;
+    ctaLabel: string;
+    ctaHref: string;
+  };
+};
+
 export type ProductCategoryId =
   | "interactive"
   | "led"
@@ -112,6 +165,7 @@ export type ProductsPageContent = {
     featuredVt13: FeaturedVt13Content;
   };
   inFocus: BrandLineupSection;
+  oneScreen: OneScreenContent;
   led: {
     kicker: string;
     title: string;

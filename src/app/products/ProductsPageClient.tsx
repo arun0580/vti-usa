@@ -35,6 +35,8 @@ import { getCapabilityIcon } from "@/lib/products-page/icons";
 import { EditableText, EditableTextarea } from "@/lib/products-page/EditableField";
 import { CmsAddProductCard, CmsProductActions } from "@/lib/products-page/CmsProductActions";
 import { EditableImage } from "@/lib/products-page/EditableImage";
+import { OneScreenGuruEditModal } from "@/lib/products-page/OneScreenGuruEditModal";
+import { OneScreenProductEditModal } from "@/lib/products-page/OneScreenProductEditModal";
 import { ProductEditModal } from "@/lib/products-page/ProductEditModal";
 import { TableEditModal } from "@/lib/products-page/TableEditModal";
 import {
@@ -42,12 +44,16 @@ import {
   emptyCatalogItem,
   emptyInteractivePanel,
   emptyManagementApp,
+  emptyOneScreenGuruCard,
+  emptyOneScreenProduct,
 } from "@/lib/products-page/productDefaults";
 import type {
   AccessoryItem,
   CatalogItem,
   InteractivePanel,
   ManagementApp,
+  OneScreenGuruCard,
+  OneScreenProduct,
   ProductCategoryId,
   ProductsPageContent,
 } from "@/lib/products-page/types";
@@ -91,12 +97,19 @@ export function ProductsPageClient({
     compare,
     dimensions,
     inFocus,
+    oneScreen,
   } = content;
 
   const [activeCategory, setActiveCategory] = useState<ProductCategoryId>("interactive");
   const [interactiveBrand, setInteractiveBrand] = useState<InteractiveBrand>("virtual");
   const [panelFinderOpen, setPanelFinderOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<ProductEditTarget | null>(null);
+  const [oneScreenEdit, setOneScreenEdit] = useState<
+    { mode: "add" } | { mode: "edit"; index: number } | null
+  >(null);
+  const [oneScreenGuruEdit, setOneScreenGuruEdit] = useState<
+    { mode: "add" } | { mode: "edit"; index: number } | null
+  >(null);
   const [tableEdit, setTableEdit] = useState<"compare" | "dimensions" | null>(null);
 
   const showInteractive = activeCategory === "interactive";
@@ -339,6 +352,62 @@ export function ProductsPageClient({
     };
     return cmsItemModalTitle(editTarget.mode, labels[editTarget.scope]);
   })();
+
+  const oneScreenModalItem: OneScreenProduct | null = (() => {
+    if (!oneScreenEdit) return null;
+    if (oneScreenEdit.mode === "add") return emptyOneScreenProduct();
+    return oneScreen.products[oneScreenEdit.index] ?? null;
+  })();
+
+  const oneScreenGuruModalItem: OneScreenGuruCard | null = (() => {
+    if (!oneScreenGuruEdit) return null;
+    if (oneScreenGuruEdit.mode === "add") return emptyOneScreenGuruCard();
+    return oneScreen.guruCards[oneScreenGuruEdit.index] ?? null;
+  })();
+
+  function saveOneScreenProduct(item: OneScreenProduct) {
+    if (!oneScreenEdit || !onContentChange) return;
+    onContentChange((prev) => {
+      if (oneScreenEdit.mode === "add") {
+        return {
+          ...prev,
+          oneScreen: {
+            ...prev.oneScreen,
+            products: [...prev.oneScreen.products, item],
+          },
+        };
+      }
+      const products = [...prev.oneScreen.products];
+      products[oneScreenEdit.index] = item;
+      return {
+        ...prev,
+        oneScreen: { ...prev.oneScreen, products },
+      };
+    });
+    setOneScreenEdit(null);
+  }
+
+  function saveOneScreenGuruCard(item: OneScreenGuruCard) {
+    if (!oneScreenGuruEdit || !onContentChange) return;
+    onContentChange((prev) => {
+      if (oneScreenGuruEdit.mode === "add") {
+        return {
+          ...prev,
+          oneScreen: {
+            ...prev.oneScreen,
+            guruCards: [...prev.oneScreen.guruCards, item],
+          },
+        };
+      }
+      const guruCards = [...prev.oneScreen.guruCards];
+      guruCards[oneScreenGuruEdit.index] = item;
+      return {
+        ...prev,
+        oneScreen: { ...prev.oneScreen, guruCards },
+      };
+    });
+    setOneScreenGuruEdit(null);
+  }
 
   return (
     <div>
@@ -825,155 +894,242 @@ export function ProductsPageClient({
         {showInteractiveOneScreen ? (
           <section className="mt-10 scroll-mt-24" id="onescreen">
             <Reveal className="text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-red-600">
-                OneScreen — authorized dealer
-              </p>
-              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl">
-                Touchscreen T7 — smarter screen, made to last.
-              </h2>
-              <p className="mx-auto mt-3 max-w-3xl text-sm leading-6 text-zinc-600">
-                We're the original and only authorized distributor of the
-                OneScreen line. The flagship T7 pairs a battle-tested
-                collaboration panel with the GURU live-help service that comes
-                standard on every OneScreen product.
-              </p>
+              <EditableText
+                as="p"
+                className="text-xs font-semibold uppercase tracking-[0.22em] text-red-600"
+                value={oneScreen.kicker}
+                onChange={patchString((d, kicker) => ({
+                  ...d,
+                  oneScreen: { ...d.oneScreen, kicker },
+                }))}
+              />
+              <EditableText
+                as="h2"
+                className="mt-3 text-2xl font-extrabold tracking-tight text-zinc-950 sm:text-3xl"
+                value={oneScreen.title}
+                onChange={patchString((d, title) => ({
+                  ...d,
+                  oneScreen: { ...d.oneScreen, title },
+                }))}
+              />
+              <EditableTextarea
+                className="mx-auto mt-3 max-w-3xl text-sm leading-6 text-zinc-600"
+                value={oneScreen.description}
+                rows={3}
+                onChange={patchString((d, description) => ({
+                  ...d,
+                  oneScreen: { ...d.oneScreen, description },
+                }))}
+              />
             </Reveal>
 
             <RevealGroup className="mt-8 grid gap-6 lg:grid-cols-2">
-              <RevealItem className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5">
-                <div className="relative aspect-[16/9] w-full bg-zinc-100">
-                  <Image
-                    src="/products/onescreen-t7-DtnnEsSH.png"
-                    alt="OneScreen Touchscreen T7"
-                    fill
-                    className="object-cover"
-                    sizes="(min-width: 1024px) 640px, 92vw"
-                  />
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/5"
-                  />
-                  <div className="absolute left-3 top-3 z-10 inline-flex items-center rounded-full bg-red-600 px-2.5 py-1 text-[9px] font-extrabold tracking-[0.22em] text-white">
-                    FLAGSHIP
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 z-10 p-5 text-left">
-                    <div className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                      Touchscreen T7
-                    </div>
-                    <p className="mt-1 text-sm font-medium text-white/90">
-                      Smarter screen. Made to last.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-6">
-                  <div className="text-[11px] font-extrabold tracking-[0.22em] text-red-600">
-                    TOUCHSCREEN T7
-                  </div>
-                  <div className="mt-2 text-lg font-semibold text-zinc-950">
-                    Smarter screen. Made to last.
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-zinc-600">
-                    Built for speed and efficiency with an Octa-core processor,
-                    8GB RAM, 128GB storage, and Android 15 — all backed by
-                    Google EDLA certification.
-                  </p>
-                  <p className="mt-3 text-sm leading-6 text-zinc-600">
-                    Multitask effortlessly: share your screen, annotate, process
-                    data, and extend your display across multiple screens — all
-                    at once.
-                  </p>
-
-                  <div className="mt-4 grid gap-2.5 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2.5">
-                    {[
-                      "Octa-core processor",
-                      "8GB RAM · 128GB storage",
-                      "Android 15",
-                      "Google EDLA certified",
-                      "Screen share + extend",
-                      "Annotate & multitask",
-                    ].map((h) => (
-                      <ChecklistLine key={h}>{h}</ChecklistLine>
-                    ))}
-                  </div>
-
-                  <div className="mt-6 flex flex-wrap justify-start gap-x-6 gap-y-3 sm:gap-8">
-                    <a
-                      href="/pdf/OneScreen_T7-Business-105_Spec_Sheet.pdf"
-                      target="_blank"
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 transition-colors hover:text-red-700 hover:underline border-b border-red-600/20"
-                    >
-                      105&quot; Business Spec
-                      <span aria-hidden>→</span>
-                    </a>
-                    <a
-                      href="/pdf/OneScreen_T7-Education-86_Spec_Sheet.pdf"
-                      target="_blank"
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 transition-colors hover:text-red-700 hover:underline border-b border-red-600/20"
-                    >
-                      86&quot; Education Spec
-                      <span aria-hidden>→</span>
-                    </a>
-                  </div>
-                </div>
-              </RevealItem>
-
-              <RevealItem className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5">
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-white">
-                  <div className="absolute left-3 top-3 z-10 inline-flex items-center rounded-full bg-zinc-950 px-2.5 py-1 text-[9px] font-extrabold tracking-[0.22em] text-white">
-                    INCLUDED
-                  </div>
-                  <div className="absolute inset-0 p-6 sm:p-8">
-                    <div className="relative h-full w-full min-h-0 min-w-0">
+              {oneScreen.products.map((product, productIndex) => (
+                <RevealItem
+                  key={`os-product-${productIndex}-${product.overlayTitle}`}
+                  className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5"
+                >
+                  {editable ? (
+                    <CmsProductActions
+                      onEdit={() =>
+                        setOneScreenEdit({ mode: "edit", index: productIndex })
+                      }
+                      onDelete={() => {
+                        if (!onContentChange) return;
+                        if (!window.confirm("Remove this OneScreen product?")) return;
+                        onContentChange((prev) => ({
+                          ...prev,
+                          oneScreen: {
+                            ...prev.oneScreen,
+                            products: prev.oneScreen.products.filter(
+                              (_, i) => i !== productIndex,
+                            ),
+                          },
+                        }));
+                      }}
+                    />
+                  ) : null}
+                  <div className="relative aspect-[16/9] w-full bg-zinc-100">
+                    {product.imageSrc ? (
                       <Image
-                        src="/products/onescreen-guru-badge-5aFHwYcl.png"
-                        alt="GURU Help 24/5"
+                        src={product.imageSrc}
+                        alt={product.imageAlt}
                         fill
-                        className="object-contain"
-                        sizes="(min-width: 1024px) 40vw, 90vw"
+                        className="object-cover"
+                        sizes="(min-width: 1024px) 640px, 92vw"
                       />
+                    ) : (
+                      <div className="absolute inset-0 bg-zinc-200" />
+                    )}
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/5"
+                    />
+                    <div className="absolute left-3 top-3 z-10 inline-flex items-center rounded-full bg-red-600 px-2.5 py-1 text-[9px] font-extrabold tracking-[0.22em] text-white">
+                      {product.badge}
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 z-10 p-5 text-left">
+                      <div className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                        {product.overlayTitle}
+                      </div>
+                      <p className="mt-1 text-sm font-medium text-white/90">
+                        {product.overlaySubtitle}
+                      </p>
                     </div>
                   </div>
-                </div>
-                <div className="border-t border-zinc-200 p-6">
-                  <div className="text-[11px] font-extrabold tracking-[0.22em] text-red-600">
-                    GURU HELP · 24/5
-                  </div>
-                  <div className="mt-2 text-lg font-semibold text-zinc-950">
-                    Live human support, included.
-                  </div>
-                  <p className="mt-2 text-[12px] font-semibold text-zinc-500">
-                    24/5 Live GURU Support Included · Available for All
-                    OneScreen Products
-                  </p>
-                  <p className="mt-4 text-sm leading-6 text-zinc-600">
-                    Every OneScreen product ships with 24/5 live GURU support —
-                    real people who help your team get unstuck on day one and
-                    every day after.
-                  </p>
 
-                  <ul className="mt-5 m-0 flex list-none flex-col gap-2.5 p-0">
-                    {[
-                      "24/5 live human support — no chatbots",
-                      "Available for all OneScreen products",
-                      "Onboarding, training, and troubleshooting",
-                      "Pairs with your assigned Virtual rep",
-                    ].map((x) => (
-                      <li key={x}>
-                        <ChecklistLine>{x}</ChecklistLine>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="p-6">
+                    <div className="text-[11px] font-extrabold tracking-[0.22em] text-red-600">
+                      {product.kicker}
+                    </div>
+                    <div className="mt-2 text-lg font-semibold text-zinc-950">
+                      {product.title}
+                    </div>
+                    {product.body1 ? (
+                      <p className="mt-2 text-sm leading-6 text-zinc-600">
+                        {product.body1}
+                      </p>
+                    ) : null}
+                    {product.body2 ? (
+                      <p className="mt-3 text-sm leading-6 text-zinc-600">
+                        {product.body2}
+                      </p>
+                    ) : null}
 
-                  <p className="mt-5 text-sm italic leading-6 text-zinc-500">
-                    Your Virtual rep is your first call — GURU is the global
-                    safety net behind it.
-                  </p>
-                </div>
-              </RevealItem>
+                    {product.highlights.length > 0 ? (
+                      <div className="mt-4 grid gap-2.5 sm:grid-cols-2 sm:gap-x-4 sm:gap-y-2.5">
+                        {product.highlights.map((h, index) => (
+                          <ChecklistLine key={`os-prod-${productIndex}-hl-${index}`}>
+                            {h}
+                          </ChecklistLine>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {product.links.length > 0 ? (
+                      <div className="mt-6 flex flex-wrap justify-start gap-x-6 gap-y-3 sm:gap-8">
+                        {product.links.map((link, index) => (
+                          <a
+                            key={`os-prod-${productIndex}-link-${index}`}
+                            href={link.href || undefined}
+                            target="_blank"
+                            className="inline-flex items-center gap-1.5 border-b border-red-600/20 text-sm font-semibold text-red-600 transition-colors hover:text-red-700 hover:underline"
+                          >
+                            {link.label}
+                            <span aria-hidden>→</span>
+                          </a>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                </RevealItem>
+              ))}
+
+              {oneScreen.guruCards.map((card, cardIndex) => (
+                <RevealItem
+                  key={`os-guru-${cardIndex}-${card.title}`}
+                  className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5"
+                >
+                  {editable ? (
+                    <CmsProductActions
+                      onEdit={() =>
+                        setOneScreenGuruEdit({ mode: "edit", index: cardIndex })
+                      }
+                      onDelete={() => {
+                        if (!onContentChange) return;
+                        if (!window.confirm("Remove this support card?")) return;
+                        onContentChange((prev) => ({
+                          ...prev,
+                          oneScreen: {
+                            ...prev.oneScreen,
+                            guruCards: prev.oneScreen.guruCards.filter(
+                              (_, i) => i !== cardIndex,
+                            ),
+                          },
+                        }));
+                      }}
+                    />
+                  ) : null}
+                  <div className="relative aspect-[16/9] w-full overflow-hidden bg-white">
+                    <div className="absolute left-3 top-3 z-10 inline-flex items-center rounded-full bg-zinc-950 px-2.5 py-1 text-[9px] font-extrabold tracking-[0.22em] text-white">
+                      {card.badge}
+                    </div>
+                    <div className="absolute inset-0 p-6 sm:p-8">
+                      <div className="relative h-full w-full min-h-0 min-w-0">
+                        {card.imageSrc ? (
+                          <Image
+                            src={card.imageSrc}
+                            alt={card.imageAlt}
+                            fill
+                            className="object-contain"
+                            sizes="(min-width: 1024px) 40vw, 90vw"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 rounded-xl bg-zinc-100" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="border-t border-zinc-200 p-6">
+                    <div className="text-[11px] font-extrabold tracking-[0.22em] text-red-600">
+                      {card.kicker}
+                    </div>
+                    <div className="mt-2 text-lg font-semibold text-zinc-950">
+                      {card.title}
+                    </div>
+                    {card.subtitle ? (
+                      <p className="mt-2 text-[12px] font-semibold text-zinc-500">
+                        {card.subtitle}
+                      </p>
+                    ) : null}
+                    {card.body ? (
+                      <p className="mt-4 text-sm leading-6 text-zinc-600">
+                        {card.body}
+                      </p>
+                    ) : null}
+
+                    {card.highlights.length > 0 ? (
+                      <ul className="mt-5 m-0 flex list-none flex-col gap-2.5 p-0">
+                        {card.highlights.map((x, index) => (
+                          <li key={`os-guru-${cardIndex}-hl-${index}`}>
+                            <ChecklistLine>{x}</ChecklistLine>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+
+                    {card.footerNote ? (
+                      <p className="mt-5 text-sm italic leading-6 text-zinc-500">
+                        {card.footerNote}
+                      </p>
+                    ) : null}
+                  </div>
+                </RevealItem>
+              ))}
+
+              {editable ? (
+                <RevealItem>
+                  <CmsAddProductCard
+                    label="Add OneScreen product"
+                    onClick={() => setOneScreenEdit({ mode: "add" })}
+                  />
+                </RevealItem>
+              ) : null}
             </RevealGroup>
 
-            <OneScreenSoftwareSuite />
+            <OneScreenSoftwareSuite
+              content={oneScreen.softwareSuite}
+              editable={editable}
+              onChange={
+                editable && onContentChange
+                  ? (softwareSuite) =>
+                      onContentChange((prev) => ({
+                        ...prev,
+                        oneScreen: { ...prev.oneScreen, softwareSuite },
+                      }))
+                  : undefined
+              }
+            />
           </section>
         ) : null}
 
@@ -1704,6 +1860,42 @@ export function ProductsPageClient({
         target={modalTarget}
         onClose={() => setEditTarget(null)}
         onSave={saveEditedProduct}
+      />
+
+      <OneScreenProductEditModal
+        key={
+          oneScreenEdit
+            ? `onescreen-${oneScreenEdit.mode}-${oneScreenEdit.mode === "edit" ? oneScreenEdit.index : "new"}`
+            : "onescreen-closed"
+        }
+        open={Boolean(oneScreenEdit && oneScreenModalItem)}
+        mode={oneScreenEdit?.mode ?? "edit"}
+        title={
+          oneScreenEdit
+            ? cmsItemModalTitle(oneScreenEdit.mode, "OneScreen product")
+            : "OneScreen product"
+        }
+        item={oneScreenModalItem}
+        onClose={() => setOneScreenEdit(null)}
+        onSave={saveOneScreenProduct}
+      />
+
+      <OneScreenGuruEditModal
+        key={
+          oneScreenGuruEdit
+            ? `os-guru-${oneScreenGuruEdit.mode}-${oneScreenGuruEdit.mode === "edit" ? oneScreenGuruEdit.index : "new"}`
+            : "os-guru-closed"
+        }
+        open={Boolean(oneScreenGuruEdit && oneScreenGuruModalItem)}
+        mode={oneScreenGuruEdit?.mode ?? "edit"}
+        title={
+          oneScreenGuruEdit
+            ? cmsItemModalTitle(oneScreenGuruEdit.mode, "support card")
+            : "Support card"
+        }
+        item={oneScreenGuruModalItem}
+        onClose={() => setOneScreenGuruEdit(null)}
+        onSave={saveOneScreenGuruCard}
       />
 
       <TableEditModal

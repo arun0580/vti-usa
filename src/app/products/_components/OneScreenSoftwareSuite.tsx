@@ -1,126 +1,112 @@
-import { GraduationCap, BookOpen, PenTool, Settings } from "lucide-react";
-import type { ComponentType } from "react";
+import { BookOpen, GraduationCap, PenTool, Settings } from "lucide-react";
+import type { ReactNode } from "react";
+import { CmsAddProductCard, CmsProductActions } from "@/lib/products-page/CmsProductActions";
+import { EditableText, EditableTextarea } from "@/lib/products-page/EditableField";
+import { emptyOneScreenApp } from "@/lib/products-page/productDefaults";
+import type { OneScreenContent } from "@/lib/products-page/types";
 
-/* Line-art icon paths from Lucide (v0.460) — ISC License, https://lucide.dev */
+const APP_ICONS: Record<string, ReactNode> = {
+  graduation: <GraduationCap className="h-5 w-5" />,
+  book: <BookOpen className="h-5 w-5" />,
+  pen: <PenTool className="h-5 w-5" />,
+  settings: <Settings className="h-5 w-5" />,
+};
 
-function PenLineArtIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden
-    >
-      <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-    </svg>
-  );
-}
+export function OneScreenSoftwareSuite({
+  content,
+  editable = false,
+  onChange,
+}: {
+  content: OneScreenContent["softwareSuite"];
+  editable?: boolean;
+  onChange?: (next: OneScreenContent["softwareSuite"]) => void;
+}) {
+  function patch(field: keyof OneScreenContent["softwareSuite"], value: string) {
+    if (!onChange) return;
+    onChange({ ...content, [field]: value });
+  }
 
-function BookOpenLineArtIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden
-    >
-      <path d="M12 7v14" />
-      <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
-    </svg>
-  );
-}
-
-function SettingsLineArtIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden
-    >
-      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  );
-}
-
-const APPS: {
-  name: string;
-  desc: string;
-  Icon: React.ReactNode;
-}[] = [
-  {
-    name: "Lesson",
-    desc: "Build and explore standards-based or custom lessons — accurate, simple lesson creation with a built-in repository.",
-    Icon: <GraduationCap className="h-5 w-5" />,
-  },
-  {
-    name: "QuizWiz",
-    desc: "AI-assisted quiz creation with Google Drive and Google Forms integration — students answer from any device.",
-    Icon: <BookOpen className="h-5 w-5" />,
-  },
-  {
-    name: "Scrybe",
-    desc: "AI-based real-time transcription and translation — closed captions for accessibility, with AI-summarized notes you can share.",
-    Icon: <PenTool className="h-5 w-5" />,
-  },
-  {
-    name: "OneScreen Central",
-    desc: "Centrally monitor, push updates, and manage every OneScreen panel across your campus.",
-    Icon: <Settings className="h-5 w-5" />,
-  },
-];
-
-export function OneScreenSoftwareSuite() {
   return (
     <div className="mt-10 rounded-3xl border border-zinc-200/90 bg-white p-6 shadow-sm shadow-zinc-950/[0.04] sm:p-10">
       <div className="text-center">
-        <p className="text-[12px] font-semibold tracking-[0.2em] text-red-600">
-          ONESCREEN SOFTWARE SUITE
-        </p>
-        <h3 className="mt-2 text-xl font-bold tracking-tight text-zinc-950 sm:text-3xl">
-          Four apps that ship with every panel.
-        </h3>
+        <EditableText
+          as="p"
+          className="text-[12px] font-semibold tracking-[0.2em] text-red-600"
+          value={content.kicker}
+          onChange={editable ? (kicker) => patch("kicker", kicker) : undefined}
+        />
+        <EditableText
+          as="h3"
+          className="mt-2 text-xl font-bold tracking-tight text-zinc-950 sm:text-3xl"
+          value={content.title}
+          onChange={editable ? (title) => patch("title", title) : undefined}
+        />
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 sm:gap-5 md:grid-cols-4">
-        {APPS.map((app) => {
-          const { Icon } = app;
-          return (
+        {content.apps.map((app, index) => (
+          <div
+            key={`os-app-${index}-${app.name}`}
+            className="relative rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm shadow-zinc-950/5 sm:p-6"
+          >
+            {editable && onChange ? (
+              <CmsProductActions
+                onDelete={() => {
+                  if (!window.confirm("Remove this software app?")) return;
+                  onChange({
+                    ...content,
+                    apps: content.apps.filter((_, i) => i !== index),
+                  });
+                }}
+              />
+            ) : null}
             <div
-              key={app.name}
-              className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm shadow-zinc-950/5 sm:p-6"
+              aria-hidden="true"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-rose-100/90 bg-rose-50/90 text-red-600"
             >
-              <div
-                aria-hidden="true"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-rose-100/90 bg-rose-50/90 text-red-600"
-              >
-                {Icon}
-              </div>
-              <div className="mt-4 text-base font-semibold text-zinc-950">
-                {app.name}
-              </div>
-              <p className="mt-2 text-sm leading-6 text-zinc-600">
-                {app.desc}
-              </p>
+              {APP_ICONS[app.icon] ?? APP_ICONS.graduation}
             </div>
-          );
-        })}
+            <EditableText
+              as="div"
+              className="mt-4 pr-16 text-base font-semibold text-zinc-950"
+              value={app.name}
+              onChange={
+                editable && onChange
+                  ? (name) => {
+                      const apps = [...content.apps];
+                      apps[index] = { ...apps[index], name };
+                      onChange({ ...content, apps });
+                    }
+                  : undefined
+              }
+            />
+            <EditableTextarea
+              className="mt-2 text-sm leading-6 text-zinc-600"
+              value={app.desc}
+              rows={4}
+              onChange={
+                editable && onChange
+                  ? (desc) => {
+                      const apps = [...content.apps];
+                      apps[index] = { ...apps[index], desc };
+                      onChange({ ...content, apps });
+                    }
+                  : undefined
+              }
+            />
+          </div>
+        ))}
+        {editable && onChange ? (
+          <CmsAddProductCard
+            label="Add software app"
+            onClick={() =>
+              onChange({
+                ...content,
+                apps: [...content.apps, emptyOneScreenApp()],
+              })
+            }
+          />
+        ) : null}
       </div>
 
       <div className="mt-9 flex flex-col items-center sm:mt-10">
@@ -128,15 +114,36 @@ export function OneScreenSoftwareSuite() {
           className="mb-3 h-1.5 w-1.5 rounded-full bg-red-600"
           aria-hidden
         />
-        <p className="max-w-xl text-center text-sm leading-6 text-zinc-600">
-          Looking for the right OneScreen configuration?{" "}
-          <a
-            href="/contact"
-            className="font-bold text-red-600 transition hover:text-red-700"
-          >
-            Talk to your Virtual rep →
-          </a>
-        </p>
+        {editable ? (
+          <div className="flex w-full max-w-xl flex-col items-center gap-2 text-center">
+            <EditableText
+              as="p"
+              className="text-sm leading-6 text-zinc-600"
+              value={content.ctaPrefix}
+              onChange={(ctaPrefix) => patch("ctaPrefix", ctaPrefix)}
+            />
+            <EditableText
+              className="text-sm font-bold text-red-600"
+              value={content.ctaLabel}
+              onChange={(ctaLabel) => patch("ctaLabel", ctaLabel)}
+            />
+            <EditableText
+              className="text-xs text-zinc-500"
+              value={content.ctaHref}
+              onChange={(ctaHref) => patch("ctaHref", ctaHref)}
+            />
+          </div>
+        ) : (
+          <p className="max-w-xl text-center text-sm leading-6 text-zinc-600">
+            {content.ctaPrefix}{" "}
+            <a
+              href={content.ctaHref}
+              className="font-bold text-red-600 transition hover:text-red-700"
+            >
+              {content.ctaLabel}
+            </a>
+          </p>
+        )}
       </div>
     </div>
   );

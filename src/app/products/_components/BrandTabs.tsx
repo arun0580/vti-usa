@@ -4,8 +4,8 @@ import { motion } from "motion/react";
 import { tapPress } from "@/lib/motion";
 
 export const INTERACTIVE_BRAND_TABS = [
-  { label: "Virtual", value: "virtual" },
-  { label: "OneScreen", value: "onescreen" },
+  { label: "Weonex", value: "virtual" },
+  { label: "MaxHub", value: "onescreen" },
   { label: "Hisense", value: "infocus" },
 ] as const;
 

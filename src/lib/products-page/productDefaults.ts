@@ -3,6 +3,9 @@ import type {
   CatalogItem,
   InteractivePanel,
   ManagementApp,
+  OneScreenApp,
+  OneScreenGuruCard,
+  OneScreenProduct,
 } from "./types";
 
 export const emptyInteractivePanel = (): InteractivePanel => ({
@@ -36,4 +39,36 @@ export const emptyManagementApp = (): ManagementApp => ({
   tag: "",
   desc: "",
   bullets: [],
+});
+
+export const emptyOneScreenProduct = (): OneScreenProduct => ({
+  badge: "NEW",
+  imageSrc: "",
+  imageAlt: "",
+  overlayTitle: "New OneScreen product",
+  overlaySubtitle: "Add a short tagline",
+  kicker: "ONESCREEN",
+  title: "Product title",
+  body1: "Describe the product here.",
+  body2: "",
+  highlights: ["Key feature"],
+  links: [{ label: "Download Spec Sheet", href: "" }],
+});
+
+export const emptyOneScreenApp = (): OneScreenApp => ({
+  name: "New app",
+  desc: "Describe what this app does.",
+  icon: "graduation",
+});
+
+export const emptyOneScreenGuruCard = (): OneScreenGuruCard => ({
+  badge: "INCLUDED",
+  imageSrc: "",
+  imageAlt: "",
+  kicker: "SUPPORT",
+  title: "New support card",
+  subtitle: "",
+  body: "Describe the support offering here.",
+  highlights: ["Key benefit"],
+  footerNote: "",
 });

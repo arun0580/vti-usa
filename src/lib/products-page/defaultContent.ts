@@ -128,6 +128,94 @@ export const defaultProductsContent: ProductsPageContent = {
       },
     ],
   },
+  oneScreen: {
+    kicker: "OneScreen — authorized dealer",
+    title: "Touchscreen T7 — smarter screen, made to last.",
+    description:
+      "We're the original and only authorized distributor of the OneScreen line. The flagship T7 pairs a battle-tested collaboration panel with the GURU live-help service that comes standard on every OneScreen product.",
+    products: [
+      {
+        badge: "FLAGSHIP",
+        imageSrc: "/products/onescreen-t7-DtnnEsSH.png",
+        imageAlt: "OneScreen Touchscreen T7",
+        overlayTitle: "Touchscreen T7",
+        overlaySubtitle: "Smarter screen. Made to last.",
+        kicker: "TOUCHSCREEN T7",
+        title: "Smarter screen. Made to last.",
+        body1:
+          "Built for speed and efficiency with an Octa-core processor, 8GB RAM, 128GB storage, and Android 15 — all backed by Google EDLA certification.",
+        body2:
+          "Multitask effortlessly: share your screen, annotate, process data, and extend your display across multiple screens — all at once.",
+        highlights: [
+          "Octa-core processor",
+          "8GB RAM · 128GB storage",
+          "Android 15",
+          "Google EDLA certified",
+          "Screen share + extend",
+          "Annotate & multitask",
+        ],
+        links: [
+          {
+            label: '105" Business Spec',
+            href: "/pdf/OneScreen_T7-Business-105_Spec_Sheet.pdf",
+          },
+          {
+            label: '86" Education Spec',
+            href: "/pdf/OneScreen_T7-Education-86_Spec_Sheet.pdf",
+          },
+        ],
+      },
+    ],
+    guruCards: [
+      {
+        badge: "INCLUDED",
+        imageSrc: "/products/onescreen-guru-badge-5aFHwYcl.png",
+        imageAlt: "GURU Help 24/5",
+        kicker: "GURU HELP · 24/5",
+        title: "Live human support, included.",
+        subtitle:
+          "24/5 Live GURU Support Included · Available for All OneScreen Products",
+        body: "Every OneScreen product ships with 24/5 live GURU support — real people who help your team get unstuck on day one and every day after.",
+        highlights: [
+          "24/5 live human support — no chatbots",
+          "Available for all OneScreen products",
+          "Onboarding, training, and troubleshooting",
+          "Pairs with your assigned Virtual rep",
+        ],
+        footerNote:
+          "Your Virtual rep is your first call — GURU is the global safety net behind it.",
+      },
+    ],
+    softwareSuite: {
+      kicker: "ONESCREEN SOFTWARE SUITE",
+      title: "Four apps that ship with every panel.",
+      apps: [
+        {
+          name: "Lesson",
+          desc: "Build and explore standards-based or custom lessons — accurate, simple lesson creation with a built-in repository.",
+          icon: "graduation",
+        },
+        {
+          name: "QuizWiz",
+          desc: "AI-assisted quiz creation with Google Drive and Google Forms integration — students answer from any device.",
+          icon: "book",
+        },
+        {
+          name: "Scrybe",
+          desc: "AI-based real-time transcription and translation — closed captions for accessibility, with AI-summarized notes you can share.",
+          icon: "pen",
+        },
+        {
+          name: "OneScreen Central",
+          desc: "Centrally monitor, push updates, and manage every OneScreen panel across your campus.",
+          icon: "settings",
+        },
+      ],
+      ctaPrefix: "Looking for the right OneScreen configuration?",
+      ctaLabel: "Talk to your Virtual rep →",
+      ctaHref: "/contact",
+    },
+  },
   led: {
     kicker: "Virtual line — exclusive",
     title: "DvLED posters & video walls — from a single panel to an entire wall.",

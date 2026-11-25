@@ -35,5 +35,37 @@ export function mergeProductsContent(
   stored?: Partial<ProductsPageContent> | null,
 ): ProductsPageContent {
   if (!stored) return defaultProductsContent;
-  return mergeDeep(defaultProductsContent, stored);
+  const merged = mergeDeep(defaultProductsContent, stored);
+
+  // Migrate legacy oneScreen.flagship → products[] and guru → guruCards[]
+  const legacy = stored.oneScreen as
+    | (Partial<ProductsPageContent["oneScreen"]> & {
+        flagship?: ProductsPageContent["oneScreen"]["products"][number];
+        guru?: ProductsPageContent["oneScreen"]["guruCards"][number];
+      })
+    | undefined;
+  if (
+    legacy?.flagship &&
+    (!Array.isArray(legacy.products) || legacy.products.length === 0)
+  ) {
+    merged.oneScreen = {
+      ...merged.oneScreen,
+      products: [
+        mergeDeep(defaultProductsContent.oneScreen.products[0], legacy.flagship),
+      ],
+    };
+  }
+  if (
+    legacy?.guru &&
+    (!Array.isArray(legacy.guruCards) || legacy.guruCards.length === 0)
+  ) {
+    merged.oneScreen = {
+      ...merged.oneScreen,
+      guruCards: [
+        mergeDeep(defaultProductsContent.oneScreen.guruCards[0], legacy.guru),
+      ],
+    };
+  }
+
+  return merged;
 }

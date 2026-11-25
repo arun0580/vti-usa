@@ -92,7 +92,7 @@ export function AdminProductsClient({
     <div className="flex min-h-0 flex-1 flex-col">
       <AdminPageToolbar
         title="Products page editor"
-        description="Use the category tabs to switch sections. Click Edit to update a product or + Add Product to create one."
+        description="Use the category tabs to switch sections. Click any text to edit, use Change image on photos, or Edit / + Add Product on product cards."
         lastUpdated={lastUpdated}
         previewHref="/products"
         saving={saving}
