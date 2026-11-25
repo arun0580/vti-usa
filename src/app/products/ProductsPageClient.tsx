@@ -923,10 +923,14 @@ export function ProductsPageClient({
               />
             </Reveal>
 
-            <RevealGroup className="mt-8 grid gap-6 lg:grid-cols-2">
+            <RevealGroup
+              className="mt-8 grid gap-6 lg:grid-cols-2"
+              disableAnimation={editable}
+            >
               {oneScreen.products.map((product, productIndex) => (
                 <RevealItem
-                  key={`os-product-${productIndex}-${product.overlayTitle}`}
+                  key={`os-product-${productIndex}`}
+                  disableAnimation={editable}
                   className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5"
                 >
                   {editable ? (
@@ -1027,7 +1031,8 @@ export function ProductsPageClient({
 
               {oneScreen.guruCards.map((card, cardIndex) => (
                 <RevealItem
-                  key={`os-guru-${cardIndex}-${card.title}`}
+                  key={`os-guru-${cardIndex}`}
+                  disableAnimation={editable}
                   className="relative overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm shadow-zinc-950/5"
                 >
                   {editable ? (
@@ -1108,7 +1113,7 @@ export function ProductsPageClient({
               ))}
 
               {editable ? (
-                <RevealItem>
+                <RevealItem disableAnimation>
                   <CmsAddProductCard
                     label="Add OneScreen product"
                     onClick={() => setOneScreenEdit({ mode: "add" })}

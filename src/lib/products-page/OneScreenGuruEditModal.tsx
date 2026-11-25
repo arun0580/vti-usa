@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { type CmsItemModalMode } from "@/lib/page-cms/cmsModalMode";
 import { cn } from "@/lib/cn";
 import { ProductFileUploadField } from "./ProductFileUploadField";
@@ -29,6 +30,11 @@ export function OneScreenGuruEditModal({
 }) {
   const [draft, setDraft] = useState<OneScreenGuruCard | null>(null);
   const [fileUploading, setFileUploading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!open) {
@@ -38,7 +44,7 @@ export function OneScreenGuruEditModal({
     if (item) setDraft(structuredClone(item));
   }, [open, item]);
 
-  if (!open || !draft) return null;
+  if (!mounted || !open || !draft) return null;
 
   function handleSave() {
     if (!draft) return;
@@ -46,47 +52,31 @@ export function OneScreenGuruEditModal({
     onClose();
   }
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+  return createPortal(
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <button
         type="button"
         aria-label="Close"
         onClick={onClose}
         className="absolute inset-0 bg-zinc-950/50"
       />
-      <div className="relative z-10 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-6 shadow-xl">
-        <h2 className="text-lg font-bold text-zinc-950">{title}</h2>
-        <p className="mt-1 text-sm text-zinc-500">
-          {mode === "add"
-            ? "Fill in the details below."
-            : "Edit all card details below."}
-        </p>
+      <div className="relative z-10 flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-xl">
+        <div className="shrink-0 border-b border-zinc-100 px-6 pb-4 pt-6">
+          <h2 className="text-lg font-bold text-zinc-950">{title}</h2>
+          <p className="mt-1 text-sm text-zinc-500">
+            {mode === "add"
+              ? "Fill in the details below."
+              : "Edit all card details below."}
+          </p>
+        </div>
 
-        <div className="mt-5 space-y-4">
+        <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-6 py-5">
           <label className="block text-sm font-semibold text-zinc-800">
             Badge
             <input
               className={fieldClass}
               value={draft.badge}
               onChange={(e) => setDraft({ ...draft, badge: e.target.value })}
-            />
-          </label>
-
-          <ProductFileUploadField
-            label="Card image"
-            accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
-            value={draft.imageSrc}
-            onChange={(imageSrc) => setDraft({ ...draft, imageSrc })}
-            hint="PNG, JPG, WebP, GIF, or SVG — up to 10 MB."
-            onUploadingChange={setFileUploading}
-          />
-
-          <label className="block text-sm font-semibold text-zinc-800">
-            Image alt text
-            <input
-              className={fieldClass}
-              value={draft.imageAlt}
-              onChange={(e) => setDraft({ ...draft, imageAlt: e.target.value })}
             />
           </label>
 
@@ -102,6 +92,7 @@ export function OneScreenGuruEditModal({
           <label className="block text-sm font-semibold text-zinc-800">
             Title
             <input
+              autoFocus
               className={fieldClass}
               value={draft.title}
               onChange={(e) => setDraft({ ...draft, title: e.target.value })}
@@ -132,7 +123,7 @@ export function OneScreenGuruEditModal({
             <textarea
               className={textareaClass}
               rows={5}
-              value={draft.highlights.join("\n")}
+              value={(draft.highlights ?? []).join("\n")}
               onChange={(e) =>
                 setDraft({
                   ...draft,
@@ -150,15 +141,33 @@ export function OneScreenGuruEditModal({
             <textarea
               className={textareaClass}
               rows={2}
-              value={draft.footerNote}
+              value={draft.footerNote ?? ""}
               onChange={(e) =>
                 setDraft({ ...draft, footerNote: e.target.value })
               }
             />
           </label>
+
+          <ProductFileUploadField
+            label="Card image"
+            accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+            value={draft.imageSrc}
+            onChange={(imageSrc) => setDraft({ ...draft, imageSrc })}
+            hint="PNG, JPG, WebP, GIF, or SVG — up to 10 MB."
+            onUploadingChange={setFileUploading}
+          />
+
+          <label className="block text-sm font-semibold text-zinc-800">
+            Image alt text
+            <input
+              className={fieldClass}
+              value={draft.imageAlt}
+              onChange={(e) => setDraft({ ...draft, imageAlt: e.target.value })}
+            />
+          </label>
         </div>
 
-        <div className="mt-6 flex justify-end gap-2">
+        <div className="flex shrink-0 justify-end gap-2 border-t border-zinc-100 px-6 py-4">
           <button
             type="button"
             onClick={onClose}
@@ -182,6 +191,7 @@ export function OneScreenGuruEditModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
