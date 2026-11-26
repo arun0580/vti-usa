@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const title =
   "Interactive Panels, LED Signage, Accessories & Software — VTI";
 const description =
-  "Browse Virtual Technologies' full product lineup: interactive panels (Virtual, OneScreen, InFocus), LED posters & signage, accessories, and the Get Curious Together OER software platform.";
+  "Browse Virtual Technologies' full product lineup: interactive panels (Virtual, MaxHub, InFocus), LED posters & signage, accessories, and the Get Curious Together OER software platform.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.vtiusa.com"),

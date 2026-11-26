@@ -1115,7 +1115,7 @@ export function ProductsPageClient({
               {editable ? (
                 <RevealItem disableAnimation>
                   <CmsAddProductCard
-                    label="Add OneScreen product"
+                    label="Add MaxHub product"
                     onClick={() => setOneScreenEdit({ mode: "add" })}
                   />
                 </RevealItem>
@@ -1877,8 +1877,8 @@ export function ProductsPageClient({
         mode={oneScreenEdit?.mode ?? "edit"}
         title={
           oneScreenEdit
-            ? cmsItemModalTitle(oneScreenEdit.mode, "OneScreen product")
-            : "OneScreen product"
+            ? cmsItemModalTitle(oneScreenEdit.mode, "MaxHub product")
+            : "MaxHub product"
         }
         item={oneScreenModalItem}
         onClose={() => setOneScreenEdit(null)}
